@@ -27,13 +27,13 @@ cost = -tf.reduce_sum(y_*tf.log(y))
 #cost1 = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y0), reduction_indices=[1]))
 
 #train_step1 = tf.train.GradientDescentOptimizer(0.5).minimize(cost1)
-train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cost)
+train_step = tf.train.GradientDescentOptimizer(0.001).minimize(cost)
 
 init = tf.initialize_all_variables()
 
 with tf.Session() as sess:
     sess.run(init)
-    for i in range(1000):
+    for i in range(10000):
         batch_xs, batch_ys = mnist.train.next_batch(100)
         sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 #        sess.run(train_step1, feed_dict={x: batch_xs, y_: batch_ys})
