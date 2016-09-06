@@ -1,6 +1,5 @@
 *.py[cod]
 
-data
 
 # C extensions
 *.so
@@ -46,3 +45,9 @@ nosetests.xml
 *~
 ~*
 .swp
+
+# data
+*data
+data
+.bz2
+
