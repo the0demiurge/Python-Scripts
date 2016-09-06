@@ -36,3 +36,11 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Tensorboard
+.ash-laptop
+
+# Editor
+*~
+~*
+.swp
