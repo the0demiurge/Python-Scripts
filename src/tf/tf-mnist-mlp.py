@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import numpy as np
 import tensorflow as tf
-from pylab import *
 
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
@@ -12,7 +11,7 @@ y_ = tf.placeholder(tf.float32, [None, 10])
 
 W1 = tf.Variable(tf.truncated_normal([784, 500]))
 b1 = tf.Variable(tf.zeros([500]))
-y1 = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
+y1 = tf.nn.relu6(tf.matmul(x, W1) + b1)
 
 W2 = tf.Variable(tf.truncated_normal([500, 200]))
 b2 = tf.Variable(tf.zeros([200]))
@@ -24,9 +23,9 @@ y = tf.nn.softmax(tf.matmul(y2, W3) + b3)
 
 cost = -tf.reduce_sum(y_*tf.log(tf.clip_by_value(y, 1e-6, 1.0)))
 
-train_step = tf.train.GradientDescentOptimizer(0.0011).minimize(cost)
+train_step = tf.train.AdamOptimizer(0.0011).minimize(cost)
 
-tf.scalar_summary('cost', cost)
+tf.scalar_summary('costrelu', cost)
 
 init = tf.initialize_all_variables()
 
@@ -54,11 +53,3 @@ with tf.Session() as sess:
     print(sess.run(W2))
     print(sess.run(b1))
     print(sess.run(b2))
-figure(1)
-subplot(121)
-plot(tmp)
-title('accuracy')
-subplot(122)
-plot(costss)
-title('cost')
-show()

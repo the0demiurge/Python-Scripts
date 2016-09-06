@@ -11,7 +11,7 @@ import tensorflow as tf
 #from pylab import *
  
 
-def load_examples(name)
+def load_examples(name):
 """load example datasets from tensorflow
 Args:
     name: the dataset name
