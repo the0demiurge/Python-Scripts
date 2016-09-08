@@ -22,10 +22,12 @@ b3 = tf.Variable(tf.zeros([10]))
 y = tf.nn.softmax(tf.matmul(y2, W3) + b3)
 
 cost = -tf.reduce_sum(y_*tf.log(tf.clip_by_value(y, 1e-6, 1.0)))
+#cost = tf.nn.softmax_cross_entropy_with_logits(y, y_)
+#cost = tf.nn.sigmoid_cross_entropy_with_logits(y, y_)
 
 train_step = tf.train.AdamOptimizer(0.0011).minimize(cost)
 
-tf.scalar_summary('costrelu', cost)
+tf.scalar_summary('cost', cost)
 
 init = tf.initialize_all_variables()
 
@@ -49,7 +51,7 @@ with tf.Session() as sess:
             print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
             tmp.append(accuracy)
             costss.append(cost_)
-    print(sess.run(W1))
-    print(sess.run(W2))
-    print(sess.run(b1))
-    print(sess.run(b2))
+#    print(sess.run(W1))
+#    print(sess.run(W2))
+#    print(sess.run(b1))
+#    print(sess.run(b2))
