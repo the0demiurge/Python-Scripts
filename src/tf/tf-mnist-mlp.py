@@ -6,19 +6,20 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 tmp = []
 costss = []
-x = tf.placeholder(tf.float32, [None, 784])
-y_ = tf.placeholder(tf.float32, [None, 10])
+net_size = [784, 500, 200, 10]
+x = tf.placeholder(tf.float32, [None, net_size[0]])
+y_ = tf.placeholder(tf.float32, [None, net_size[3]])
 
-W1 = tf.Variable(tf.truncated_normal([784, 500]))
-b1 = tf.Variable(tf.zeros([500]))
-y1 = tf.nn.relu6(tf.matmul(x, W1) + b1)
+W1 = tf.Variable(tf.truncated_normal([net_size[0], net_size[1]]))
+b1 = tf.Variable(tf.zeros([net_size[1]]))
+y1 = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
 
-W2 = tf.Variable(tf.truncated_normal([500, 200]))
-b2 = tf.Variable(tf.zeros([200]))
+W2 = tf.Variable(tf.truncated_normal([net_size[1], net_size[2]]))
+b2 = tf.Variable(tf.zeros([net_size[2]]))
 y2 = tf.nn.sigmoid(tf.matmul(y1, W2) + b2)
 
-W3 = tf.Variable(tf.truncated_normal([200, 10]))
-b3 = tf.Variable(tf.zeros([10]))
+W3 = tf.Variable(tf.truncated_normal([net_size[2], net_size[3]]))
+b3 = tf.Variable(tf.zeros([net_size[3]]))
 y = tf.nn.softmax(tf.matmul(y2, W3) + b3)
 
 cost = -tf.reduce_sum(y_*tf.log(tf.clip_by_value(y, 1e-6, 1.0)))
