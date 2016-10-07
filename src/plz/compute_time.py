@@ -47,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    input('\n\n请输入回车继续')
