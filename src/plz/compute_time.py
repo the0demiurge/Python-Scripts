@@ -40,7 +40,7 @@ def main():
     s = sec % 3600
     hour = (sec - s) / 3600
     minutes = s / 60
-    print('total %d hours and %.0f mins' % (hour, minutes))
+    print('total {0:d} hours and {1:.0f} mins'.format(hour, minutes))
     print('for my lover, 小胖儿～, 13自动化老徐')
     return result
 
