@@ -76,13 +76,50 @@ Args:
         '''
         assert int(batch_size) > 0, 'batch_size {} is not > 0'.format(
             batch_size)
+        batch_xs = self.next_xbatch(batch_size)
+        batch_ys = self.this_ybatch()
+        return batch_xs, batch_ys
+
+    def this_xbatch(self):
+        batch_index = np.array(range(
+            self._batch_position,
+            self._batch_position + self._batch_size))
+        batch_index %= self.train_size
+        batch_xs = self.X_train.iloc[batch_index, :]
+        return batch_xs.values
+
+    def this_ybatch(self):
+        batch_index = np.array(range(
+            self._batch_position,
+            self._batch_position + self._batch_size))
+        batch_index %= self.train_size
+        batch_ys = self.Y_train.iloc[batch_index, :]
+        return batch_ys.values
+
+    def next_xbatch(self, batch_size=100):
+        assert int(batch_size) > 0, 'batch_size {} is not > 0'.format(
+            batch_size)
+        self._batch_size = batch_size
+        self._batch_position += batch_size
+        self._batch_position %= self.train_size
+
         batch_index = np.array(range(
             self._batch_position,
             self._batch_position + batch_size))
         batch_index %= self.train_size
-        (batch_xs,
-         batch_ys) = (self.X_train.iloc[batch_index, :],
-                      self.Y_train.iloc[batch_index, :])
+        batch_xs = self.X_train.iloc[batch_index, :]
+        return batch_xs.values
+
+    def next_ybatch(self, batch_size=100):
+        assert int(batch_size) > 0, 'batch_size {} is not > 0'.format(
+            batch_size)
+        self._batch_size = batch_size
         self._batch_position += batch_size
         self._batch_position %= self.train_size
-        return batch_xs.values, batch_ys.values
+
+        batch_index = np.array(range(
+            self._batch_position,
+            self._batch_position + batch_size))
+        batch_index %= self.train_size
+        batch_ys = self.Y_train.iloc[batch_index, :]
+        return batch_ys.values
