@@ -63,7 +63,9 @@ class LinkList(object):
 
     """Link list"""
 
-    def __init__(self, lst=[]):
+    def __init__(self, lst=None):
+        if lst is None:
+            lst = []
         self.__head = Node()
         p = self.__head
         for item in lst:
