@@ -120,7 +120,7 @@ def ae(struct_of_net=[150, 8]):
     # Launch the graph
     with tf.Session() as sess:
         sess.run(init)
-        for epoch in range(10):
+        for epoch in range(1000):
             # Loop over all batches
             for i in range(10):
                 fd = {x: X[:(i + 1) * 100, :]}
