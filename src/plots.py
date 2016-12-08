@@ -143,7 +143,7 @@ def ae(struct_of_net=[150, 8]):
         for i in range(4):
             subplot(2,2,i+1)
             scatter(X[:,ind[ 2 * i]], X[:,ind[ 2 * i + 1]],c='r', label='Raw data', edgecolors='r', s=ss)
-            scatter( datas[:, ind[2 * i]], datas[:, ind[2 * i + 1]], c='black', label='Restored data', marker='+', edgecolors='black', s=20)
+            scatter( datas[:, ind[2 * i]], datas[:, ind[2 * i + 1]], c='g', label='Restored data', marker='+', edgecolors='g', s=2*ss)
             xlabel('feature %d, %d' % (2 * i, 2 * i + 1))
             # title('autoencoder restoration')
         legend()
