@@ -36,7 +36,11 @@ def main():
     sheetname = args.sheetname
     column = args.column
     xls_column = {'1':'A:N', '2':'P:AC', '3':'AE:AR'}
-    data = read_excel(filename,  sheetname=sheetname, parse_cols=xls_column[column], skiprows=10)
+    try:
+        data = read_excel(filename, sheetname=sheetname, parse_cols=xls_column[column], skiprows=10)
+    except:
+        sheetname = 0
+    data = read_excel(filename, sheetname=sheetname, parse_cols=xls_column[column], skiprows=10)
     data = data.replace(to_replace={'旷工' : nan})
     data = array(data)
     data = data[:,[1,3,6,8,10,12]]
