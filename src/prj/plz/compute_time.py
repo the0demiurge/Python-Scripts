@@ -36,11 +36,14 @@ def main():
     sheetname = args.sheetname
     column = args.column
     xls_column = {'1':'A:N', '2':'P:AC', '3':'AE:AR'}
+    info_column = {'1': 'B,J', '2': 'Q,Y', '3': 'AF,AN'}
     try:
         data = read_excel(filename, sheetname=sheetname, parse_cols=xls_column[column], skiprows=10)
     except:
         sheetname = 0
     data = read_excel(filename, sheetname=sheetname, parse_cols=xls_column[column], skiprows=10)
+    info = read_excel(filename, sheetname=sheetname, parse_cols=info_column[column]).ix[:1, :].values
+    print('  姓名  ： %s\n记录时间： %s' % (info[0, 1], info[1, 0]))
     data = data.replace(to_replace={'旷工' : nan})
     data = array(data)
     data = data[:,[1,3,6,8,10,12]]
@@ -54,7 +57,7 @@ def main():
     s = sec % 3600
     hour = int((sec - s) / 3600)
     minutes = s / 60
-    print('total {0:d} hours and {1:.0f} mins'.format(hour, minutes))
+    print('出勤时间： {0:d}小时{1:.0f}分钟'.format(hour, minutes))
     print('for my lover, 小胖儿～, 13自动化老徐')
     return result
 
