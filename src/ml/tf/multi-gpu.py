@@ -38,7 +38,7 @@ with tf.device('/gpu:1'):
     l4 = linear_layer(l3, [200, 10])
     y = tf.nn.softmax(l4)
 
-    cost = tf.nn.softmax_cross_entropy_with_logits(l4, y_)
+    cost = tf.nn.softmax_cross_entropy_with_logits(logits=l4, labels=y_)
 
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float16))
