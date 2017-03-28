@@ -9,6 +9,7 @@ __author__ = 'the0demiurge'
 
 
 class Batcher(object):
+
     '''create a batcher with the same api as tensorflow
     usage:
         data = Batcher(X, Y)

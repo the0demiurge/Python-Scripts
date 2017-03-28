@@ -1,4 +1,6 @@
 import argparse
+import os
+import pdb
 import numpy as np
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
@@ -6,13 +8,17 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 class IncreaseNN(object):
 
-    def init(self, shape):
+    def __init__(self, shape, log_dir='/tmp/tf_charlesxu'):
         self.__shape = shape
+        os.system('rm -rf /tmp/tf_charlesxu')
+        if not os.path.isdir(log_dir):
+            os.makedirs(log_dir)
+        self.log_dir = log_dir
         self.sess = tf.InteractiveSession()
         self.net = self.interferece(self.shape)
         tf.global_variables_initializer().run()
 
-    def init_placeholders(self, shape):
+    def _init_placeholders(self, shape):
         with tf.name_scope('input'):
             placeholders = {
                 'x': tf.placeholder(tf.float32, [None, shape[0]]),
@@ -20,7 +26,7 @@ class IncreaseNN(object):
             }
         return placeholders
 
-    def init_variables(self, shape):
+    def _init_variables(self, shape):
 
         def init_weight_variable(shape):
             """Create a weight variable with appropriate initialization."""
@@ -32,42 +38,41 @@ class IncreaseNN(object):
             initial = tf.constant(0.1, shape=shape)
             return tf.Variable(initial)
 
-        with tf.name_scope('variables'):
-            variables = {
-                'weights': [init_weight_variable(a, b) for a, b in zip(shape[:-1], shape[1:])],
-                'biases': [init_bias_variable([a]) for a in shape[1:]]
-            }
-        for w, b in zip(variables['weights'], variables['biases']):
-            self.variable_summaries(w)
-            self.variable_summaries(b)
+        variables = {
+            'weights': [init_weight_variable([a, b]) for a, b in zip(shape[:-1], shape[1:])],
+            'biases': [init_bias_variable([a]) for a in shape[1:]]
+        }
+        for index, (w, b) in enumerate(zip(variables['weights'], variables['biases'])):
+            self._variable_summaries(w, 'weight_%d' % index)
+            self._variable_summaries(b, 'bias_%d' % index)
         return variables
 
-    def init_layer(self, name, x, w, b, activation=tf.nn.relu):
+    def _init_layer(self, name, x, w, b, activation=tf.nn.relu):
         with tf.name_scope(name):
-            z = x * w + b
-            tf.summary('z', z)
+            z = tf.matmul(x, w) + b
+            tf.summary.histogram('z', z)
             layer = activation(z)
             tf.summary.histogram('layer', layer)
         return layer
 
-    def init_layers(self, placeholders, variables):
+    def _init_layers(self, placeholders, variables):
         layers = [placeholders['x']]
         for index, (w, b) in enumerate(zip(variables['weights'][:-1], variables['biases'][:-1])):
-            layer = self.init_layer('layer %d' % index, layers[-1], w, b)
+            layer = self._init_layer('layer_%d' % index, layers[-1], w, b)
             layers.append(layer)
-        layer = self.init_layer('last layer', layers[-1], variables['weights'][-1], variables['biases'][-1], tf.identity)
+        layer = self._init_layer('last_layer', layers[-1], variables['weights'][-1], variables['biases'][-1], tf.identity)
         layers.append(layer)
         return layers
 
-    def init_loss(self, labels, logits):
-        with tf.name_scope('cross entropy'):
+    def _init_loss(self, labels, logits):
+        with tf.name_scope('cross_entropy'):
             diff = tf.nn.softmax_cross_entropy_with_logits(labels=labels, logits=logits)
             with tf.name_scope('total'):
                 cross_entropy = tf.reduce_mean(diff)
         tf.summary.scalar('cross entropy', cross_entropy)
         return cross_entropy
 
-    def init_accuracy(self, labels, logits):
+    def _init_accuracy(self, labels, logits):
         with tf.name_scope('accuracy'):
             with tf.name_scope('correct_prediction'):
                 correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(labels, 1))
@@ -76,37 +81,93 @@ class IncreaseNN(object):
         tf.summary.scalar('accuracy', accuracy)
         return accuracy
 
-    def init_train_ops(self, lost, learning_rate=0.01):
+    def _init_train_ops(self, lost, learning_rate=0.01):
         with tf.name_scope('train'):
             train_step = tf.train.RMSPropOptimizer(learning_rate).minimize(lost)
         return train_step
 
     def interferece(self, shape):
         interfereces = dict()
-        interfereces['placeholders'] = self.init_placeholders(shape)
-        interfereces['variables'] = self.init_variables(shape)
-        interfereces['layers'] = self.init_layers(interfereces['placeholders'], interfereces['variables'])
-        interfereces['cross_entropy'] = self.init_loss(labels=interfereces['placeholders']['y'], logits=interfereces['layers'][-1])
-        interfereces['accuracy'] = self.init_accuracy(labels=interfereces['placeholders']['y'], logits=interfereces['layers'][-1])
-        interfereces['train_step'] = self.init_train_ops(interfereces['cross_entropy'])
+        interfereces['placeholders'] = self._init_placeholders(shape)
+        interfereces['variables'] = self._init_variables(shape)
+        interfereces['layers'] = self._init_layers(interfereces['placeholders'], interfereces['variables'])
+        interfereces['cross_entropy'] = self._init_loss(labels=interfereces['placeholders']['y'], logits=interfereces['layers'][-1])
+        interfereces['accuracy'] = self._init_accuracy(labels=interfereces['placeholders']['y'], logits=interfereces['layers'][-1])
+        interfereces['train_step'] = self._init_train_ops(interfereces['cross_entropy'])
         interfereces['merged'] = tf.summary.merge_all()
         interfereces['summary'] = {
             'train_writer': tf.summary.FileWriter(self.log_dir + '/train', self.sess.graph),
             'test_writer': tf.summary.FileWriter(self.log_dir + '/test', self.sess.graph)}
         return interfereces
 
-    def train(self, data):
-        pass
+    def _feed_dict(self, data, net):
+        xs, ys = data.next_batch(100)
+        feed_dict = {
+            net['placeholders']['x']: xs,
+            net['placeholders']['y']: ys
+        }
+        return feed_dict
 
-    def increase(self):
-        pass
+    def fit(self, data_train, data_test, epoches=1000):
+        net = self.net
+        for epoch in range(epoches):
+            # testing
+            if epoch % 1 == 0:
+                summary, test_accuracy = self.sess.run(
+                    [net['merged'], net['accuracy']],
+                    feed_dict=self._feed_dict(data_test, net))
+                net['summary']['test_writer'].add_summary(summary, epoch)
+                print(epoch, test_accuracy, end='')
 
-    def predict(self):
-        pass
+            # training
+            # run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+            run_metadata = tf.RunMetadata()
+            summary, _ = self.sess.run(
+                [net['merged'], net['train_step']],
+                feed_dict=self._feed_dict(data_train, net),
+                # options=run_options,
+                run_metadata=run_metadata)
+            net['summary']['train_writer'].add_run_metadata(run_metadata, 'step%06d' % epoch)
+            net['summary']['train_writer'].add_summary(summary, epoch)
 
-    def variable_summaries(self, variable):
+    def increase(self, shape):
+        old_variables = {
+            'weights': [var.eval() for var in self.net['variables']['weights']],
+            'biases': [var.eval() for var in self.net['variables']['biases']]
+        }
+        tf.reset_default_graph()
+        self.sess = tf.InteractiveSession()
+        interfereces = dict()
+        interfereces['placeholders'] = self._init_placeholders(shape)
+        # interfereces['placeholders'] = self.net['placeholders']
+
+        variables = {
+            'weights': [self._increase_variable([a, b], old_variables['weights'][index] if index < len(old_variables['weights']) else None) for index, (a, b) in enumerate(zip(shape[:-1], shape[1:]))],
+            'biases': [self._increase_variable([a], old_variables['biases'][index] if index < len(old_variables['biases']) else None) for index, a in enumerate(shape[1:])]
+        }
+        for index, (w, b) in enumerate(zip(variables['weights'], variables['biases'])):
+            self._variable_summaries(w, 'weight_%d' % index)
+            self._variable_summaries(b, 'bias_%d' % index)
+
+        interfereces['variables'] = variables
+        interfereces['layers'] = self._init_layers(interfereces['placeholders'], interfereces['variables'])
+        interfereces['cross_entropy'] = self._init_loss(labels=interfereces['placeholders']['y'], logits=interfereces['layers'][-1])
+        interfereces['accuracy'] = self._init_accuracy(labels=interfereces['placeholders']['y'], logits=interfereces['layers'][-1])
+        interfereces['train_step'] = self._init_train_ops(interfereces['cross_entropy'])
+        interfereces['merged'] = tf.summary.merge_all()
+        interfereces['summary'] = {
+            'train_writer': tf.summary.FileWriter(self.log_dir + '/train', self.sess.graph),
+            'test_writer': tf.summary.FileWriter(self.log_dir + '/test', self.sess.graph)}
+        self.net = interfereces
+        tf.global_variables_initializer().run()
+        return interfereces
+
+    def predict(self, data_x):
+        return self.net['layers'][-1].eval(session=self.sess, feed_dict={self.net['placeholders']['x']: data_x})
+
+    def _variable_summaries(self, variable, name='var'):
         """Attach a lot of summaries to a Tensor (for TensorBoard visualization)."""
-        with tf.name_scope('summaries'):
+        with tf.name_scope(name):
             mean = tf.reduce_mean(variable)
             tf.summary.scalar('mean', mean)
             with tf.name_scope('stddev'):
@@ -116,13 +177,34 @@ class IncreaseNN(object):
             tf.summary.scalar('min', tf.reduce_min(variable))
             tf.summary.histogram('histogram', variable)
 
-    @staticmethod
-    def increase_variable(from_variable, shape):
-        from_shape = from_variable.get_shape()
-        from_values = from_variable.eval()
-        to_values = np.random.randn(*shape) / 10
+    def _increase_variable(self, shape, from_variable=None):
+        if from_variable is not None:
+            to_values = np.random.randn(*shape) / 10
+            var = tf.Variable(to_values, dtype=tf.float32)
+            tf.variables_initializer([var]).run()
+            return var
 
-        # 应当适当扩展宽容性
+        if isinstance(from_variable, tf.Variable):
+            try:
+                from_variable.eval(session=self.sess)
+            except tf.errors.FailedPreconditionError:
+                tf.variables_initializer([from_variable]).run()
+            from_shape = from_variable.get_shape().as_list()
+            from_values = from_variable.eval(session=self.sess)
+        elif isinstance(from_variable, np.ndarray):
+            from_shape = from_variable.shape
+            from_values = from_variable
+        to_values = np.random.randn(*shape) / 10
+        transfer_shape = [min(dim) for dim in zip(from_shape, shape)]
+
+        if len(from_shape) == 1:
+            to_values += 0.1
+            to_values[:transfer_shape[0]] = from_values[:transfer_shape[0]]
+        else:
+            to_values[..., :transfer_shape[-2], :transfer_shape[-1]] = from_values[..., :transfer_shape[-2], :transfer_shape[-1]]
+        var = tf.Variable(to_values, dtype=tf.float32)
+        tf.variables_initializer([var]).run()
+        return var
 
     @property
     def shape(self):
@@ -130,7 +212,12 @@ class IncreaseNN(object):
 
 
 def main():
-    pass
+    data_path = '/home/charlesxu/Workspace/data/MNIST_data/'
+    data = input_data.read_data_sets(data_path, one_hot=True)
+    network = IncreaseNN([784, 50, 10])
+    network.fit(data.train, data.test, epoches=2)
+    network.increase([784, 60, 50, 10])
+    network.fit(data.train, data.test, epoches=200)
 
 
 if __name__ == '__main__':
