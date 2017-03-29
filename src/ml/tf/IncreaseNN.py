@@ -227,32 +227,29 @@ class IncreaseNN(object):
 
 
 def original(data):
-    with tf.name_scope('orig'):
-        network = IncreaseNN([784, 20, 10])
+    network = IncreaseNN([784, 20, 10], log_dir='/tmp/tf_charlesxu/original')
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        network.increase([784, 20, 10])
         network.fit(data.train, data.test, epoches=100)
-        for hidden in range(20):
-            network.increase([784, 20, 10])
-            network.fit(data.train, data.test, epoches=100)
 
 
 def widen(data):
-    with tf.name_scope('widen'):
-        network = IncreaseNN([784, 1, 10])
+    network = IncreaseNN([784, 1, 10], log_dir='/tmp/tf_charlesxu/widen')
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        network.increase([784, hidden + 2, 10])
         network.fit(data.train, data.test, epoches=100)
-        for hidden in range(20):
-            network.increase([784, hidden + 2, 10])
-            network.fit(data.train, data.test, epoches=100)
 
 
 def deepen(data):
-    with tf.name_scope('deepen'):
-        structure = [784, 30, 10]
-        network = IncreaseNN(structure)
+    structure = [784, 30, 10]
+    network = IncreaseNN(structure, log_dir='/tmp/tf_charlesxu/deepen')
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        structure.insert(1, 30)
+        network.increase(structure)
         network.fit(data.train, data.test, epoches=100)
-        for hidden in range(20):
-            structure.insert(1, 30)
-            network.increase(structure)
-            network.fit(data.train, data.test, epoches=100)
 
 
 def main():
