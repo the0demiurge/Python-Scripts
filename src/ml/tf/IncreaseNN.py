@@ -1,6 +1,5 @@
-import argparse
 import os
-import pdb
+import time
 import numpy as np
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
@@ -8,15 +7,16 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 class IncreaseNN(object):
 
-    def __init__(self, shape, log_dir='/tmp/tf_charlesxu'):
+    def __init__(self, shape, log_dir='/tmp/tf_charlesxu/' + time.asctime()):
+        tf.reset_default_graph()
         self.__shape = shape
-        os.system('rm -rf /tmp/tf_charlesxu')
         if not os.path.isdir(log_dir):
             os.makedirs(log_dir)
         self.log_dir = log_dir
         self.sess = tf.InteractiveSession()
         self.net = self.interferece(self.shape)
         tf.global_variables_initializer().run()
+        self.__step = 0
 
     def _init_placeholders(self, shape):
         with tf.name_scope('input'):
@@ -113,38 +113,46 @@ class IncreaseNN(object):
         for epoch in range(epoches):
             # testing
             if epoch % 1 == 0:
+                run_metadata = tf.RunMetadata()
                 summary, test_accuracy = self.sess.run(
                     [net['merged'], net['accuracy']],
-                    feed_dict=self._feed_dict(data_test, net))
-                net['summary']['test_writer'].add_summary(summary, epoch)
-                print(epoch, test_accuracy, end='')
+                    feed_dict=self._feed_dict(data_test, net),
+                    run_metadata=run_metadata)
+                net['summary']['test_writer'].add_run_metadata(run_metadata, 'step%06d' % self.__step)
+                net['summary']['test_writer'].add_summary(summary, self.__step)
+                print(self.__step, test_accuracy, end='\n')
 
             # training
-            # run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
             run_metadata = tf.RunMetadata()
             summary, _ = self.sess.run(
                 [net['merged'], net['train_step']],
                 feed_dict=self._feed_dict(data_train, net),
-                # options=run_options,
                 run_metadata=run_metadata)
-            net['summary']['train_writer'].add_run_metadata(run_metadata, 'step%06d' % epoch)
-            net['summary']['train_writer'].add_summary(summary, epoch)
+            net['summary']['train_writer'].add_run_metadata(run_metadata, 'step%06d' % self.__step)
+            net['summary']['train_writer'].add_summary(summary, self.__step)
+            self.__step += 1
+        self.__step += 100
 
     def increase(self, shape):
         old_variables = {
             'weights': [var.eval() for var in self.net['variables']['weights']],
             'biases': [var.eval() for var in self.net['variables']['biases']]
         }
+        self.sess.close()
         tf.reset_default_graph()
         self.sess = tf.InteractiveSession()
         interfereces = dict()
         interfereces['placeholders'] = self._init_placeholders(shape)
-        # interfereces['placeholders'] = self.net['placeholders']
 
         variables = {
-            'weights': [self._increase_variable([a, b], old_variables['weights'][index] if index < len(old_variables['weights']) else None) for index, (a, b) in enumerate(zip(shape[:-1], shape[1:]))],
-            'biases': [self._increase_variable([a], old_variables['biases'][index] if index < len(old_variables['biases']) else None) for index, a in enumerate(shape[1:])]
+            'weights': [self._increase_variable(
+                [a, b], old_variables['weights'][index] if index < len(old_variables['weights']) else None
+            ) for index, (a, b) in enumerate(zip(shape[:-1], shape[1:]))],
+            'biases': [self._increase_variable(
+                [a], old_variables['biases'][index] if index < len(old_variables['biases']) else None
+            ) for index, a in enumerate(shape[1:])]
         }
+
         for index, (w, b) in enumerate(zip(variables['weights'], variables['biases'])):
             self._variable_summaries(w, 'weight_%d' % index)
             self._variable_summaries(b, 'bias_%d' % index)
@@ -178,7 +186,7 @@ class IncreaseNN(object):
             tf.summary.histogram('histogram', variable)
 
     def _increase_variable(self, shape, from_variable=None):
-        if from_variable is not None:
+        if from_variable is None:
             to_values = np.random.randn(*shape) / 10
             var = tf.Variable(to_values, dtype=tf.float32)
             tf.variables_initializer([var]).run()
@@ -194,6 +202,8 @@ class IncreaseNN(object):
         elif isinstance(from_variable, np.ndarray):
             from_shape = from_variable.shape
             from_values = from_variable
+        else:
+            raise Exception('Not recognised type %s' % str(type(from_variable)))
         to_values = np.random.randn(*shape) / 10
         transfer_shape = [min(dim) for dim in zip(from_shape, shape)]
 
@@ -211,14 +221,41 @@ class IncreaseNN(object):
         return self.__shape
 
 
+def original(data):
+    network = IncreaseNN([784, 20, 10])
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        network.increase([784, 20, 10])
+        network.fit(data.train, data.test, epoches=100)
+
+
+def widen(data):
+    network = IncreaseNN([784, 1, 10])
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        network.increase([784, hidden + 2, 10])
+        network.fit(data.train, data.test, epoches=100)
+
+
+def deepen(data):
+    structure = [784, 30, 10]
+    network = IncreaseNN(structure)
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        structure.insert(1, 30)
+        network.increase(structure)
+        network.fit(data.train, data.test, epoches=100)
+
+
 def main():
     data_path = '/home/charlesxu/Workspace/data/MNIST_data/'
     data = input_data.read_data_sets(data_path, one_hot=True)
-    network = IncreaseNN([784, 50, 10])
-    network.fit(data.train, data.test, epoches=2)
-    network.increase([784, 60, 50, 10])
-    network.fit(data.train, data.test, epoches=200)
+
+    original(data)
+    widen(data)
+    deepen(data)
 
 
 if __name__ == '__main__':
     main()
+()
