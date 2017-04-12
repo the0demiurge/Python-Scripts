@@ -2,6 +2,7 @@ import gym
 import pid
 
 cont_angle = pid.PID()
+env = gym.make('CartPole-v0')
 env.reset()
 env.render()
 step = 0
