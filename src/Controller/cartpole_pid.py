@@ -2,7 +2,6 @@ import gym
 import pid
 
 cont_angle = pid.PID()
-ipydb.set_trace()
 env.reset()
 env.render()
 step = 0
