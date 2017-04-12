@@ -227,10 +227,17 @@ class IncreaseNN(object):
 
 
 def original(data):
-    network = IncreaseNN([784, 20, 10], log_dir='/tmp/tf_charlesxu/original')
+    network = IncreaseNN([784, 20, 10], log_dir='/tmp/tf_charlesxu/original_wide')
     network.fit(data.train, data.test, epoches=100)
     for hidden in range(20):
         network.increase([784, 20, 10])
+        network.fit(data.train, data.test, epoches=100)
+
+    structure = [784] + [30] * 19 + [10]
+    network = IncreaseNN(structure, log_dir='/tmp/tf_charlesxu/original_deep')
+    network.fit(data.train, data.test, epoches=100)
+    for hidden in range(20):
+        network.increase(structure)
         network.fit(data.train, data.test, epoches=100)
 
 
