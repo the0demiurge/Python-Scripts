@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from pylab import *
 from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 
 
 def plot_embedding(X, y, plot_title=None, unbalanced=True):
@@ -41,15 +42,18 @@ def plot_embedding(X, y, plot_title=None, unbalanced=True):
     if title is not None:
         title(plot_title)
 
-def tsne(data_test, data_label, plot_title=None, unbalanced=True):
+def tsne(data_test, data_label, title=None, unbalanced=True, method='tsne'):
     label_n = argmax(data_label, axis=1)
 
-    model = TSNE(n_iter=10000)
+    models = {
+        'tsne': TSNE(n_iter=5000),
+        'pca': PCA()}
+
+    model = models[method.lower()]
     tsne_transformed = model.fit_transform(data_test, label_n)
 
-    plot_embedding(tsne_transformed, label_n, plot_title if plot_title else 't-sne projection', unbalanced)
+    plot_embedding(tsne_transformed, label_n, title if title else 't-sne projection', unbalanced)
 
-    show()
 
 
 def main():
