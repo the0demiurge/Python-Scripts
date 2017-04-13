@@ -7,7 +7,10 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 class IncreaseNN(object):
 
-    def __init__(self, shape, log_dir='/tmp/tf_charlesxu'):
+    def __init__(self, shape, X=None, Y=None, log_dir='/tmp/tf_charlesxu'):
+        if X and Y:
+            shape.insert(0, X.shape[1])
+            shape.append(Y.shape[1])
         tf.reset_default_graph()
         self.__shape = shape
         if not os.path.isdir(log_dir):
