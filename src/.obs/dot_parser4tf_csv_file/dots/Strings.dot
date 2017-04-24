@@ -1,0 +1,10 @@
+digraph "Strings"{
+rankdir="LR"
+node [shape="box"]
+		"Strings" -> "as_string" -> "tf.as_string";
+		"Strings" -> "reduce_join" -> "tf.reduce_join";
+		"Strings" -> "string_join" -> "tf.string_join";
+		"Strings" -> "string_to_hash_bucket" -> "tf.string_to_hash_bucket";
+		"Strings" -> "string_to_hash_bucket_fast" -> "tf.string_to_hash_bucket_fast";
+		"Strings" -> "string_to_hash_bucket_strong" -> "tf.string_to_hash_bucket_strong";
+}

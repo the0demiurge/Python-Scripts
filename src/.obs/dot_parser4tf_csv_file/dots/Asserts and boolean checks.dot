@@ -1,0 +1,19 @@
+digraph "Asserts and boolean checks"{
+rankdir="LR"
+node [shape="box"]
+		"Asserts and boolean checks" -> "assert_equal" -> "tf.assert_equal";
+		"Asserts and boolean checks" -> "assert_integer" -> "tf.assert_integer";
+		"Asserts and boolean checks" -> "assert_less" -> "tf.assert_less";
+		"Asserts and boolean checks" -> "assert_less_equal" -> "tf.assert_less_equal";
+		"Asserts and boolean checks" -> "assert_negative" -> "tf.assert_negative";
+		"Asserts and boolean checks" -> "assert_non_negative" -> "tf.assert_non_negative";
+		"Asserts and boolean checks" -> "assert_non_positive" -> "tf.assert_non_positive";
+		"Asserts and boolean checks" -> "assert_positive" -> "tf.assert_positive";
+		"Asserts and boolean checks" -> "assert_proper_iterable" -> "tf.assert_proper_iterable";
+		"Asserts and boolean checks" -> "assert_rank" -> "tf.assert_rank";
+		"Asserts and boolean checks" -> "assert_rank_at_least" -> "tf.assert_rank_at_least";
+		"Asserts and boolean checks" -> "assert_type" -> "tf.assert_type";
+		"Asserts and boolean checks" -> "is_non_decreasing" -> "tf.is_non_decreasing";
+		"Asserts and boolean checks" -> "is_numeric_tensor" -> "tf.is_numeric_tensor";
+		"Asserts and boolean checks" -> "is_strictly_increasing" -> "tf.is_strictly_increasing";
+}

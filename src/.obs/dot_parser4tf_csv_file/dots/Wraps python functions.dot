@@ -1,0 +1,5 @@
+digraph "Wraps python functions"{
+rankdir="LR"
+node [shape="box"]
+		"Wraps python functions" -> "py_func" -> "tf.py_func";
+}

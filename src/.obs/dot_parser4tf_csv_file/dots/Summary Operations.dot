@@ -1,0 +1,5 @@
+digraph "Summary Operations"{
+rankdir="LR"
+node [shape="box"]
+		"Summary Operations" -> "tensor_summary" -> "tf.tensor_summary";
+}

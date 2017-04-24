@@ -1,0 +1,15 @@
+digraph "Losses (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Losses (contrib)" -> "absolute_difference" -> "tf.contrib.losses.absolute_difference";
+		"Losses (contrib)" -> "add_loss" -> "tf.contrib.losses.add_loss";
+		"Losses (contrib)" -> "cosine_distance" -> "tf.contrib.losses.cosine_distance";
+		"Losses (contrib)" -> "get_losses" -> "tf.contrib.losses.get_losses";
+		"Losses (contrib)" -> "get_regularization_losses" -> "tf.contrib.losses.get_regularization_losses";
+		"Losses (contrib)" -> "get_total_loss" -> "tf.contrib.losses.get_total_loss";
+		"Losses (contrib)" -> "log_loss" -> "tf.contrib.losses.log_loss";
+		"Losses (contrib)" -> "sigmoid_cross_entropy" -> "tf.contrib.losses.sigmoid_cross_entropy";
+		"Losses (contrib)" -> "softmax_cross_entropy" -> "tf.contrib.losses.softmax_cross_entropy";
+		"Losses (contrib)" -> "sum_of_pairwise_squares" -> "tf.contrib.losses.sum_of_pairwise_squares";
+		"Losses (contrib)" -> "sum_of_squares" -> "tf.contrib.losses.sum_of_squares";
+}

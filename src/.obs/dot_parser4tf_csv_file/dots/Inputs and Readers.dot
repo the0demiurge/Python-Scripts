@@ -1,0 +1,38 @@
+digraph "Inputs and Readers"{
+rankdir="LR"
+node [shape="box"]
+		"Inputs and Readers" -> "batch" -> "tf.batch";
+		"Inputs and Readers" -> "batch_join" -> "tf.batch_join";
+		"Inputs and Readers" -> "decode_csv" -> "tf.decode_csv";
+		"Inputs and Readers" -> "decode_json_example" -> "tf.decode_json_example";
+		"Inputs and Readers" -> "decode_raw" -> "tf.decode_raw";
+		"Inputs and Readers" -> "FIFOQueue" -> "tf.FIFOQueue";
+		"Inputs and Readers" -> "FixedLenFeature" -> "tf.FixedLenFeature";
+		"Inputs and Readers" -> "FixedLengthRecordReader" -> "tf.FixedLengthRecordReader";
+		"Inputs and Readers" -> "FixedLenSequenceFeature" -> "tf.FixedLenSequenceFeature";
+		"Inputs and Readers" -> "IdentityReader" -> "tf.IdentityReader";
+		"Inputs and Readers" -> "input_producer" -> "tf.input_producer";
+		"Inputs and Readers" -> "limit_epochs" -> "tf.limit_epochs";
+		"Inputs and Readers" -> "match_filenames_once" -> "tf.match_filenames_once";
+		"Inputs and Readers" -> "matching_files" -> "tf.matching_files";
+		"Inputs and Readers" -> "PaddingFIFOQueue" -> "tf.PaddingFIFOQueue";
+		"Inputs and Readers" -> "parse_example" -> "tf.parse_example";
+		"Inputs and Readers" -> "parse_single_example" -> "tf.parse_single_example";
+		"Inputs and Readers" -> "placeholder" -> "tf.placeholder";
+		"Inputs and Readers" -> "placeholder_with_default" -> "tf.placeholder_with_default";
+		"Inputs and Readers" -> "QueueBase" -> "tf.QueueBase";
+		"Inputs and Readers" -> "RandomShuffleQueue" -> "tf.RandomShuffleQueue";
+		"Inputs and Readers" -> "range_input_producer" -> "tf.range_input_producer";
+		"Inputs and Readers" -> "read_file" -> "tf.read_file";
+		"Inputs and Readers" -> "ReaderBase" -> "tf.ReaderBase";
+		"Inputs and Readers" -> "shuffle_batch" -> "tf.shuffle_batch";
+		"Inputs and Readers" -> "shuffle_batch_join" -> "tf.shuffle_batch_join";
+		"Inputs and Readers" -> "size" -> "tf.size";
+		"Inputs and Readers" -> "slice_input_producer" -> "tf.slice_input_producer";
+		"Inputs and Readers" -> "sparse_placeholder" -> "tf.sparse_placeholder";
+		"Inputs and Readers" -> "string_input_producer" -> "tf.string_input_producer";
+		"Inputs and Readers" -> "TextLineReader" -> "tf.TextLineReader";
+		"Inputs and Readers" -> "TFRecordReader" -> "tf.TFRecordReader";
+		"Inputs and Readers" -> "VarLenFeature" -> "tf.VarLenFeature";
+		"Inputs and Readers" -> "WholeFileReader" -> "tf.WholeFileReader";
+}

@@ -1,0 +1,19 @@
+digraph "Monitors (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Monitors (contrib)" -> "BaseMonitor" -> "tf.contrib.monitors.BaseMonitor";
+		"Monitors (contrib)" -> "CaptureVariable" -> "tf.contrib.monitors.CaptureVariable";
+		"Monitors (contrib)" -> "CheckpointSaver" -> "tf.contrib.monitors.CheckpointSaver";
+		"Monitors (contrib)" -> "EveryN" -> "tf.contrib.monitors.EveryN";
+		"Monitors (contrib)" -> "ExportMonitor" -> "tf.contrib.monitors.ExportMonitor";
+		"Monitors (contrib)" -> "get_default_monitors" -> "tf.contrib.monitors.get_default_monitors";
+		"Monitors (contrib)" -> "GraphDump" -> "tf.contrib.monitors.GraphDump";
+		"Monitors (contrib)" -> "LoggingTrainable" -> "tf.contrib.monitors.LoggingTrainable";
+		"Monitors (contrib)" -> "NanLoss" -> "tf.contrib.monitors.NanLoss";
+		"Monitors (contrib)" -> "PrintTensor" -> "tf.contrib.monitors.PrintTensor";
+		"Monitors (contrib)" -> "StepCounter" -> "tf.contrib.monitors.StepCounter";
+		"Monitors (contrib)" -> "StopAtStep" -> "tf.contrib.monitors.StopAtStep";
+		"Monitors (contrib)" -> "SummarySaver" -> "tf.contrib.monitors.SummarySaver";
+		"Monitors (contrib)" -> "SummaryWriterCache" -> "tf.contrib.monitors.SummaryWriterCache";
+		"Monitors (contrib)" -> "ValidationMonitor" -> "tf.contrib.monitors.ValidationMonitor";
+}

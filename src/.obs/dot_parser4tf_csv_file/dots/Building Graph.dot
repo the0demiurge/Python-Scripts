@@ -1,0 +1,34 @@
+digraph "Building Graph"{
+rankdir="LR"
+node [shape="box"]
+		"Building Graph" -> "add_to_collection" -> "tf.add_to_collection";
+		"Building Graph" -> "as_dtype" -> "tf.as_dtype";
+		"Building Graph" -> "bytes" -> "tf.bytes";
+		"Building Graph" -> "container" -> "tf.container";
+		"Building Graph" -> "control_dependencies" -> "tf.control_dependencies";
+		"Building Graph" -> "convert_to_tensor" -> "tf.convert_to_tensor";
+		"Building Graph" -> "convert_to_tensor_or_indexed_slices" -> "tf.convert_to_tensor_or_indexed_slices";
+		"Building Graph" -> "device" -> "tf.device";
+		"Building Graph" -> "DeviceSpec" -> "tf.DeviceSpec";
+		"Building Graph" -> "Dimension" -> "tf.Dimension";
+		"Building Graph" -> "DType" -> "tf.DType";
+		"Building Graph" -> "get_collection" -> "tf.get_collection";
+		"Building Graph" -> "get_collection_ref" -> "tf.get_collection_ref";
+		"Building Graph" -> "get_default_graph" -> "tf.get_default_graph";
+		"Building Graph" -> "get_seed" -> "tf.get_seed";
+		"Building Graph" -> "Graph" -> "tf.Graph";
+		"Building Graph" -> "GraphKeys" -> "tf.GraphKeys";
+		"Building Graph" -> "import_graph_def" -> "tf.import_graph_def";
+		"Building Graph" -> "load_file_system_library" -> "tf.load_file_system_library";
+		"Building Graph" -> "load_op_library" -> "tf.load_op_library";
+		"Building Graph" -> "name_scope" -> "tf.name_scope";
+		"Building Graph" -> "NoGradient" -> "tf.NoGradient";
+		"Building Graph" -> "op_scope" -> "tf.op_scope";
+		"Building Graph" -> "Operation" -> "tf.Operation";
+		"Building Graph" -> "register_tensor_conversion_function" -> "tf.register_tensor_conversion_function";
+		"Building Graph" -> "RegisterGradient" -> "tf.RegisterGradient";
+		"Building Graph" -> "RegisterShape" -> "tf.RegisterShape";
+		"Building Graph" -> "reset_default_graph" -> "tf.reset_default_graph";
+		"Building Graph" -> "Tensor" -> "tf.Tensor";
+		"Building Graph" -> "TensorShape" -> "tf.TensorShape";
+}

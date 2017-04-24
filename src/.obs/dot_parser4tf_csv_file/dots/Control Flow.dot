@@ -1,0 +1,32 @@
+digraph "Control Flow"{
+rankdir="LR"
+node [shape="box"]
+		"Control Flow" -> "add_check_numerics_ops" -> "tf.add_check_numerics_ops";
+		"Control Flow" -> "Assert" -> "tf.Assert";
+		"Control Flow" -> "case" -> "tf.case";
+		"Control Flow" -> "check_numerics" -> "tf.check_numerics";
+		"Control Flow" -> "cond" -> "tf.cond";
+		"Control Flow" -> "count_up_to" -> "tf.count_up_to";
+		"Control Flow" -> "equal" -> "tf.equal";
+		"Control Flow" -> "greater" -> "tf.greater";
+		"Control Flow" -> "greater_equal" -> "tf.greater_equal";
+		"Control Flow" -> "group" -> "tf.group";
+		"Control Flow" -> "identity" -> "tf.identity";
+		"Control Flow" -> "is_finite" -> "tf.is_finite";
+		"Control Flow" -> "is_inf" -> "tf.is_inf";
+		"Control Flow" -> "is_nan" -> "tf.is_nan";
+		"Control Flow" -> "less" -> "tf.less";
+		"Control Flow" -> "less_equal" -> "tf.less_equal";
+		"Control Flow" -> "logical_and" -> "tf.logical_and";
+		"Control Flow" -> "logical_not" -> "tf.logical_not";
+		"Control Flow" -> "logical_or" -> "tf.logical_or";
+		"Control Flow" -> "logical_xor" -> "tf.logical_xor";
+		"Control Flow" -> "no_op" -> "tf.no_op";
+		"Control Flow" -> "not_equal" -> "tf.not_equal";
+		"Control Flow" -> "Print" -> "tf.Print";
+		"Control Flow" -> "select" -> "tf.select";
+		"Control Flow" -> "tuple" -> "tf.tuple";
+		"Control Flow" -> "verify_tensor_all_finite" -> "tf.verify_tensor_all_finite";
+		"Control Flow" -> "where" -> "tf.where";
+		"Control Flow" -> "while_loop" -> "tf.while_loop";
+}

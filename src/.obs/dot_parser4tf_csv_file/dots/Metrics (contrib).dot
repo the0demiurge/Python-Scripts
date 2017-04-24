@@ -1,0 +1,28 @@
+digraph "Metrics (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Metrics (contrib)" -> "accuracy" -> "tf.contrib.metrics.accuracy";
+		"Metrics (contrib)" -> "aggregate_metric_map" -> "tf.contrib.metrics.aggregate_metric_map";
+		"Metrics (contrib)" -> "aggregate_metrics" -> "tf.contrib.metrics.aggregate_metrics";
+		"Metrics (contrib)" -> "auc_using_histogram" -> "tf.contrib.metrics.auc_using_histogram";
+		"Metrics (contrib)" -> "confusion_matrix" -> "tf.contrib.metrics.confusion_matrix";
+		"Metrics (contrib)" -> "set_difference" -> "tf.contrib.metrics.set_difference";
+		"Metrics (contrib)" -> "set_intersection" -> "tf.contrib.metrics.set_intersection";
+		"Metrics (contrib)" -> "set_size" -> "tf.contrib.metrics.set_size";
+		"Metrics (contrib)" -> "set_union" -> "tf.contrib.metrics.set_union";
+		"Metrics (contrib)" -> "streaming_accuracy" -> "tf.contrib.metrics.streaming_accuracy";
+		"Metrics (contrib)" -> "streaming_auc" -> "tf.contrib.metrics.streaming_auc";
+		"Metrics (contrib)" -> "streaming_mean" -> "tf.contrib.metrics.streaming_mean";
+		"Metrics (contrib)" -> "streaming_mean_absolute_error" -> "tf.contrib.metrics.streaming_mean_absolute_error";
+		"Metrics (contrib)" -> "streaming_mean_cosine_distance" -> "tf.contrib.metrics.streaming_mean_cosine_distance";
+		"Metrics (contrib)" -> "streaming_mean_iou" -> "tf.contrib.metrics.streaming_mean_iou";
+		"Metrics (contrib)" -> "streaming_mean_relative_error" -> "tf.contrib.metrics.streaming_mean_relative_error";
+		"Metrics (contrib)" -> "streaming_mean_squared_error" -> "tf.contrib.metrics.streaming_mean_squared_error";
+		"Metrics (contrib)" -> "streaming_percentage_less" -> "tf.contrib.metrics.streaming_percentage_less";
+		"Metrics (contrib)" -> "streaming_precision" -> "tf.contrib.metrics.streaming_precision";
+		"Metrics (contrib)" -> "streaming_recall" -> "tf.contrib.metrics.streaming_recall";
+		"Metrics (contrib)" -> "streaming_recall_at_k" -> "tf.contrib.metrics.streaming_recall_at_k";
+		"Metrics (contrib)" -> "streaming_root_mean_squared_error" -> "tf.contrib.metrics.streaming_root_mean_squared_error";
+		"Metrics (contrib)" -> "streaming_sparse_precision_at_k" -> "tf.contrib.metrics.streaming_sparse_precision_at_k";
+		"Metrics (contrib)" -> "streaming_sparse_recall_at_k" -> "tf.contrib.metrics.streaming_sparse_recall_at_k";
+}

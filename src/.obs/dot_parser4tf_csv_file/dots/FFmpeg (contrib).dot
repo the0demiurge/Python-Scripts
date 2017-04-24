@@ -1,0 +1,6 @@
+digraph "FFmpeg (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"FFmpeg (contrib)" -> "decode_audio" -> "tf.contrib.ffmpeg.decode_audio";
+		"FFmpeg (contrib)" -> "encode_audio" -> "tf.contrib.ffmpeg.encode_audio";
+}

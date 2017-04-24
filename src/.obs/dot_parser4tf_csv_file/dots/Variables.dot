@@ -1,0 +1,47 @@
+digraph "Variables"{
+rankdir="LR"
+node [shape="box"]
+		"Variables" -> "all_variables" -> "tf.all_variables";
+		"Variables" -> "assert_variables_initialized" -> "tf.assert_variables_initialized";
+		"Variables" -> "assign" -> "tf.assign";
+		"Variables" -> "assign_add" -> "tf.assign_add";
+		"Variables" -> "assign_sub" -> "tf.assign_sub";
+		"Variables" -> "constant_initializer" -> "tf.constant_initializer";
+		"Variables" -> "count_up_to" -> "tf.count_up_to";
+		"Variables" -> "device" -> "tf.device";
+		"Variables" -> "export_meta_graph" -> "tf.export_meta_graph";
+		"Variables" -> "get_checkpoint_state" -> "tf.get_checkpoint_state";
+		"Variables" -> "get_variable" -> "tf.get_variable";
+		"Variables" -> "get_variable_scope" -> "tf.get_variable_scope";
+		"Variables" -> "import_meta_graph" -> "tf.import_meta_graph";
+		"Variables" -> "IndexedSlices" -> "tf.IndexedSlices";
+		"Variables" -> "initialize_all_variables" -> "tf.initialize_all_variables";
+		"Variables" -> "initialize_local_variables" -> "tf.initialize_local_variables";
+		"Variables" -> "initialize_variables" -> "tf.initialize_variables";
+		"Variables" -> "is_variable_initialized" -> "tf.is_variable_initialized";
+		"Variables" -> "latest_checkpoint" -> "tf.latest_checkpoint";
+		"Variables" -> "local_variables" -> "tf.local_variables";
+		"Variables" -> "make_template" -> "tf.make_template";
+		"Variables" -> "min_max_variable_partitioner" -> "tf.min_max_variable_partitioner";
+		"Variables" -> "moving_average_variables" -> "tf.moving_average_variables";
+		"Variables" -> "no_regularizer" -> "tf.no_regularizer";
+		"Variables" -> "ones_initializer" -> "tf.ones_initializer";
+		"Variables" -> "random_normal_initializer" -> "tf.random_normal_initializer";
+		"Variables" -> "random_uniform_initializer" -> "tf.random_uniform_initializer";
+		"Variables" -> "report_uninitialized_variables" -> "tf.report_uninitialized_variables";
+		"Variables" -> "Saver" -> "tf.Saver";
+		"Variables" -> "scatter_add" -> "tf.scatter_add";
+		"Variables" -> "scatter_sub" -> "tf.scatter_sub";
+		"Variables" -> "scatter_update" -> "tf.scatter_update";
+		"Variables" -> "sparse_mask" -> "tf.sparse_mask";
+		"Variables" -> "trainable_variables" -> "tf.trainable_variables";
+		"Variables" -> "truncated_normal_initializer" -> "tf.truncated_normal_initializer";
+		"Variables" -> "uniform_unit_scaling_initializer" -> "tf.uniform_unit_scaling_initializer";
+		"Variables" -> "update_checkpoint_state" -> "tf.update_checkpoint_state";
+		"Variables" -> "Variable" -> "tf.Variable";
+		"Variables" -> "variable_axis_size_partitioner" -> "tf.variable_axis_size_partitioner";
+		"Variables" -> "variable_op_scope" -> "tf.variable_op_scope";
+		"Variables" -> "variable_scope" -> "tf.variable_scope";
+		"Variables" -> "VariableScope" -> "tf.VariableScope";
+		"Variables" -> "zeros_initializer" -> "tf.zeros_initializer";
+}

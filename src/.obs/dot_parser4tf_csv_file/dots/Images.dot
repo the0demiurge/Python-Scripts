@@ -1,0 +1,42 @@
+digraph "Images"{
+rankdir="LR"
+node [shape="box"]
+		"Images" -> "adjust_brightness" -> "tf.adjust_brightness";
+		"Images" -> "adjust_contrast" -> "tf.adjust_contrast";
+		"Images" -> "adjust_hue" -> "tf.adjust_hue";
+		"Images" -> "adjust_saturation" -> "tf.adjust_saturation";
+		"Images" -> "central_crop" -> "tf.central_crop";
+		"Images" -> "convert_image_dtype" -> "tf.convert_image_dtype";
+		"Images" -> "crop_and_resize" -> "tf.crop_and_resize";
+		"Images" -> "crop_to_bounding_box" -> "tf.crop_to_bounding_box";
+		"Images" -> "decode_jpeg" -> "tf.decode_jpeg";
+		"Images" -> "decode_png" -> "tf.decode_png";
+		"Images" -> "draw_bounding_boxes" -> "tf.draw_bounding_boxes";
+		"Images" -> "encode_jpeg" -> "tf.encode_jpeg";
+		"Images" -> "encode_png" -> "tf.encode_png";
+		"Images" -> "extract_glimpse" -> "tf.extract_glimpse";
+		"Images" -> "flip_left_right" -> "tf.flip_left_right";
+		"Images" -> "flip_up_down" -> "tf.flip_up_down";
+		"Images" -> "grayscale_to_rgb" -> "tf.grayscale_to_rgb";
+		"Images" -> "hsv_to_rgb" -> "tf.hsv_to_rgb";
+		"Images" -> "non_max_suppression" -> "tf.non_max_suppression";
+		"Images" -> "pad_to_bounding_box" -> "tf.pad_to_bounding_box";
+		"Images" -> "per_image_whitening" -> "tf.per_image_whitening";
+		"Images" -> "random_brightness" -> "tf.random_brightness";
+		"Images" -> "random_contrast" -> "tf.random_contrast";
+		"Images" -> "random_flip_left_right" -> "tf.random_flip_left_right";
+		"Images" -> "random_flip_up_down" -> "tf.random_flip_up_down";
+		"Images" -> "random_hue" -> "tf.random_hue";
+		"Images" -> "random_saturation" -> "tf.random_saturation";
+		"Images" -> "resize_area" -> "tf.resize_area";
+		"Images" -> "resize_bicubic" -> "tf.resize_bicubic";
+		"Images" -> "resize_bilinear" -> "tf.resize_bilinear";
+		"Images" -> "resize_image_with_crop_or_pad" -> "tf.resize_image_with_crop_or_pad";
+		"Images" -> "resize_images" -> "tf.resize_images";
+		"Images" -> "resize_nearest_neighbor" -> "tf.resize_nearest_neighbor";
+		"Images" -> "rgb_to_grayscale" -> "tf.rgb_to_grayscale";
+		"Images" -> "rgb_to_hsv" -> "tf.rgb_to_hsv";
+		"Images" -> "rot90" -> "tf.rot90";
+		"Images" -> "sample_distorted_bounding_box" -> "tf.sample_distorted_bounding_box";
+		"Images" -> "transpose_image" -> "tf.transpose_image";
+}

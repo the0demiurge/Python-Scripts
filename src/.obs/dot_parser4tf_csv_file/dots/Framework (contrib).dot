@@ -1,0 +1,38 @@
+digraph "Framework (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Framework (contrib)" -> "add_arg_scope" -> "tf.contrib.framework.add_arg_scope";
+		"Framework (contrib)" -> "add_model_variable" -> "tf.contrib.framework.add_model_variable";
+		"Framework (contrib)" -> "arg_scope" -> "tf.contrib.framework.arg_scope";
+		"Framework (contrib)" -> "arg_scoped_arguments" -> "tf.contrib.framework.arg_scoped_arguments";
+		"Framework (contrib)" -> "assert_global_step" -> "tf.contrib.framework.assert_global_step";
+		"Framework (contrib)" -> "assert_or_get_global_step" -> "tf.contrib.framework.assert_or_get_global_step";
+		"Framework (contrib)" -> "assert_same_float_dtype" -> "tf.contrib.framework.assert_same_float_dtype";
+		"Framework (contrib)" -> "assert_scalar_int" -> "tf.contrib.framework.assert_scalar_int";
+		"Framework (contrib)" -> "convert_to_tensor_or_sparse_tensor" -> "tf.contrib.framework.convert_to_tensor_or_sparse_tensor";
+		"Framework (contrib)" -> "create_global_step" -> "tf.contrib.framework.create_global_step";
+		"Framework (contrib)" -> "deprecated" -> "tf.contrib.framework.deprecated";
+		"Framework (contrib)" -> "get_global_step" -> "tf.contrib.framework.get_global_step";
+		"Framework (contrib)" -> "get_graph_from_inputs" -> "tf.contrib.framework.get_graph_from_inputs";
+		"Framework (contrib)" -> "get_local_variables" -> "tf.contrib.framework.get_local_variables";
+		"Framework (contrib)" -> "get_model_variables" -> "tf.contrib.framework.get_model_variables";
+		"Framework (contrib)" -> "get_or_create_global_step" -> "tf.contrib.framework.get_or_create_global_step";
+		"Framework (contrib)" -> "get_unique_variable" -> "tf.contrib.framework.get_unique_variable";
+		"Framework (contrib)" -> "get_variables" -> "tf.contrib.framework.get_variables";
+		"Framework (contrib)" -> "get_variables_by_name" -> "tf.contrib.framework.get_variables_by_name";
+		"Framework (contrib)" -> "get_variables_by_suffix" -> "tf.contrib.framework.get_variables_by_suffix";
+		"Framework (contrib)" -> "get_variables_to_restore" -> "tf.contrib.framework.get_variables_to_restore";
+		"Framework (contrib)" -> "has_arg_scope" -> "tf.contrib.framework.has_arg_scope";
+		"Framework (contrib)" -> "is_non_decreasing" -> "tf.contrib.framework.is_non_decreasing";
+		"Framework (contrib)" -> "is_numeric_tensor" -> "tf.contrib.framework.is_numeric_tensor";
+		"Framework (contrib)" -> "is_strictly_increasing" -> "tf.contrib.framework.is_strictly_increasing";
+		"Framework (contrib)" -> "is_tensor" -> "tf.contrib.framework.is_tensor";
+		"Framework (contrib)" -> "local_variable" -> "tf.contrib.framework.local_variable";
+		"Framework (contrib)" -> "model_variable" -> "tf.contrib.framework.model_variable";
+		"Framework (contrib)" -> "reduce_sum_n" -> "tf.contrib.framework.reduce_sum_n";
+		"Framework (contrib)" -> "safe_embedding_lookup_sparse" -> "tf.contrib.framework.safe_embedding_lookup_sparse";
+		"Framework (contrib)" -> "variable" -> "tf.contrib.framework.variable";
+		"Framework (contrib)" -> "VariableDeviceChooser" -> "tf.contrib.framework.VariableDeviceChooser";
+		"Framework (contrib)" -> "with_same_shape" -> "tf.contrib.framework.with_same_shape";
+		"Framework (contrib)" -> "with_shape" -> "tf.contrib.framework.with_shape";
+}

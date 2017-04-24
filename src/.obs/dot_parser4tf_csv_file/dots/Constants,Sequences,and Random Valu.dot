@@ -1,0 +1,20 @@
+digraph "Constants,Sequences,and Random Valu"{
+rankdir="LR"
+node [shape="box"]
+		"Constants,Sequences,and Random Valu" -> "constant" -> "tf.constant";
+		"Constants,Sequences,and Random Valu" -> "fill" -> "tf.fill";
+		"Constants,Sequences,and Random Valu" -> "linspace" -> "tf.linspace";
+		"Constants,Sequences,and Random Valu" -> "multinomial" -> "tf.multinomial";
+		"Constants,Sequences,and Random Valu" -> "ones" -> "tf.ones";
+		"Constants,Sequences,and Random Valu" -> "ones_like" -> "tf.ones_like";
+		"Constants,Sequences,and Random Valu" -> "random_crop" -> "tf.random_crop";
+		"Constants,Sequences,and Random Valu" -> "random_gamma" -> "tf.random_gamma";
+		"Constants,Sequences,and Random Valu" -> "random_normal" -> "tf.random_normal";
+		"Constants,Sequences,and Random Valu" -> "random_shuffle" -> "tf.random_shuffle";
+		"Constants,Sequences,and Random Valu" -> "random_uniform" -> "tf.random_uniform";
+		"Constants,Sequences,and Random Valu" -> "range" -> "tf.range";
+		"Constants,Sequences,and Random Valu" -> "set_random_seed" -> "tf.set_random_seed";
+		"Constants,Sequences,and Random Valu" -> "truncated_normal" -> "tf.truncated_normal";
+		"Constants,Sequences,and Random Valu" -> "zeros" -> "tf.zeros";
+		"Constants,Sequences,and Random Valu" -> "zeros_like" -> "tf.zeros_like";
+}

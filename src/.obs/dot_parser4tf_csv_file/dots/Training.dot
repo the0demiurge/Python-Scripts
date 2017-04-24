@@ -1,0 +1,45 @@
+digraph "Training"{
+rankdir="LR"
+node [shape="box"]
+		"Training" -> "AdadeltaOptimizer" -> "tf.AdadeltaOptimizer";
+		"Training" -> "AdagradOptimizer" -> "tf.AdagradOptimizer";
+		"Training" -> "AdamOptimizer" -> "tf.AdamOptimizer";
+		"Training" -> "add_queue_runner" -> "tf.add_queue_runner";
+		"Training" -> "AggregationMethod" -> "tf.AggregationMethod";
+		"Training" -> "audio_summary" -> "tf.audio_summary";
+		"Training" -> "clip_by_average_norm" -> "tf.clip_by_average_norm";
+		"Training" -> "clip_by_global_norm" -> "tf.clip_by_global_norm";
+		"Training" -> "clip_by_norm" -> "tf.clip_by_norm";
+		"Training" -> "clip_by_value" -> "tf.clip_by_value";
+		"Training" -> "ClusterSpec" -> "tf.ClusterSpec";
+		"Training" -> "Coordinator" -> "tf.Coordinator";
+		"Training" -> "do_quantize_training_on_graphdef" -> "tf.do_quantize_training_on_graphdef";
+		"Training" -> "exponential_decay" -> "tf.exponential_decay";
+		"Training" -> "ExponentialMovingAverage" -> "tf.ExponentialMovingAverage";
+		"Training" -> "FtrlOptimizer" -> "tf.FtrlOptimizer";
+		"Training" -> "generate_checkpoint_state_proto" -> "tf.generate_checkpoint_state_proto";
+		"Training" -> "global_norm" -> "tf.global_norm";
+		"Training" -> "global_step" -> "tf.global_step";
+		"Training" -> "GradientDescentOptimizer" -> "tf.GradientDescentOptimizer";
+		"Training" -> "gradients" -> "tf.gradients";
+		"Training" -> "histogram_summary" -> "tf.histogram_summary";
+		"Training" -> "image_summary" -> "tf.image_summary";
+		"Training" -> "LooperThread" -> "tf.LooperThread";
+		"Training" -> "merge_all_summaries" -> "tf.merge_all_summaries";
+		"Training" -> "merge_summary" -> "tf.merge_summary";
+		"Training" -> "MomentumOptimizer" -> "tf.MomentumOptimizer";
+		"Training" -> "Optimizer" -> "tf.Optimizer";
+		"Training" -> "QueueRunner" -> "tf.QueueRunner";
+		"Training" -> "replica_device_setter" -> "tf.replica_device_setter";
+		"Training" -> "RMSPropOptimizer" -> "tf.RMSPropOptimizer";
+		"Training" -> "scalar_summary" -> "tf.scalar_summary";
+		"Training" -> "Server" -> "tf.Server";
+		"Training" -> "SessionManager" -> "tf.SessionManager";
+		"Training" -> "start_queue_runners" -> "tf.start_queue_runners";
+		"Training" -> "stop_gradient" -> "tf.stop_gradient";
+		"Training" -> "summary_iterator" -> "tf.summary_iterator";
+		"Training" -> "SummaryWriter" -> "tf.SummaryWriter";
+		"Training" -> "Supervisor" -> "tf.Supervisor";
+		"Training" -> "write_graph" -> "tf.write_graph";
+		"Training" -> "zero_fraction" -> "tf.zero_fraction";
+}

@@ -1,0 +1,6 @@
+digraph "Data IO (Python functions)"{
+rankdir="LR"
+node [shape="box"]
+		"Data IO (Python functions)" -> "tf_record_iterator" -> "tf.tf_record_iterator";
+		"Data IO (Python functions)" -> "TFRecordWriter" -> "tf.TFRecordWriter";
+}

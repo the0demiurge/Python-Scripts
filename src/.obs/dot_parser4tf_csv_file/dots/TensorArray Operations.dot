@@ -1,0 +1,9 @@
+digraph "TensorArray Operations"{
+rankdir="LR"
+node [shape="box"]
+		"TensorArray Operations" -> "concat" -> "tf.concat";
+		"TensorArray Operations" -> "pack" -> "tf.pack";
+		"TensorArray Operations" -> "split" -> "tf.split";
+		"TensorArray Operations" -> "TensorArray" -> "tf.TensorArray";
+		"TensorArray Operations" -> "unpack" -> "tf.unpack";
+}

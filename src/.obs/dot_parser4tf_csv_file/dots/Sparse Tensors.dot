@@ -1,0 +1,24 @@
+digraph "Sparse Tensors"{
+rankdir="LR"
+node [shape="box"]
+		"Sparse Tensors" -> "shape" -> "tf.shape";
+		"Sparse Tensors" -> "sparse_add" -> "tf.sparse_add";
+		"Sparse Tensors" -> "sparse_concat" -> "tf.sparse_concat";
+		"Sparse Tensors" -> "sparse_fill_empty_rows" -> "tf.sparse_fill_empty_rows";
+		"Sparse Tensors" -> "sparse_maximum" -> "tf.sparse_maximum";
+		"Sparse Tensors" -> "sparse_merge" -> "tf.sparse_merge";
+		"Sparse Tensors" -> "sparse_minimum" -> "tf.sparse_minimum";
+		"Sparse Tensors" -> "sparse_reduce_sum" -> "tf.sparse_reduce_sum";
+		"Sparse Tensors" -> "sparse_reorder" -> "tf.sparse_reorder";
+		"Sparse Tensors" -> "sparse_reset_shape" -> "tf.sparse_reset_shape";
+		"Sparse Tensors" -> "sparse_reshape" -> "tf.sparse_reshape";
+		"Sparse Tensors" -> "sparse_retain" -> "tf.sparse_retain";
+		"Sparse Tensors" -> "sparse_softmax" -> "tf.sparse_softmax";
+		"Sparse Tensors" -> "sparse_split" -> "tf.sparse_split";
+		"Sparse Tensors" -> "sparse_tensor_dense_matmul" -> "tf.sparse_tensor_dense_matmul";
+		"Sparse Tensors" -> "sparse_tensor_to_dense" -> "tf.sparse_tensor_to_dense";
+		"Sparse Tensors" -> "sparse_to_dense" -> "tf.sparse_to_dense";
+		"Sparse Tensors" -> "sparse_to_indicator" -> "tf.sparse_to_indicator";
+		"Sparse Tensors" -> "SparseTensor" -> "tf.SparseTensor";
+		"Sparse Tensors" -> "SparseTensorValue" -> "tf.SparseTensorValue";
+}

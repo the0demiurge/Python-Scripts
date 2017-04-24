@@ -1,0 +1,7 @@
+digraph "Tensor Handle Operations"{
+rankdir="LR"
+node [shape="box"]
+		"Tensor Handle Operations" -> "delete_session_tensor" -> "tf.delete_session_tensor";
+		"Tensor Handle Operations" -> "get_session_handle" -> "tf.get_session_handle";
+		"Tensor Handle Operations" -> "get_session_tensor" -> "tf.get_session_tensor";
+}

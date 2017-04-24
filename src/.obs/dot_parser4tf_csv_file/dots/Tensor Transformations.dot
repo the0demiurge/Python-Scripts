@@ -1,0 +1,43 @@
+digraph "Tensor Transformations"{
+rankdir="LR"
+node [shape="box"]
+		"Tensor Transformations" -> "batch_to_space" -> "tf.batch_to_space";
+		"Tensor Transformations" -> "bitcast" -> "tf.bitcast";
+		"Tensor Transformations" -> "boolean_mask" -> "tf.boolean_mask";
+		"Tensor Transformations" -> "cast" -> "tf.cast";
+		"Tensor Transformations" -> "concat" -> "tf.concat";
+		"Tensor Transformations" -> "depth_to_space" -> "tf.depth_to_space";
+		"Tensor Transformations" -> "dynamic_partition" -> "tf.dynamic_partition";
+		"Tensor Transformations" -> "dynamic_stitch" -> "tf.dynamic_stitch";
+		"Tensor Transformations" -> "expand_dims" -> "tf.expand_dims";
+		"Tensor Transformations" -> "extract_image_patches" -> "tf.extract_image_patches";
+		"Tensor Transformations" -> "gather" -> "tf.gather";
+		"Tensor Transformations" -> "gather_nd" -> "tf.gather_nd";
+		"Tensor Transformations" -> "meshgrid" -> "tf.meshgrid";
+		"Tensor Transformations" -> "one_hot" -> "tf.one_hot";
+		"Tensor Transformations" -> "pack" -> "tf.pack";
+		"Tensor Transformations" -> "pad" -> "tf.pad";
+		"Tensor Transformations" -> "rank" -> "tf.rank";
+		"Tensor Transformations" -> "reshape" -> "tf.reshape";
+		"Tensor Transformations" -> "reverse" -> "tf.reverse";
+		"Tensor Transformations" -> "reverse_sequence" -> "tf.reverse_sequence";
+		"Tensor Transformations" -> "saturate_cast" -> "tf.saturate_cast";
+		"Tensor Transformations" -> "shape" -> "tf.shape";
+		"Tensor Transformations" -> "shape_n" -> "tf.shape_n";
+		"Tensor Transformations" -> "size" -> "tf.size";
+		"Tensor Transformations" -> "slice" -> "tf.slice";
+		"Tensor Transformations" -> "space_to_batch" -> "tf.space_to_batch";
+		"Tensor Transformations" -> "space_to_depth" -> "tf.space_to_depth";
+		"Tensor Transformations" -> "split" -> "tf.split";
+		"Tensor Transformations" -> "squeeze" -> "tf.squeeze";
+		"Tensor Transformations" -> "string_to_number" -> "tf.string_to_number";
+		"Tensor Transformations" -> "tile" -> "tf.tile";
+		"Tensor Transformations" -> "to_bfloat16" -> "tf.to_bfloat16";
+		"Tensor Transformations" -> "to_double" -> "tf.to_double";
+		"Tensor Transformations" -> "to_float" -> "tf.to_float";
+		"Tensor Transformations" -> "to_int32" -> "tf.to_int32";
+		"Tensor Transformations" -> "to_int64" -> "tf.to_int64";
+		"Tensor Transformations" -> "transpose" -> "tf.transpose";
+		"Tensor Transformations" -> "unique_with_counts" -> "tf.unique_with_counts";
+		"Tensor Transformations" -> "unpack" -> "tf.unpack";
+}

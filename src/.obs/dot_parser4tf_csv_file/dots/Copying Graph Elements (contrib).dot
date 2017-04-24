@@ -1,0 +1,7 @@
+digraph "Copying Graph Elements (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Copying Graph Elements (contrib)" -> "copy_op_to_graph" -> "tf.contrib.copy_graph.copy_op_to_graph";
+		"Copying Graph Elements (contrib)" -> "copy_variable_to_graph" -> "tf.contrib.copy_graph.copy_variable_to_graph";
+		"Copying Graph Elements (contrib)" -> "get_copied_op" -> "tf.contrib.copy_graph.get_copied_op";
+}

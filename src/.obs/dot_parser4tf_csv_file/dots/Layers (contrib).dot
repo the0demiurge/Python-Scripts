@@ -1,0 +1,30 @@
+digraph "Layers (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Layers (contrib)" -> "apply_regularization" -> "tf.contrib.layers.apply_regularization";
+		"Layers (contrib)" -> "avg_pool2d" -> "tf.contrib.layers.avg_pool2d";
+		"Layers (contrib)" -> "batch_norm" -> "tf.contrib.layers.batch_norm";
+		"Layers (contrib)" -> "convolution2d" -> "tf.contrib.layers.convolution2d";
+		"Layers (contrib)" -> "convolution2d_in_plane" -> "tf.contrib.layers.convolution2d_in_plane";
+		"Layers (contrib)" -> "convolution2d_transpose" -> "tf.contrib.layers.convolution2d_transpose";
+		"Layers (contrib)" -> "flatten" -> "tf.contrib.layers.flatten";
+		"Layers (contrib)" -> "fully_connected" -> "tf.contrib.layers.fully_connected";
+		"Layers (contrib)" -> "l1_regularizer" -> "tf.contrib.layers.l1_regularizer";
+		"Layers (contrib)" -> "l2_regularizer" -> "tf.contrib.layers.l2_regularizer";
+		"Layers (contrib)" -> "max_pool2d" -> "tf.contrib.layers.max_pool2d";
+		"Layers (contrib)" -> "one_hot_encoding" -> "tf.contrib.layers.one_hot_encoding";
+		"Layers (contrib)" -> "optimize_loss" -> "tf.contrib.layers.optimize_loss";
+		"Layers (contrib)" -> "repeat" -> "tf.contrib.layers.repeat";
+		"Layers (contrib)" -> "separable_convolution2d" -> "tf.contrib.layers.separable_convolution2d";
+		"Layers (contrib)" -> "stack" -> "tf.contrib.layers.stack";
+		"Layers (contrib)" -> "sum_regularizer" -> "tf.contrib.layers.sum_regularizer";
+		"Layers (contrib)" -> "summarize_activation" -> "tf.contrib.layers.summarize_activation";
+		"Layers (contrib)" -> "summarize_activations" -> "tf.contrib.layers.summarize_activations";
+		"Layers (contrib)" -> "summarize_collection" -> "tf.contrib.layers.summarize_collection";
+		"Layers (contrib)" -> "summarize_tensor" -> "tf.contrib.layers.summarize_tensor";
+		"Layers (contrib)" -> "summarize_tensors" -> "tf.contrib.layers.summarize_tensors";
+		"Layers (contrib)" -> "unit_norm" -> "tf.contrib.layers.unit_norm";
+		"Layers (contrib)" -> "variance_scaling_initializer" -> "tf.contrib.layers.variance_scaling_initializer";
+		"Layers (contrib)" -> "xavier_initializer" -> "tf.contrib.layers.xavier_initializer";
+		"Layers (contrib)" -> "xavier_initializer_conv2d" -> "tf.contrib.layers.xavier_initializer_conv2d";
+}

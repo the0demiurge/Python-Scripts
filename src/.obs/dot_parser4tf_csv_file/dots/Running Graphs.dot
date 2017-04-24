@@ -1,0 +1,24 @@
+digraph "Running Graphs"{
+rankdir="LR"
+node [shape="box"]
+		"Running Graphs" -> "AbortedError" -> "tf.AbortedError";
+		"Running Graphs" -> "AlreadyExistsError" -> "tf.AlreadyExistsError";
+		"Running Graphs" -> "CancelledError" -> "tf.CancelledError";
+		"Running Graphs" -> "DataLossError" -> "tf.DataLossError";
+		"Running Graphs" -> "DeadlineExceededError" -> "tf.DeadlineExceededError";
+		"Running Graphs" -> "FailedPreconditionError" -> "tf.FailedPreconditionError";
+		"Running Graphs" -> "get_default_session" -> "tf.get_default_session";
+		"Running Graphs" -> "InteractiveSession" -> "tf.InteractiveSession";
+		"Running Graphs" -> "InternalError" -> "tf.InternalError";
+		"Running Graphs" -> "InvalidArgumentError" -> "tf.InvalidArgumentError";
+		"Running Graphs" -> "NotFoundError" -> "tf.NotFoundError";
+		"Running Graphs" -> "OpError" -> "tf.OpError";
+		"Running Graphs" -> "OutOfRangeError" -> "tf.OutOfRangeError";
+		"Running Graphs" -> "PermissionDeniedError" -> "tf.PermissionDeniedError";
+		"Running Graphs" -> "ResourceExhaustedError" -> "tf.ResourceExhaustedError";
+		"Running Graphs" -> "Session" -> "tf.Session";
+		"Running Graphs" -> "UnauthenticatedError" -> "tf.UnauthenticatedError";
+		"Running Graphs" -> "UnavailableError" -> "tf.UnavailableError";
+		"Running Graphs" -> "UnimplementedError" -> "tf.UnimplementedError";
+		"Running Graphs" -> "UnknownError" -> "tf.UnknownError";
+}

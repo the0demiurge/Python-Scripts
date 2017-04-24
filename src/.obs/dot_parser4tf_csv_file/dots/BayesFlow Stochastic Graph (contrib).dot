@@ -1,0 +1,15 @@
+digraph "BayesFlow Stochastic Graph (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"BayesFlow Stochastic Graph (contrib)" -> "DistributionTensor" -> "tf.contreib.bayesflow.stochastic_graph.DistributionTensor";
+		"BayesFlow Stochastic Graph (contrib)" -> "get_current_value_type" -> "tf.contreib.bayesflow.stochastic_graph.get_current_value_type";
+		"BayesFlow Stochastic Graph (contrib)" -> "get_score_function_with_baseline" -> "tf.contreib.bayesflow.stochastic_graph.get_score_function_with_baseline";
+		"BayesFlow Stochastic Graph (contrib)" -> "MeanValue" -> "tf.contreib.bayesflow.stochastic_graph.MeanValue";
+		"BayesFlow Stochastic Graph (contrib)" -> "NoValueTypeSetError" -> "tf.contreib.bayesflow.stochastic_graph.NoValueTypeSetError";
+		"BayesFlow Stochastic Graph (contrib)" -> "SampleAndReshapeValue" -> "tf.contreib.bayesflow.stochastic_graph.SampleAndReshapeValue";
+		"BayesFlow Stochastic Graph (contrib)" -> "SampleValue" -> "tf.contreib.bayesflow.stochastic_graph.SampleValue";
+		"BayesFlow Stochastic Graph (contrib)" -> "score_function" -> "tf.contreib.bayesflow.stochastic_graph.score_function";
+		"BayesFlow Stochastic Graph (contrib)" -> "StochasticTensor" -> "tf.contreib.bayesflow.stochastic_graph.StochasticTensor";
+		"BayesFlow Stochastic Graph (contrib)" -> "surrogate_loss" -> "tf.contreib.bayesflow.stochastic_graph.surrogate_loss";
+		"BayesFlow Stochastic Graph (contrib)" -> "value_type" -> "tf.contreib.bayesflow.stochastic_graph.value_type";
+}

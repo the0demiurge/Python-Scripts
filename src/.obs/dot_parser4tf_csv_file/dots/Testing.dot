@@ -1,0 +1,10 @@
+digraph "Testing"{
+rankdir="LR"
+node [shape="box"]
+		"Testing" -> "assert_equal_graph_def" -> "tf.assert_equal_graph_def";
+		"Testing" -> "compute_gradient" -> "tf.compute_gradient";
+		"Testing" -> "compute_gradient_error" -> "tf.compute_gradient_error";
+		"Testing" -> "get_temp_dir" -> "tf.get_temp_dir";
+		"Testing" -> "is_built_with_cuda" -> "tf.is_built_with_cuda";
+		"Testing" -> "main" -> "tf.main";
+}

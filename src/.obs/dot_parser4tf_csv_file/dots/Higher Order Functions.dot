@@ -1,0 +1,8 @@
+digraph "Higher Order Functions"{
+rankdir="LR"
+node [shape="box"]
+		"Higher Order Functions" -> "foldl" -> "tf.foldl";
+		"Higher Order Functions" -> "foldr" -> "tf.foldr";
+		"Higher Order Functions" -> "map_fn" -> "tf.map_fn";
+		"Higher Order Functions" -> "scan" -> "tf.scan";
+}

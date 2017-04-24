@@ -1,0 +1,35 @@
+digraph "Learn (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Learn (contrib)" -> "BaseEstimator" -> "tf.contrib.learn.BaseEstimator";
+		"Learn (contrib)" -> "DNNClassifier" -> "tf.contrib.learn.DNNClassifier";
+		"Learn (contrib)" -> "DNNRegressor" -> "tf.contrib.learn.DNNRegressor";
+		"Learn (contrib)" -> "Estimator" -> "tf.contrib.learn.Estimator";
+		"Learn (contrib)" -> "evaluate" -> "tf.contrib.learn.evaluate";
+		"Learn (contrib)" -> "extract_dask_data" -> "tf.contrib.learn.extract_dask_data";
+		"Learn (contrib)" -> "extract_dask_labels" -> "tf.contrib.learn.extract_dask_labels";
+		"Learn (contrib)" -> "extract_pandas_data" -> "tf.contrib.learn.extract_pandas_data";
+		"Learn (contrib)" -> "extract_pandas_labels" -> "tf.contrib.learn.extract_pandas_labels";
+		"Learn (contrib)" -> "extract_pandas_matrix" -> "tf.contrib.learn.extract_pandas_matrix";
+		"Learn (contrib)" -> "infer" -> "tf.contrib.learn.infer";
+		"Learn (contrib)" -> "LinearClassifier" -> "tf.contrib.learn.LinearClassifier";
+		"Learn (contrib)" -> "LinearRegressor" -> "tf.contrib.learn.LinearRegressor";
+		"Learn (contrib)" -> "ModeKeys" -> "tf.contrib.learn.ModeKeys";
+		"Learn (contrib)" -> "NanLossDuringTrainingError" -> "tf.contrib.learn.NanLossDuringTrainingError";
+		"Learn (contrib)" -> "read_batch_examples" -> "tf.contrib.learn.read_batch_examples";
+		"Learn (contrib)" -> "read_batch_features" -> "tf.contrib.learn.read_batch_features";
+		"Learn (contrib)" -> "read_batch_record_features" -> "tf.contrib.learn.read_batch_record_features";
+		"Learn (contrib)" -> "run_feeds" -> "tf.contrib.learn.run_feeds";
+		"Learn (contrib)" -> "run_n" -> "tf.contrib.learn.run_n";
+		"Learn (contrib)" -> "RunConfig" -> "tf.contrib.learn.RunConfig";
+		"Learn (contrib)" -> "TensorFlowClassifier" -> "tf.contrib.learn.TensorFlowClassifier";
+		"Learn (contrib)" -> "TensorFlowDNNClassifier" -> "tf.contrib.learn.TensorFlowDNNClassifier";
+		"Learn (contrib)" -> "TensorFlowDNNRegressor" -> "tf.contrib.learn.TensorFlowDNNRegressor";
+		"Learn (contrib)" -> "TensorFlowEstimator" -> "tf.contrib.learn.TensorFlowEstimator";
+		"Learn (contrib)" -> "TensorFlowLinearClassifier" -> "tf.contrib.learn.TensorFlowLinearClassifier";
+		"Learn (contrib)" -> "TensorFlowLinearRegressor" -> "tf.contrib.learn.TensorFlowLinearRegressor";
+		"Learn (contrib)" -> "TensorFlowRegressor" -> "tf.contrib.learn.TensorFlowRegressor";
+		"Learn (contrib)" -> "TensorFlowRNNClassifier" -> "tf.contrib.learn.TensorFlowRNNClassifier";
+		"Learn (contrib)" -> "TensorFlowRNNRegressor" -> "tf.contrib.learn.TensorFlowRNNRegressor";
+		"Learn (contrib)" -> "train" -> "tf.contrib.learn.train";
+}

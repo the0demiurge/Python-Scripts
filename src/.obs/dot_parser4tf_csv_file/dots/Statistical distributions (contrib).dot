@@ -1,0 +1,28 @@
+digraph "Statistical distributions (contrib)"{
+rankdir="LR"
+node [shape="box"]
+		"Statistical distributions (contrib)" -> "BaseDistribution" -> "tf.contrib.distributions.BaseDistribution";
+		"Statistical distributions (contrib)" -> "batch_matrix_diag_transform" -> "tf.contrib.distributions.batch_matrix_diag_transform";
+		"Statistical distributions (contrib)" -> "Bernoulli" -> "tf.contrib.distributions.Bernoulli";
+		"Statistical distributions (contrib)" -> "Beta" -> "tf.contrib.distributions.Beta";
+		"Statistical distributions (contrib)" -> "Categorical" -> "tf.contrib.distributions.Categorical";
+		"Statistical distributions (contrib)" -> "Chi2" -> "tf.contrib.distributions.Chi2";
+		"Statistical distributions (contrib)" -> "Dirichlet" -> "tf.contrib.distributions.Dirichlet";
+		"Statistical distributions (contrib)" -> "DirichletMultinomial" -> "tf.contrib.distributions.DirichletMultinomial";
+		"Statistical distributions (contrib)" -> "Distribution" -> "tf.contrib.distributions.Distribution";
+		"Statistical distributions (contrib)" -> "Exponential" -> "tf.contrib.distributions.Exponential";
+		"Statistical distributions (contrib)" -> "Gamma" -> "tf.contrib.distributions.Gamma";
+		"Statistical distributions (contrib)" -> "InverseGamma" -> "tf.contrib.distributions.InverseGamma";
+		"Statistical distributions (contrib)" -> "kl" -> "tf.contrib.distributions.kl";
+		"Statistical distributions (contrib)" -> "Laplace" -> "tf.contrib.distributions.Laplace";
+		"Statistical distributions (contrib)" -> "MultivariateNormalCholesky" -> "tf.contrib.distributions.MultivariateNormalCholesky";
+		"Statistical distributions (contrib)" -> "MultivariateNormalDiag" -> "tf.contrib.distributions.MultivariateNormalDiag";
+		"Statistical distributions (contrib)" -> "MultivariateNormalFull" -> "tf.contrib.distributions.MultivariateNormalFull";
+		"Statistical distributions (contrib)" -> "Normal" -> "tf.contrib.distributions.Normal";
+		"Statistical distributions (contrib)" -> "normal_congugates_known_sigma_predictive" -> "tf.contrib.distributions.normal_congugates_known_sigma_predictive";
+		"Statistical distributions (contrib)" -> "normal_conjugates_known_sigma_posterior" -> "tf.contrib.distributions.normal_conjugates_known_sigma_posterior";
+		"Statistical distributions (contrib)" -> "RegisterKL" -> "tf.contrib.distributions.RegisterKL";
+		"Statistical distributions (contrib)" -> "StudentT" -> "tf.contrib.distributions.StudentT";
+		"Statistical distributions (contrib)" -> "TransformedDistribution" -> "tf.contrib.distributions.TransformedDistribution";
+		"Statistical distributions (contrib)" -> "Uniform" -> "tf.contrib.distributions.Uniform";
+}
