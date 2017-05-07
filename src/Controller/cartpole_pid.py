@@ -16,4 +16,3 @@ while(True):
         print('done!')
        #  env.reset()
     env.render()
-
