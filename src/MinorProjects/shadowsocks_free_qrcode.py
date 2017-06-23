@@ -16,6 +16,7 @@ import json
 __author__ = 'Charles Xu'
 __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
+__url__ = 'https://github.com/the0demiurge/Python-Scripts/blob/master/src/MinorProjects/shadowsocks_free_qrcode.py'
 
 
 def request_ss_list(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
@@ -92,14 +93,16 @@ def show_server_info(server_data):
         href = get_herf(server_data['string'], '.*查看连接信息.*')
         print(href)
         return href
+    print('\nJSON格式的配置文件内容为：')
+    json.dump(server_data, sys.stdout, ensure_ascii=False, indent=4)
     ss_uri = 'ss://{}'.format(str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'))
     qr = qrcode.QRCode()
     qr.add_data(ss_uri)
+    print('\n\n配置二维码：')
     # qr.print_tty()
     qr.print_ascii()
     print('服务器设置uri为：')
     print(ss_uri)
-    json.dump(server_data, sys.stdout, ensure_ascii=False, indent=4)
 
 
 def main():
@@ -136,6 +139,7 @@ def main():
             print('请支持SS帐号分享者，免费ShadowSocks帐号来源：\nhttps://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7')
             print('\n送给我的女朋友小胖儿～')
             print('作者', __author__, 'Email:', __email__)
+            print('项目地址：', __url__)
             exit(0)
 
 
