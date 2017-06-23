@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""
+本代码使用了regex beautifulsoup4 qrcode这三个第三方库，只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，如果遇到任何运行问题请联系我。
+如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
+"""
 try:
     import regex as re
     from bs4 import BeautifulSoup
@@ -114,7 +118,7 @@ def main():
             print('------|---------------')
             for i, server_data in enumerate(servers):
                 print(' ', i, ' ', server_data['name'])
-            print('请选择服务器序号（输入all可以获得全部服务器资料）：', end='')
+            print('请输入左侧一列的序号（输入all可以获得全部服务器资料）：', end='')
             index = input()
             if re.findall('all', index.lower()):
                 for server_data in servers:
