@@ -4,12 +4,13 @@ try:
     from bs4 import BeautifulSoup
     import qrcode
 except ImportError:
-    print('Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。Python版本为3.5')
+    print('Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。\n本软件在Linux下写成，Python版本为3.5，如果遇到任何错误，请到GitHub上提交Issue。\n')
+    exit(0)
 
+import sys
 import requests
 import base64
 import json
-import sys
 
 
 __author__ = 'Charles Xu'
@@ -125,7 +126,14 @@ def main():
             input('\n如果要继续选择服务器请按回车，否则按Ctrl+C')
 
         except KeyboardInterrupt:
-            print('\n\n请支持SS帐号分享者，免费ShadowSocks帐号来源：\nhttps://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7')
+            print('''
+     ____  _               _                ____             _
+    / ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____
+    \\___ \\| '_ \\ / _` |/ _` |/ _ \\ \\ /\\ / /\\___ \\ / _ \\ / __| |/ / __|
+     ___) | | | | (_| | (_| | (_) \\ V  V /  ___) | (_) | (__|   <\\__ \\
+    |____/|_| |_|\\__,_|\\__,_|\\___/ \\_/\\_/  |____/ \\___/ \\___|_|\\_\\___/
+            ''')
+            print('请支持SS帐号分享者，免费ShadowSocks帐号来源：\nhttps://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7')
             print('\n送给我的女朋友小胖儿～')
             print('作者', __author__, 'Email:', __email__)
             exit(0)
