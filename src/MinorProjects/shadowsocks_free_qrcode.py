@@ -1,11 +1,15 @@
 #!/usr/bin/env python
-import regex as re
+try:
+    import regex as re
+    from bs4 import BeautifulSoup
+    import qrcode
+except ImportError:
+    print('Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。Python版本为3.5')
+
 import requests
-import qrcode
 import base64
 import json
 import sys
-from bs4 import BeautifulSoup
 
 
 __author__ = 'Charles Xu'
