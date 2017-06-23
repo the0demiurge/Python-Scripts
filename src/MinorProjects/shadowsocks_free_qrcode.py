@@ -99,7 +99,7 @@ def show_server_info(server_data):
         return href
     print('\nJSON格式的配置文件内容为：')
     json.dump(server_data, sys.stdout, ensure_ascii=False, indent=4)
-    ss_uri = 'ss://{}'.format(str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'))
+    ss_uri = 'ss://{}#{}'.format(str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'), server_data['name'])
     qr = qrcode.QRCode()
     qr.add_data(ss_uri)
     print('\n\n配置二维码：')
