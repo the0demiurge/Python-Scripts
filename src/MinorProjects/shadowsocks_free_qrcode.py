@@ -95,7 +95,7 @@ def show_server_info(server_data):
         )
     except (KeyError, EOFError):
         print('请点击此链接获得详细信息：')
-        href = get_herf(server_data['string'], '.*查看连接信息.*')
+        href = get_href(server_data['string'], '.*查看连接信息.*')
         print(href)
         return href
     print('\nJSON格式的配置文件内容为：')
