@@ -19,7 +19,7 @@
 <h2>服务器列表：</h2>
 <ul>
 {% for server in servers %}
-<li><a href="/{{loop.index}}"> {{server['name']}}</a></li><br>
+<a href="/{{loop.index}}"> {{server['name']}}</a><br>
 {% endfor %}
 </ul>
 

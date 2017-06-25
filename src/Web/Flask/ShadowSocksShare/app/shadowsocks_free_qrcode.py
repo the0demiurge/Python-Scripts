@@ -97,20 +97,19 @@ def get_servers(ss_list):
                 hostname=servers[-1]['server'],
                 port=servers[-1]['server_port'],
             )
+            ss_uri = 'ss://{}#{}'.format(
+                str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
+                urllib.parse.quote(servers[-1]['name']))
+            qr = qrcode.QRCode()
+            qr.add_data(ss_uri)
+            servers[-1]['qrcode'] = qrm2string(qr.get_matrix())
+            servers[-1]['qr'] = qr
+            servers[-1]['uri'] = ss_uri
+            servers[-1]['decoded_url'] = urllib.parse.unquote(ss_uri
+                                                              )
         except (KeyError, EOFError):
             href = get_href(servers[-1]['string'], '.*查看连接信息.*')
             servers[-1]['href'] = href
-
-        ss_uri = 'ss://{}#{}'.format(
-            str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-            urllib.parse.quote(servers[-1]['name']))
-        qr = qrcode.QRCode()
-        qr.add_data(ss_uri)
-        servers[-1]['qrcode'] = qrm2string(qr.get_matrix())
-        servers[-1]['qr'] = qr
-        servers[-1]['uri'] = ss_uri
-        servers[-1]['decoded_url'] = urllib.parse.unquote(ss_uri)
-
     return servers
 
 
