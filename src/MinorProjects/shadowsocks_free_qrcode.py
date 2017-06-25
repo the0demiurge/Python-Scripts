@@ -112,7 +112,7 @@ def show_server_info(server_data):
     #     ...
     qr.print_ascii()
     print('服务器设置uri为：')
-    print(ss_uri)
+    print(urllib.parse.unquote(ss_uri))
 
 
 def main():
