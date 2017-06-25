@@ -11,6 +11,7 @@ except ImportError:
     print('Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。\n本软件在Linux下写成，Python版本为3.5，如果遇到任何错误，请到GitHub上提交Issue。\n')
     exit(0)
 
+import urllib
 import sys
 import requests
 import base64
@@ -92,18 +93,23 @@ def show_server_info(server_data):
             hostname=server_data['server'],
             port=server_data['server_port'],
         )
-    except KeyError:
+    except (KeyError, EOFError):
         print('请点击此链接获得详细信息：')
         href = get_herf(server_data['string'], '.*查看连接信息.*')
         print(href)
         return href
     print('\nJSON格式的配置文件内容为：')
     json.dump(server_data, sys.stdout, ensure_ascii=False, indent=4)
-    ss_uri = 'ss://{}#{}'.format(str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'), server_data['name'])
+    ss_uri = 'ss://{}#{}'.format(
+        str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
+        urllib.parse.quote(server_data['name']))
     qr = qrcode.QRCode()
     qr.add_data(ss_uri)
     print('\n\n配置二维码：')
-    # qr.print_tty()
+    # try:
+    #     qr.print_tty()
+    # except OSError:
+    #     ...
     qr.print_ascii()
     print('服务器设置uri为：')
     print(ss_uri)
