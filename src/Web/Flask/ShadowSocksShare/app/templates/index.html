@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>免费ShadowSocks帐号分享</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+
+<pre>
+ ____  _               _                ____             _
+/ ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____
+\___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /\___ \ / _ \ / __| |/ / __|
+ ___) | | | | (_| | (_| | (_) \ V  V /  ___) | (_) | (__|   <\__ \
+|____/|_| |_|\__,_|\__,_|\___/ \_/\_/  |____/ \___/ \___|_|\_\___/
+
+</pre>
+<h2>服务器列表</h2>
+
+{% for server in servers %}
+<a href="/{{loop.index}}"> {{server['name']}}</a><br>
+{% endfor %}
+
+<p>作者：老徐<br>
+作者的Email：<a href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a><br>
+作者的对象：小胖<br>
+请支持免费帐号提供者：<a href="https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7">原文链接</a></p>
+</body>
+</html>
