@@ -100,7 +100,7 @@ def get_servers(ss_list):
             ss_uri = 'ss://{}#{}'.format(
                 str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
                 urllib.parse.quote(servers[-1]['name']))
-            qr = qrcode.QRCode()
+            qr = qrcode.QRCode(border=0)
             qr.add_data(ss_uri)
             servers[-1]['qrcode'] = qrm2string(qr.get_matrix())
             servers[-1]['qr'] = qr
