@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="">
 </head>
 <body>
-
+<!-- qrcode -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.qrcode.js"></script>
+<script type="text/javascript" src="js/qrcode.js"></script>
 <ul>
 
 <h1>免费ShadowSocks服务器分享</h1>
@@ -17,13 +20,7 @@
 <a href='/'>返回主页</a><br>
 
 配置URI：<a href="{{uri}}"> {{uri}} </a>
-
-<code>
-<p style="font-size: 40%">
-{% for line in qrcode %} {{line}}<br>
-{% endfor %}
-</p>
-</code>
+<div id="qrcode"></div>
 
     <li>服务器：{{server}}<br></li>
     <li>端口：{{server_port}}<br></li>
@@ -32,7 +29,15 @@
     <li>SSR协议：{{ssr_portal}}<br></li>
     <li>混淆方式：{{confuse}}<br></li>
     <li>详细信息：<a href={{href}}>{{href}}</a><br></li>
+<br><br>
+ASCII格式的二维码（适合终端浏览器）：<br>
+<code>
+<p style="font-size: 40%">
+{% for line in qrcode %} {{line}}<br>
+{% endfor %}
+</p>
+</code>
 </ul>
-
+<script>jQuery('#qrcode').qrcode("{{server_data['uri']}}")</script>
 </body>
 </html>

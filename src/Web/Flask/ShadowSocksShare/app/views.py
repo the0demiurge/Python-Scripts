@@ -1,9 +1,14 @@
 from app import app
-from flask import render_template
+from flask import render_template, send_from_directory
 from app import shadowsocks_free_qrcode
 
 
 servers = shadowsocks_free_qrcode.main()
+
+
+@app.route('/')
+def index():
+    return render_template('index.html', servers=servers)
 
 
 @app.route('/<int:ind>')
@@ -30,12 +35,13 @@ def pages(ind):
                            ssr_portal=ssr_portal,
                            confuse=confuse,
                            href=href,
-                           name=name)
+                           name=name,
+                           server_data=servers[ind])
 
 
-@app.route('/')
-def index():
-    return render_template('index.html', servers=servers)
+@app.route('/js/<path:path>')
+def send_jsadfsadfs(path):
+    return send_from_directory('js', path)
 
 
 @app.errorhandler(404)
