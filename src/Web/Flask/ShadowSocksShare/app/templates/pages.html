@@ -19,6 +19,11 @@
 
 <a href='/'>返回主页</a><br>
 
+{%- if href != 'None' -%}
+    请点击这个链接查看详细信息：<br>
+    <a href={{href}}>{{href}}</a><br></li>
+
+{% else %}
 配置URI：<a href="{{uri}}"> {{uri}} </a>
 <div id="qrcode"></div>
 
@@ -28,7 +33,6 @@
     <li>加密方法：{{method}}<br></li>
     <li>SSR协议：{{ssr_portal}}<br></li>
     <li>混淆方式：{{confuse}}<br></li>
-    <li>详细信息：<a href={{href}}>{{href}}</a><br></li>
 <br><br>
 ASCII格式的二维码（适合终端浏览器）：<br>
 <code>
@@ -37,6 +41,7 @@ ASCII格式的二维码（适合终端浏览器）：<br>
 {% endfor %}
 </p>
 </code>
+{% endif %}
 </ul>
 <script>jQuery('#qrcode').qrcode("{{server_data['uri']}}")</script>
 </body>

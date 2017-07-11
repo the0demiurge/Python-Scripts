@@ -14,9 +14,9 @@ def index():
 @app.route('/<int:ind>')
 def pages(ind):
     ind -= 1
-    uri = servers[ind]['decoded_url'] if 'decoded_url' in servers[ind] else 'None'
+    uri = servers[ind]['decoded_url'] if 'decoded_url' in servers[ind] else ''
     name = servers[ind]['name'] if 'name' in servers[ind] else 'None'
-    qrcode = servers[ind]['qrcode'] if 'qrcode' in servers[ind] else 'None'
+    qrcode = servers[ind]['qrcode'] if 'qrcode' in servers[ind] else ''
     server = servers[ind]['server'] if 'server' in servers[ind] else 'None'
     server_port = servers[ind]['server_port'] if 'server_port' in servers[ind] else 'None'
     password = servers[ind]['password'] if 'password' in servers[ind] else 'None'
