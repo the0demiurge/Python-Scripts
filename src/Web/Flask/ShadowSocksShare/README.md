@@ -2,9 +2,18 @@
 
 简介：其实没啥好介绍的，就是一个很简单的HTML解析而已。
 
-用法：`python manage.py runserver`
+### 用法：
+`python manage.py runserver`
 
-编写的软件版本：
+### OpenShift部署方法：
+
+* 创建一个应用 `rhc app create ssshare python-3.3`
+* 下载本代码 `git clone https://github.com/the0demiurge/Python-Scripts.git`
+* 下载OpenShift项目 `git clone ssh://project-git-uri ssshare`
+* 直接将源码复制到OpenShift项目中 `cp -r Python-Scripts/src/Web/Flask/ShadowSocksShare/* ssshare/`
+* 提交修改 `cd ssshare;git add -A;git commit -m 'added ssshare';git push`
+
+### 编写的软件版本：
 
 * Python 3.5
 * Flask 0.12.2
