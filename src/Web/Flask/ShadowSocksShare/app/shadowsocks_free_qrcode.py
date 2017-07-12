@@ -61,32 +61,32 @@ def get_servers(ss_list):
             servers[-1]['name'] = tmp[0]
 
         # server
-        tmp = re.findall('(?<=服务器\s*\d+[^:：]*[:：])[\w\d\.]+', i)
+        tmp = re.findall('(?<=服务器\s*\d+[^:：]*[:：]\s*)[\w\d\.]+', i)
         if tmp:
             servers[-1]['server'] = tmp[0]
 
         # server_port
-        tmp = re.findall('(?<=端口\s*[^:：]*[:：])\d+', i)
+        tmp = re.findall('(?<=端口\s*[^:：]*[:：]\s*)\d+', i)
         if tmp:
             servers[-1]['server_port'] = tmp[0]
 
         # password
-        tmp = re.findall('(?<=密码\s*[^:：]*[:：])[\w\d\.\+\-_\*\\/]+', i)
+        tmp = re.findall('(?<=密码\s*[^:：]*[:：]\s*)[\w\d\.\+\-_\*\\/]+', i)
         if tmp:
             servers[-1]['password'] = tmp[0]
 
         # method
-        tmp = re.findall('(?<=加密方[式法]\s*[^:：]*[:：])[\w\d\.\+\-_\*\\/]+', i)
+        tmp = re.findall('(?<=加密方[式法]\s*[^:：]*[:：]\s*)[\w\d\.\+\-_\*\\/]+', i)
         if tmp:
             servers[-1]['method'] = tmp[0]
 
         # SSR协议
-        tmp = re.findall('(?<=SSR协议\s*[^:：]*[:：])[\w\d\.\+\-_\*\\/]+', i)
+        tmp = re.findall('(?<=SSR协议\s*[^:：]*[:：]\s*)[\w\d\.\+\-_\*\\/]+', i)
         if tmp:
             servers[-1]['ssr_portal'] = tmp[0]
 
         # 混淆
-        tmp = re.findall('(?<=混淆\s*[^:：]*[:：])[\w\d\.\+\-_\*\\/]+', i)
+        tmp = re.findall('(?<=混淆\s*[^:：]*[:：]\s*)[\w\d\.\+\-_\*\\/]+', i)
         if tmp:
             servers[-1]['confuse'] = tmp[0]
 
