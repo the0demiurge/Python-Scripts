@@ -12,22 +12,23 @@ help = '''东北大学IP网关登陆器
 '''.format(name=__file__)
 
 
-def connect(payload={}):
+def connect(payload={}, url='http://ipgw.neu.edu.cn/srun_portal_pc.php'):
     not_connetced = True
     while not_connetced:
         try:
-            response = requests.post('http://ipgw.neu.edu.cn/srun_portal_pc.php', data=payload)
+            response = requests.post(url, data=payload)
             not_connetced = False
         except requests.exceptions.ConnectionError:
             ...
     return response
+
 
 def query():
     # 查询状态
     payload = {
         'action': 'get_online_info',
     }
-    r =connect(payload)
+    r = connect(payload, 'http://ipgw.neu.edu.cn/include/auth_action.php')
     return r.content.decode('utf-8')
 
 
@@ -67,7 +68,7 @@ def logout(username='', password=''):
         'ajax': '1',
         'username': '{}'.format(username),
         'password': '{}'.format(password)}
-    r =connect(payload)
+    r = connect(payload)
     return r.text
 
 if __name__ == '__main__':
