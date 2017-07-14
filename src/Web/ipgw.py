@@ -12,22 +12,32 @@ help = '''东北大学IP网关登陆器
 '''.format(name=__file__)
 
 
+def connect(payload={}):
+    not_connetced = True
+    while not_connetced:
+        try:
+            response = requests.post('http://ipgw.neu.edu.cn/srun_portal_pc.php', data=payload)
+            not_connetced = False
+        except requests.exceptions.ConnectionError:
+            ...
+    return response
+
 def query():
     # 查询状态
     payload = {
         'action': 'get_online_info',
     }
-    r = requests.post('http://ipgw.neu.edu.cn/include/auth_action.php', data=payload)
+    r =connect(payload)
     return r.content.decode('utf-8')
 
 
 def login(username='', password=''):
     # 登陆
-    # E2620 已经在线
-    # E2616 已欠费
     # E2531 用户不存在
     # E2553 密码错误
     # E2606 用户被禁用
+    # E2616 已欠费
+    # E2620 已经在线
 
     # '1. 请' 成功登陆
     payload = {
@@ -40,7 +50,7 @@ def login(username='', password=''):
         'username': '{}'.format(username),
         'password': '{}'.format(password),
         'save_me': '0'}
-    r = requests.post('http://ipgw.neu.edu.cn/srun_portal_pc.php', data=payload)
+    r = connect(payload)
     soup = bs4.BeautifulSoup(r.content.decode('utf-8'), 'html.parser')
     if re.findall('5分钟', str(soup.p)):
         return 'sleep', str(soup.p)
@@ -57,9 +67,8 @@ def logout(username='', password=''):
         'ajax': '1',
         'username': '{}'.format(username),
         'password': '{}'.format(password)}
-    r = requests.post('http://ipgw.neu.edu.cn/include/auth_action.php', data=payload)
+    r =connect(payload)
     return r.text
-
 
 if __name__ == '__main__':
     import fire
