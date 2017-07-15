@@ -5,33 +5,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>免费ShadowSocks帐号分享</title>
     <link rel="stylesheet" href="">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+
 </head>
 
 <body>
-
-<pre>
- ____  _               _                ____             _
-/ ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____
-\___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /\___ \ / _ \ / __| |/ / __|
- ___) | | | | (_| | (_| | (_) \ V  V /  ___) | (_) | (__|   <\__ \
-|____/|_| |_|\__,_|\__,_|\___/ \_/\_/  |____/ \___/ \___|_|\_\___/
-
+<h3>
+<pre style="text-align: center;">
+{{ss}}
 </pre>
-<h2>服务器列表：</h2>
-<ul>
-{% for server in servers %}
-<a href="/{{loop.index}}"> {{server['name']}}</a><br>
-{% endfor %}
-</ul>
-
-<p>
-请支持免费帐号提供者：<a href="https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7">原文链接</a><br>
-作者：老徐<br>
-<a href="https://the0demiurge.blogspot.jp/">作者的博客</a><br>
-作者的Email：<a href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a><br>
+</h3>
+<h2 style="text-align: center;">服务器列表：</h2>
+<fieldset style="text-align: center;">
+  <legend style="text-align: center;">ShadowSocks服务器信息</legend>
+  {% for server in servers %}
+  <a href="/{{loop.index}}"> {{server['name']}}</a>
+  <br>
+  {% endfor %}
+</fieldset>
+<p style="text-align: center;">
+免费帐号提供者：<a href="https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7">原文链接</a>
+<br>
+作者：老徐
+<br>
+<a href="https://the0demiurge.blogspot.jp/">作者的博客</a>
+<br>
+作者的Email：<a href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a>
+<br>
 源码：<a href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare">GitHub链接</a>
+<br>
+<strong>访问次数：{{counter}}</strong>
+<br>
+</p>
+
+<p style="text-align: center;">如果连上ss之后成功翻了出去，刷新此页面你就能看到下面的微信二维码，并可以资助我^_^
+<br>
+<img src="https://2.bp.blogspot.com/-k-wEhqPNegI/WQwuxp6sacI/AAAAAAAAWlE/b2JZeYsWWswP5oMuul90kEQi7-riKYMYgCLcB/s320/wechat.png" alt="">
+</p>
+
+<a href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+</body>
+
+</html>
 
 <pre><code>
+
      __________________
     < 作者的对象：小胖 >
      ------------------
@@ -41,13 +62,3 @@
           (__)__ _
 
 </code></pre>
-
-</p>
-
-<p>捐助我，请用微信扫二维码(想看到该二维码需要爬墙。。)</p>
-<img src="https://2.bp.blogspot.com/-k-wEhqPNegI/WQwuxp6sacI/AAAAAAAAWlE/b2JZeYsWWswP5oMuul90kEQi7-riKYMYgCLcB/s320/wechat.png" alt="">
-
-<a href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
-
-</body>
-</html>

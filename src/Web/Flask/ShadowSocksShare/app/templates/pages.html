@@ -1,48 +1,60 @@
 <!DOCTYPE html>
 <html>
+<center>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>免费ShadowSocks帐号分享</title>
     <link rel="stylesheet" href="">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+
 </head>
+
 <body>
 <!-- qrcode -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.qrcode.js"></script>
 <script type="text/javascript" src="js/qrcode.js"></script>
-<ul>
 
-<h1>免费ShadowSocks服务器分享</h1>
-
-<h2>服务器名称：{{name}}</h2>
+<h1>{{name}}</h1>
 
 <a href='/'>返回主页</a><br>
 
 {%- if href != 'None' -%}
+<p>
     请点击这个链接查看详细信息：<br>
-    <a href={{href}}>{{href}}</a><br></li>
+    <a href={{href}}>{{href}}</a>
+</p>
 
 {% else %}
+<p>
 配置URI：<a href="{{uri}}"> {{uri}} </a>
+</p>
 <div id="qrcode"></div>
-
-    <li>服务器：{{server}}<br></li>
-    <li>端口：{{server_port}}<br></li>
-    <li>密码：{{password}}<br></li>
-    <li>加密方法：{{method}}<br></li>
-    <li>SSR协议：{{ssr_portal}}<br></li>
-    <li>混淆方式：{{confuse}}<br></li>
-<br><br>
-ASCII格式的二维码（适合终端浏览器）：<br>
-<code>
+<table border="1" style="text-align: center;" frame="hsides">
+    <caption>服务器详细配置信息</caption>
+    <tr><td>服务器</td><td>{{server}}</td></tr>
+    <tr><td>端口</td><td>{{server_port}}</td></tr>
+    <tr><td>密码</td><td>{{password}}</td></tr>
+    <tr><td>加密方法</td><td>{{method}}</td></tr>
+    <tr><td>SSR协议</td><td>{{ssr_portal}}</td></tr>
+    <tr><td>混淆方式</td><td>{{confuse}}</td></tr>
+</table>
+<h5>
+ASCII格式的二维码（适合终端浏览器）：
+</h5>
+<samp>
 <p style="font-size: 40%">
 {% for line in qrcode %} {{line}}<br>
 {% endfor %}
 </p>
-</code>
+</samp>
 {% endif %}
-</ul>
 <script>jQuery('#qrcode').qrcode("{{server_data['uri']}}")</script>
+<a href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 </body>
+
+</center>
 </html>

@@ -1,14 +1,35 @@
 from app import app
 from flask import render_template, send_from_directory
 from app import shadowsocks_free_qrcode
+import random
+
+ss = ['''
+  mmmm  #                 #                 mmmm                #           
+ #"   " # mm    mmm    mmm#   mmm  m     m #"   "  mmm    mmm   #   m   mmm 
+ "#mmm  #"  #  "   #  #" "#  #" "# "m m m" "#mmm  #" "#  #"  "  # m"   #   "
+     "# #   #  m"""#  #   #  #   #  #m#m#      "# #   #  #      #"#     """m
+ "mmm#" #   #  "mm"#  "#m##  "#m#"   # #   "mmm#" "#m#"  "#mm"  #  "m  "mmm"
+
+                                                                             ''',
+''' ____  _               _                ____             _        
+/ ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____ 
+\___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /\___ \ / _ \ / __| |/ / __|
+ ___) | | | | (_| | (_| | (_) \ V  V /  ___) | (_) | (__|   <\__ \\
+|____/|_| |_|\__,_|\__,_|\___/ \_/\_/  |____/ \___/ \___|_|\_\___/
+                                                                  
+
+''']
 
 
 servers = shadowsocks_free_qrcode.main()
+counter = 0
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', servers=servers)
+    global counter
+    counter += 1
+    return render_template('index.html', servers=servers, ss=ss[random.randint(0, 1)], counter=counter)
 
 
 @app.route('/<int:ind>')
@@ -24,7 +45,8 @@ def pages(ind):
     ssr_portal = servers[ind]['ssr_portal'] if 'ssr_portal' in servers[ind] else 'None'
     confuse = servers[ind]['confuse'] if 'confuse' in servers[ind] else 'None'
     href = servers[ind]['href'] if 'href' in servers[ind] else 'None'
-
+    global counter
+    counter += 1
     return render_template('pages.html',
                            uri=uri,
                            qrcode=qrcode,
@@ -36,6 +58,7 @@ def pages(ind):
                            confuse=confuse,
                            href=href,
                            name=name,
+                           counter=counter,
                            server_data=servers[ind])
 
 
@@ -46,4 +69,6 @@ def send_jsadfsadfs(path):
 
 @app.errorhandler(404)
 def page_not_found(e):
+    global counter
+    counter += 1
     return render_template('404.html'), 404
