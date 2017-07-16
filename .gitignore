@@ -50,3 +50,4 @@ nosetests.xml
 data
 .bz2
 
+.ipynb_checkpoints
