@@ -4,19 +4,19 @@ from app import shadowsocks_free_qrcode
 import random
 
 ss = ['''
-  mmmm  #                 #                 mmmm                #           
- #"   " # mm    mmm    mmm#   mmm  m     m #"   "  mmm    mmm   #   m   mmm 
+  mmmm  #                 #                 mmmm                #
+ #"   " # mm    mmm    mmm#   mmm  m     m #"   "  mmm    mmm   #   m   mmm
  "#mmm  #"  #  "   #  #" "#  #" "# "m m m" "#mmm  #" "#  #"  "  # m"   #   "
      "# #   #  m"""#  #   #  #   #  #m#m#      "# #   #  #      #"#     """m
  "mmm#" #   #  "mm"#  "#m##  "#m#"   # #   "mmm#" "#m#"  "#mm"  #  "m  "mmm"
 
                                                                              ''',
-''' ____  _               _                ____             _        
-/ ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____ 
+      ''' ____  _               _                ____             _
+/ ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____
 \___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /\___ \ / _ \ / __| |/ / __|
  ___) | | | | (_| | (_| | (_) \ V  V /  ___) | (_) | (__|   <\__ \\
 |____/|_| |_|\__,_|\__,_|\___/ \_/\_/  |____/ \___/ \___|_|\_\___/
-                                                                  
+
 
 ''']
 
@@ -25,11 +25,29 @@ servers = shadowsocks_free_qrcode.main()
 counter = 0
 
 
+def gen_canvas_nest():
+    """为背景很绚丽的特效生成随机参数
+    """
+    color = ','.join([str(random.randint(0, 255)) for i in range(3)])
+    opacity = str(random.random()+0.5)
+    count = str(random.randint(0, 500))
+    return color, opacity, count
+
+
 @app.route('/')
 def index():
     global counter
     counter += 1
-    return render_template('index.html', servers=servers, ss=ss[random.randint(0, 1)], counter=counter)
+    color, opacity, count = gen_canvas_nest()
+    return render_template(
+        'index.html',
+        servers=servers,
+        ss=ss[random.randint(0, 1)],
+        counter=counter,
+        color=color,
+        opacity=opacity,
+        count=count,
+    )
 
 
 @app.route('/<int:ind>')
@@ -47,19 +65,26 @@ def pages(ind):
     href = servers[ind]['href'] if 'href' in servers[ind] else 'None'
     global counter
     counter += 1
-    return render_template('pages.html',
-                           uri=uri,
-                           qrcode=qrcode,
-                           server=server,
-                           server_port=server_port,
-                           password=password,
-                           method=method,
-                           ssr_portal=ssr_portal,
-                           confuse=confuse,
-                           href=href,
-                           name=name,
-                           counter=counter,
-                           server_data=servers[ind])
+    color, opacity, count = gen_canvas_nest()
+
+    return render_template(
+        'pages.html',
+        uri=uri,
+        qrcode=qrcode,
+        server=server,
+        server_port=server_port,
+        password=password,
+        method=method,
+        ssr_portal=ssr_portal,
+        confuse=confuse,
+        href=href,
+        name=name,
+        counter=counter,
+        server_data=servers[ind],
+        color=color,
+        opacity=opacity,
+        count=count,
+    )
 
 
 @app.route('/js/<path:path>')
@@ -71,4 +96,10 @@ def send_jsadfsadfs(path):
 def page_not_found(e):
     global counter
     counter += 1
-    return render_template('404.html'), 404
+    color, opacity, count = gen_canvas_nest()
+    return render_template(
+        '404.html',
+        color=color,
+        opacity=opacity,
+        count=count,
+    ), 404
