@@ -1,0 +1,6 @@
+[submodule "src/Web/js/Function/jquery-qrcode"]
+	path = src/Web/js/Function/jquery-qrcode
+	url = https://github.com/jeromeetienne/jquery-qrcode.git
+[submodule "src/Web/js/Views/canvas-nest"]
+	path = src/Web/js/Views/canvas-nest
+	url = https://github.com/hustcc/canvas-nest.js.git
