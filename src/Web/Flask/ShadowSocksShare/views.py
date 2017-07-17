@@ -1,24 +1,8 @@
 from app import app
-from flask import render_template, send_from_directory
 from app import shadowsocks_free_qrcode
+from app import ss
+from flask import render_template, send_from_directory
 import random
-
-ss = ['''
-  mmmm  #                 #                 mmmm                #
- #"   " # mm    mmm    mmm#   mmm  m     m #"   "  mmm    mmm   #   m   mmm
- "#mmm  #"  #  "   #  #" "#  #" "# "m m m" "#mmm  #" "#  #"  "  # m"   #   "
-     "# #   #  m"""#  #   #  #   #  #m#m#      "# #   #  #      #"#     """m
- "mmm#" #   #  "mm"#  "#m##  "#m#"   # #   "mmm#" "#m#"  "#mm"  #  "m  "mmm"
-
-                                                                             ''',
-      ''' ____  _               _                ____             _
-/ ___|| |__   __ _  __| | _____      __/ ___|  ___   ___| | _____
-\___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /\___ \ / _ \ / __| |/ / __|
- ___) | | | | (_| | (_| | (_) \ V  V /  ___) | (_) | (__|   <\__ \\
-|____/|_| |_|\__,_|\__,_|\___/ \_/\_/  |____/ \___/ \___|_|\_\___/
-
-
-''']
 
 
 servers = shadowsocks_free_qrcode.main()
@@ -30,7 +14,7 @@ def gen_canvas_nest():
     """
     color = ','.join([str(random.randint(0, 255)) for i in range(3)])
     opacity = str(random.random()+0.5)
-    count = str(random.randint(0, 500))
+    count = str(random.randint(0, 150))
     return color, opacity, count
 
 
@@ -42,7 +26,7 @@ def index():
     return render_template(
         'index.html',
         servers=servers,
-        ss=ss[random.randint(0, 1)],
+        ss=ss[random.randint(0, len(ss)-1)],
         counter=counter,
         color=color,
         opacity=opacity,
