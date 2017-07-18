@@ -20,6 +20,8 @@ def gen_canvas_nest():
 
 @app.route('/')
 def index():
+    global servers
+    servers = shadowsocks_free_qrcode.main()
     global counter
     counter += 1
     color, opacity, count = gen_canvas_nest()
