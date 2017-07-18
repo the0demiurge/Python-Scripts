@@ -3,10 +3,22 @@ from app import shadowsocks_free_qrcode
 from app import ss
 from flask import render_template, send_from_directory
 import random
+import time
+import os
 
 
 servers = shadowsocks_free_qrcode.main()
-counter = 0
+curtime = time.ctime()
+
+counter_path = os.path.expanduser('~/python/counter')
+def counter(counter_path=counter_path):
+    if not os.path.exists(os.path.split(counter_path)[0]):
+        os.makedirs(os.path.split(counter_path)[0])
+    if not os.path.exists(counter_path):
+        open(counter_path, 'w').write('0')
+    count = int(open(counter_path).readline())
+    open(counter_path, 'w').write(str(count + 1))
+    return count
 
 
 def gen_canvas_nest():
@@ -22,17 +34,16 @@ def gen_canvas_nest():
 def index():
     global servers
     servers = shadowsocks_free_qrcode.main()
-    global counter
-    counter += 1
     color, opacity, count = gen_canvas_nest()
     return render_template(
         'index.html',
         servers=servers,
         ss=ss[random.randint(0, len(ss)-1)],
-        counter=counter,
+        counter=counter(),
         color=color,
         opacity=opacity,
         count=count,
+        ctime=curtime,
     )
 
 
@@ -49,10 +60,8 @@ def pages(ind):
     ssr_portal = servers[ind]['ssr_portal'] if 'ssr_portal' in servers[ind] else 'None'
     confuse = servers[ind]['confuse'] if 'confuse' in servers[ind] else 'None'
     href = servers[ind]['href'] if 'href' in servers[ind] else 'None'
-    global counter
-    counter += 1
     color, opacity, count = gen_canvas_nest()
-
+    
     return render_template(
         'pages.html',
         uri=uri,
@@ -65,7 +74,7 @@ def pages(ind):
         confuse=confuse,
         href=href,
         name=name,
-        counter=counter,
+        counter=counter(),
         server_data=servers[ind],
         color=color,
         opacity=opacity,
@@ -75,13 +84,13 @@ def pages(ind):
 
 @app.route('/js/<path:path>')
 def send_jsadfsadfs(path):
+    counter()
     return send_from_directory('js', path)
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    global counter
-    counter += 1
+    counter()
     color, opacity, count = gen_canvas_nest()
     return render_template(
         '404.html',

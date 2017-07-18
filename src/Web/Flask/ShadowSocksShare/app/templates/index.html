@@ -8,43 +8,89 @@
     <meta http-equiv="Cache-Control" content="no-transform" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
-
+    <style type="text/css">
+        table{
+            border-collapse: collapse;
+            margin:0px auto;
+        }
+        table, td{
+            border:1px solid black;
+        }
+    </style>
 </head>
 
+
+
 <body>
+
+
 <h3>
 <pre style="text-align: center;">
 {{ss}}
 </pre>
 </h3>
+
+
 <h2 style="text-align: center;">服务器列表：</h2>
+
+
 <fieldset style="text-align: center;">
+
   <legend style="text-align: center;">ShadowSocks服务器信息</legend>
   {% for server in servers %}
-  <a href="/{{loop.index}}"> {{server['name']}}</a>
+  <a target="_blank" href="/{{loop.index}}"> {{server['name']}}</a>
   <br>
   {% endfor %}
+
 </fieldset>
+
+
+
 <p style="text-align: center;">
-免费帐号提供者：<a href="https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7">原文链接</a>
-<br>
-作者：老徐
-<br>
-<a href="https://the0demiurge.blogspot.jp/">作者的博客</a>
-<br>
-作者的Email：<a href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a>
-<br>
-源码：<a href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare">GitHub链接</a>
-<br>
-<strong>访问次数：{{counter}}</strong>
-<br>
+免费帐号提供者：<a target="_blank" href="https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7">原文链接</a>
 </p>
+
+
+<div style="text-align: center;">
+<table border="1" style="text-align: center;">
+
+  <tr>
+      <td>作者</td><td>老徐</td>
+  </tr>
+  
+  <tr>
+      <td>作者的博客</td><td><a target="_blank" href="https://the0demiurge.blogspot.jp/">Blogger（需爬墙）</a></td>
+  </tr>
+  
+  <tr>
+      <td>作者的Email</td><td><a target="_blank" href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a></td>
+  </tr>
+  
+  <tr>
+      <td>源码地址</td><td><a target="_blank" href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare">GitHub链接</a></td>
+  </tr>
+  
+  <tr>
+      <td><strong>网页源码更新时间</td><td>{{ctime}}</strong></td>
+  </tr>
+  
+  <tr>
+      <td><strong>访问次数</td><td>{{counter}}</strong></td>
+  </tr>
+  
+</table>
+</div>
+
 
 <p style="text-align: center;">如果连上ss之后成功翻了出去，刷新此页面你就能看到下面的微信二维码，并可以资助我^_^
 <br>
 <img src="https://2.bp.blogspot.com/-k-wEhqPNegI/WQwuxp6sacI/AAAAAAAAWlE/b2JZeYsWWswP5oMuul90kEQi7-riKYMYgCLcB/s320/wechat.png" alt="">
 </p>
+
+<!-- beautiful background -->
 <script type="text/javascript" color="{{color}}" opacity="{{opacity}}" count="{{count}}" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+<!-- github ribbon -->
 <a href="https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
 </body>
@@ -59,6 +105,6 @@
      \
       \
        \ >()_
-          (__)__ _
+          (__)__ _ ___ __
 
 </code></pre>
