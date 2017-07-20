@@ -39,7 +39,8 @@
     </p>
 {% else %}
     <p>
-        配置URI：<a href="{{uri}}"> {{uri}} </a>
+        配置URI：<a href="{{uri}}"> {{uri}} </a><br>
+        <button id="btn" class="js-copy" data-clipboard-text="{{uri}}"><span>一键复制SS配置</span></button><br />
     </p>
 
 
@@ -69,8 +70,28 @@
 {% endif %}
 </div>
 
+<!-- clipboard -->
+<script type="text/javascript" src="js/clipboard.min.js"></script>
+
+<script>
+var btn = document.getElementById('btn');
+var clipboard = new Clipboard(btn);//实例化
+
+//复制成功执行的回调，可选
+clipboard.on('success', function(e) {
+    console.log(e);
+    alert("复制成功")
+});
+
+//复制失败执行的回调，可选
+clipboard.on('error', function(e) {
+    console.log(e);
+    alert("复制失败，请手动复制")
+});
+</script>
+
 <!-- qrcode -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="js/jquery.min.js""></script>
 <script type="text/javascript" src="js/jquery.qrcode.js"></script>
 <script type="text/javascript" src="js/qrcode.js"></script>
 <script>jQuery('#qrcode').qrcode("{{server_data['uri']}}")</script>
