@@ -2,6 +2,10 @@
 
 简介：其实没啥好介绍的，就是一个很简单的HTML解析而已。
 
+示例网站：[ss.pythonic.life](http://ss.pythonic.life)
+
+博客连接：[the0demiurge.blogspot.jp](https://the0demiurge.blogspot.jp/2017/07/shadowsocks.html)
+
 ### 用法：
 `python manage.py runserver`
 
