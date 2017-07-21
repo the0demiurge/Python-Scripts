@@ -57,9 +57,10 @@ def pages(ind):
     server_port = servers[ind]['server_port'] if 'server_port' in servers[ind] else 'None'
     password = servers[ind]['password'] if 'password' in servers[ind] else 'None'
     method = servers[ind]['method'] if 'method' in servers[ind] else 'None'
-    ssr_portal = servers[ind]['ssr_portal'] if 'ssr_portal' in servers[ind] else 'None'
-    confuse = servers[ind]['confuse'] if 'confuse' in servers[ind] else 'None'
+    ssr_protocol = servers[ind]['ssr_protocol'] if 'ssr_protocol' in servers[ind] else 'None'
+    obfs = servers[ind]['obfs'] if 'obfs' in servers[ind] else 'None'
     href = servers[ind]['href'] if 'href' in servers[ind] else 'None'
+    json = servers[ind]['json'] if 'json' in servers[ind] else 'None'
     color, opacity, count = gen_canvas_nest()
     
     return render_template(
@@ -70,8 +71,8 @@ def pages(ind):
         server_port=server_port,
         password=password,
         method=method,
-        ssr_portal=ssr_portal,
-        confuse=confuse,
+        ssr_protocol=ssr_protocol,
+        obfs=obfs,
         href=href,
         name=name,
         counter=counter(),
@@ -79,6 +80,7 @@ def pages(ind):
         color=color,
         opacity=opacity,
         count=count,
+        json=json,
     )
 
 

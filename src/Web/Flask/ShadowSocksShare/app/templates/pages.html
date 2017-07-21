@@ -33,30 +33,50 @@
 
 
 {%- if href != 'None' -%}
-    <p>
+
+    <div id="hlink">
         请点击这个链接查看详细信息：<br>
         <a href={{href}}>{{href}}</a>
-    </p>
+    </div>
+    
 {% else %}
-    <p>
-        配置URI：<a href="{{uri}}"> {{uri}} </a><br>
-        <button id="btn" class="js-copy" data-clipboard-text="{{uri}}"><span>一键复制SS配置</span></button><br />
-    </p>
+
+    <div id="uri">
+        <h4>配置URI</h4>
+        <input  value="{{uri}}" readonly onclick="this.select()" size="70"><br>
+        <button id="btn" class="js-copy" data-clipboard-text="{{uri}}"><span>一键复制URI</span></button><br />
+    </div>
 
 
+    <h4>SSR二维码</h4>
     <div id="qrcode"></div>
-
+    
+    
+    <div id="table">
     <table style="text-align: center;">
-        <caption>服务器详细配置信息</caption>
+        <h4>服务器详细配置信息</h4>
         <tr><td>服务器</td><td>{{server}}</td></tr>
         <tr><td>端口</td><td>{{server_port}}</td></tr>
         <tr><td>密码</td><td>{{password}}</td></tr>
         <tr><td>加密方法</td><td>{{method}}</td></tr>
-        <tr><td>SSR协议</td><td>{{ssr_portal}}</td></tr>
-        <tr><td>混淆方式</td><td>{{confuse}}</td></tr>
+        <tr><td>SSR协议</td><td>{{ssr_protocol}}</td></tr>
+        <tr><td>混淆方式</td><td>{{obfs}}</td></tr>
     </table>
-
-
+    </div>
+    
+    
+    {%- if json != 'None' -%}
+    <div id="json">
+        <h4>JSON格式的配置文件</h4>
+        <textarea rows="18" cols="40" onclick="this.select()" readonly>
+            {{json}}
+        </textarea><br>
+        <button id="btn_json" class="js-copy" data-clipboard-text="{{json}}"><span>一键复制JSON配置</span></button><br />
+    </div>
+    {% endif %}
+    
+    
+    <div id="ascii">
     <h4>
     ASCII格式的二维码（适合终端浏览器）：
     </h4>
@@ -67,6 +87,7 @@
             {% endfor %}
         </p>
     </samp>
+    </div>
 {% endif %}
 </div>
 
@@ -80,11 +101,24 @@ var clipboard = new Clipboard(btn);//实例化
 //复制成功执行的回调，可选
 clipboard.on('success', function(e) {
     console.log(e);
-    alert("复制成功")
+    alert("URI复制成功")
 });
 
 //复制失败执行的回调，可选
 clipboard.on('error', function(e) {
+    console.log(e);
+    alert("复制失败，请手动复制")
+});
+
+var clipboard1 = new Clipboard(btn_json);//实例化
+//复制成功执行的回调，可选
+clipboard1.on('success', function(e) {
+    console.log(e);
+    alert("JSON复制成功")
+});
+
+//复制失败执行的回调，可选
+clipboard1.on('error', function(e) {
     console.log(e);
     alert("复制失败，请手动复制")
 });

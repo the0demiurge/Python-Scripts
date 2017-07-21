@@ -83,30 +83,72 @@ def get_servers(ss_list):
         # SSR协议
         tmp = re.findall('(?<=SSR协议\s*[^:：]*[:：]\s*[^a-zA-Z_0-9]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
         if tmp:
-            servers[-1]['ssr_portal'] = tmp[0]
+            servers[-1]['ssr_protocol'] = tmp[0]
 
         # 混淆
         tmp = re.findall('(?<=混淆\s*[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
         if tmp:
-            servers[-1]['confuse'] = tmp[0]
+            servers[-1]['obfs'] = tmp[0]
 
         try:
-            decoded = '{method}:{password}@{hostname}:{port}'.format(
-                method=servers[-1]['method'],
-                password=servers[-1]['password'],
-                hostname=servers[-1]['server'],
-                port=servers[-1]['server_port'],
-            )
-            ss_uri = 'ss://{}#{}'.format(
-                str(base64.b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-                urllib.parse.quote(servers[-1]['name']))
+            try:
+                # SSR信息是否完整
+                decoded = ':'.join([
+                                   servers[-1]['server'],
+                                   servers[-1]['server_port'],
+                                   servers[-1]['ssr_protocol'],
+                                   servers[-1]['method'],
+                                   servers[-1]['obfs'],
+                                   base64.urlsafe_b64encode(bytes(servers[-1]['password'], 'utf-8')).decode('utf-8').replace('=', '')
+                                   ])
+                decoded += '/?remarks={remarks}'.format(
+                    remarks=base64.urlsafe_b64encode(bytes(servers[-1]['name'], 'utf-8')).decode('utf-8').replace('=', '')
+                )
+                ss_uri = 'ssr://{endoced}'.format(
+                                                  endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
+                )
+            except (KeyError, EOFError):
+                # 不完整则是SS
+                decoded = '{method}:{password}@{hostname}:{port}'.format(
+                    method=servers[-1]['method'],
+                    password=servers[-1]['password'],
+                    hostname=servers[-1]['server'],
+                    port=servers[-1]['server_port'],
+                )
+                ss_uri = 'ss://{}#{}'.format(
+                    str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
+                    urllib.parse.quote(servers[-1]['name']))
+
             qr = qrcode.QRCode(border=0)
             qr.add_data(ss_uri)
             servers[-1]['qrcode'] = qrm2string(qr.get_matrix())
             servers[-1]['qr'] = qr
             servers[-1]['uri'] = ss_uri
-            servers[-1]['decoded_url'] = urllib.parse.unquote(ss_uri
-                                                              )
+            servers[-1]['decoded_url'] = urllib.parse.unquote(ss_uri)
+
+            obfs = servers[-1]['obfs'] if 'obfs' in servers[-1] else ''
+            method = servers[-1]['method'] if 'method' in servers[-1] else ''
+            ssr_protocol = servers[-1]['ssr_protocol'] if 'ssr_protocol' in servers[-1] else ''
+
+            servers[-1]['json'] = json.dumps({
+                "server": servers[-1]['server'],
+                "server_ipv6": "::",
+                "server_port": int(servers[-1]['server_port']),
+                "local_address": "127.0.0.1",
+                "local_port": 1080,
+                "password": servers[-1]['password'],
+                "timeout": 300,
+                "udp_timeout": 60,
+                "method": method,
+                "protocol": ssr_protocol,
+                "protocol_param": "",
+                "obfs": obfs,
+                "obfs_param": "",
+                "fast_open": False,
+                "workers": 1
+            },
+                ensure_ascii=False,
+                indent=2)
         except (KeyError, EOFError):
             href = get_href(servers[-1]['string'], '.*查看连接信息.*')
             servers[-1]['href'] = href
