@@ -101,11 +101,12 @@ def get_servers(ss_list):
                                    servers[-1]['obfs'],
                                    base64.urlsafe_b64encode(bytes(servers[-1]['password'], 'utf-8')).decode('utf-8').replace('=', '')
                                    ])
-                decoded += '/?remarks={remarks}'.format(
-                    remarks=base64.urlsafe_b64encode(bytes(servers[-1]['name'], 'utf-8')).decode('utf-8').replace('=', '')
+                decoded += '/?remarks={remarks}&group={group}'.format(
+                    remarks=base64.urlsafe_b64encode(bytes(servers[-1]['name'], 'utf-8')).decode('utf-8').replace('=', ''),
+                    group=base64.urlsafe_b64encode(b"new-pac&Charles Xu").decode('utf-8').replace('=', ''),
                 )
                 ss_uri = 'ssr://{endoced}'.format(
-                                                  endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
+                    endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
                 )
             except (KeyError, EOFError):
                 # 不完整则是SS
@@ -145,7 +146,8 @@ def get_servers(ss_list):
                 "obfs": obfs,
                 "obfs_param": "",
                 "fast_open": False,
-                "workers": 1
+                "workers": 1,
+                "group": "new-pac&Charles Xu"
             },
                 ensure_ascii=False,
                 indent=2)

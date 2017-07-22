@@ -1,16 +1,19 @@
+import base64
+import random
+import time
+import os
 from app import app
 from app import shadowsocks_free_qrcode
 from app import ss
 from flask import render_template, send_from_directory
-import random
-import time
-import os
 
 
 servers = shadowsocks_free_qrcode.main()
 curtime = time.ctime()
 
 counter_path = os.path.expanduser('~/python/counter')
+
+
 def counter(counter_path=counter_path):
     if not os.path.exists(os.path.split(counter_path)[0]):
         os.makedirs(os.path.split(counter_path)[0])
@@ -62,7 +65,7 @@ def pages(ind):
     href = servers[ind]['href'] if 'href' in servers[ind] else 'None'
     json = servers[ind]['json'] if 'json' in servers[ind] else 'None'
     color, opacity, count = gen_canvas_nest()
-    
+
     return render_template(
         'pages.html',
         uri=uri,
@@ -88,6 +91,12 @@ def pages(ind):
 def send_jsadfsadfs(path):
     counter()
     return send_from_directory('js', path)
+
+
+@app.route('/subscribe')
+def subscribe():
+    decoded = '\n'.join(map(lambda x: x['uri'], servers))
+    return base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 
 @app.errorhandler(404)
