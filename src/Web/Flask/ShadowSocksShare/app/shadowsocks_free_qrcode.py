@@ -12,7 +12,7 @@ except ImportError:
     exit(0)
 
 import urllib
-import sys
+# import sys
 import requests
 import base64
 import json
@@ -21,7 +21,7 @@ import json
 __author__ = 'Charles Xu'
 __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
-__url__ = 'https://github.com/the0demiurge/Python-Scripts/blob/master/src/MinorProjects/shadowsocks_free_qrcode.py'
+__url__ = 'http://ss.ishadowx.com/'
 
 
 def get_href(string, pattern='.*'):
@@ -38,7 +38,67 @@ def qrm2string(qrm):
     return qrs
 
 
-def request_ss_list(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
+def request_iss(url='http://ss.ishadowx.com/'):
+    data = requests.get(url)
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    info = {
+        'message': soup.find('div', attrs={'id': 'portfolio'}).find('div', attrs={'class': 'section-title text-center center'}).text,
+        'name': 'ishadowx',
+        'url': url}
+
+    '''servers[-1]['name'] = tmp[0]
+    servers[-1]['server'] = tmp[0]
+    servers[-1]['server_port'] = tmp[0]
+    servers[-1]['password'] = tmp[0]
+    servers[-1]['method'] = tmp[0]
+    servers[-1]['ssr_protocol'] = tmp[0]
+    servers[-1]['obfs'] = tmp[0]'''
+
+    soup = BeautifulSoup(data.text, 'html.parser')
+    server_data = soup.find_all('div', attrs={'class': 'hover-text'})
+    servers = list()
+
+    for i, server in enumerate(server_data):
+        try:
+            servers.append(dict())
+            server_data = server.text.strip().split('\n')
+            servers[-1]['server'] = server_data[0].split(':')[-1].strip()
+            servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0]
+            servers[-1]['name'] = ' '.join(['ss.ishadowx.com', str(i)])
+            servers[-1]['password'] = server_data[2].split(':')[-1].strip()
+            servers[-1]['method'] = server_data[3].split(':')[-1].strip()
+            if 'QR' not in server_data[4]:
+                servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
+                servers[-1]['name'] = ' '.join(['ssr', servers[-1]['name']])
+        except Exception:
+            pass
+    return servers, info
+
+
+def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
+    data = requests.get(url)
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    data = soup.find('div', attrs={'id': 'ss-body'})
+    data = data.text.strip().split('\n\n\n')
+    info = {'message': data[0].split('\n')[0], 'name': '小双加速', 'url': url}
+    data[0] = data[0].split('\n', maxsplit=1)[-1]
+    servers = list()
+    for server in data:
+        server = server.split('\n')
+        servers.append(dict())
+        servers[-1]['name'] = '小双{}'.format(server[0]).strip()
+        servers[-1]['server'] = server[1].split()[1].strip()
+        servers[-1]['server_port'] = server[1].split()[3].strip()
+        servers[-1]['password'] = server[2].split()[3].strip()
+        servers[-1]['method'] = server[2].split()[1].strip()
+        servers[-1]['ssr_protocol'] = server[3].split()[1].split(':')[1].strip()
+        servers[-1]['obfs'] = server[3].split()[2].split(':')[1].strip()
+    return servers, info
+
+
+def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
     data = requests.get(url)
     soup = BeautifulSoup(data.text, 'html.parser')
 
@@ -47,10 +107,7 @@ def request_ss_list(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E
     for i in soup.find_all('p'):
         if re.match('\<p\>\s*服务器\d+[^:：]*[:：]', str(i)):
             ss_list.append(str(i))
-    return ss_list
 
-
-def get_servers(ss_list):
     servers = list()
     for i in ss_list:
         servers.append(dict())
@@ -89,55 +146,18 @@ def get_servers(ss_list):
         tmp = re.findall('(?<=混淆\s*[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
         if tmp:
             servers[-1]['obfs'] = tmp[0]
+    info = {'message': '', 'name': 'new-pac', 'url': url}
+    return servers, info
 
-        try:
-            try:
-                # SSR信息是否完整
-                decoded = ':'.join([
-                                   servers[-1]['server'],
-                                   servers[-1]['server_port'],
-                                   servers[-1]['ssr_protocol'],
-                                   servers[-1]['method'],
-                                   servers[-1]['obfs'],
-                                   base64.urlsafe_b64encode(bytes(servers[-1]['password'], 'utf-8')).decode('utf-8').replace('=', '')
-                                   ])
-                decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=base64.urlsafe_b64encode(bytes(servers[-1]['name'], 'utf-8')).decode('utf-8').replace('=', ''),
-                    group=base64.urlsafe_b64encode(b"new-pac&Charles Xu").decode('utf-8').replace('=', ''),
-                )
-                ss_uri = 'ssr://{endoced}'.format(
-                    endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
-                )
-            except (KeyError, EOFError):
-                # 不完整则是SS
-                decoded = '{method}:{password}@{hostname}:{port}'.format(
-                    method=servers[-1]['method'],
-                    password=servers[-1]['password'],
-                    hostname=servers[-1]['server'],
-                    port=servers[-1]['server_port'],
-                )
-                ss_uri = 'ss://{}#{}'.format(
-                    str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-                    urllib.parse.quote(servers[-1]['name']))
 
-            qr = qrcode.QRCode(border=0)
-            qr.add_data(ss_uri)
-            servers[-1]['qrcode'] = qrm2string(qr.get_matrix())
-            servers[-1]['qr'] = qr
-            servers[-1]['uri'] = ss_uri
-            servers[-1]['decoded_url'] = urllib.parse.unquote(ss_uri)
-
-            obfs = servers[-1]['obfs'] if 'obfs' in servers[-1] else ''
-            method = servers[-1]['method'] if 'method' in servers[-1] else ''
-            ssr_protocol = servers[-1]['ssr_protocol'] if 'ssr_protocol' in servers[-1] else ''
-
-            servers[-1]['json'] = json.dumps({
-                "server": servers[-1]['server'],
+def get_qr_uri(servers):
+    '''{
+                "server": server['server'],
                 "server_ipv6": "::",
-                "server_port": int(servers[-1]['server_port']),
+                "server_port": int(server['server_port']),
                 "local_address": "127.0.0.1",
                 "local_port": 1080,
-                "password": servers[-1]['password'],
+                "password": server['password'],
                 "timeout": 300,
                 "udp_timeout": 60,
                 "method": method,
@@ -147,20 +167,91 @@ def get_servers(ss_list):
                 "obfs_param": "",
                 "fast_open": False,
                 "workers": 1,
-                "group": "new-pac&Charles Xu"
+                "group": "Charles Xu"
+            },'''
+    for server in servers:
+        try:
+            try:
+                # SSR信息是否完整
+                decoded = ':'.join([
+                                   server['server'],
+                                   server['server_port'],
+                                   server['ssr_protocol'],
+                                   server['method'],
+                                   server['obfs'],
+                                   base64.urlsafe_b64encode(bytes(server['password'], 'utf-8')).decode('utf-8').replace('=', '')
+                                   ])
+                decoded += '/?remarks={remarks}&group={group}'.format(
+                    remarks=base64.urlsafe_b64encode(bytes(server['name'], 'utf-8')).decode('utf-8').replace('=', ''),
+                    group=base64.urlsafe_b64encode(b"new-pac&Charles Xu").decode('utf-8').replace('=', ''),
+                )
+                ss_uri = 'ssr://{endoced}'.format(
+                    endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
+                )
+            except (KeyError, EOFError):
+                # 不完整则是SS
+                decoded = '{method}:{password}@{hostname}:{port}'.format(
+                    method=server['method'],
+                    password=server['password'],
+                    hostname=server['server'],
+                    port=server['server_port'],
+                )
+                ss_uri = 'ss://{}#{}'.format(
+                    str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
+                    urllib.parse.quote(server['name']))
+
+            qr = qrcode.QRCode(border=0)
+            qr.add_data(ss_uri)
+            server['qrcode'] = qrm2string(qr.get_matrix())
+            server['qr'] = qr
+            server['uri'] = ss_uri
+            server['decoded_url'] = urllib.parse.unquote(ss_uri)
+
+            obfs = server['obfs'] if 'obfs' in server else ''
+            method = server['method'] if 'method' in server else ''
+            ssr_protocol = server['ssr_protocol'] if 'ssr_protocol' in server else ''
+
+            server['json'] = json.dumps({
+                "server": server['server'],
+                "server_ipv6": "::",
+                "server_port": int(server['server_port']),
+                "local_address": "127.0.0.1",
+                "local_port": 1080,
+                "password": server['password'],
+                "timeout": 300,
+                "udp_timeout": 60,
+                "method": method,
+                "protocol": ssr_protocol,
+                "protocol_param": "",
+                "obfs": obfs,
+                "obfs_param": "",
+                "fast_open": False,
+                "workers": 1,
+                "group": "Charles Xu"
             },
                 ensure_ascii=False,
                 indent=2)
         except (KeyError, EOFError):
-            href = get_href(servers[-1]['string'], '.*查看连接信息.*')
-            servers[-1]['href'] = href
+            try:
+                href = get_href(server['string'], '.*查看连接信息.*')
+                server['href'] = href
+            except Exception:
+                pass
     return servers
 
 
 def main():
-    ss_list = request_ss_list()
-    servers = get_servers(ss_list)
-    return servers
+    # servers = request_newpac()
+    # servers = get_qr_uri(servers)
+    # return servers
+    servers_iss, info_iss = request_iss()
+    servers_xiaoshuang, info_xiaoshuang = request_xiaoshuang()
+
+    result = [
+        {'data': get_qr_uri(servers_iss), 'info': info_iss},
+        {'data': get_qr_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
+    ]
+    return result
 
 
 if __name__ == '__main__':

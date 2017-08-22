@@ -35,10 +35,17 @@
     <h2>最新通知</h2>
     
     <p>
-        <h3>请使用 ShadowSocksR 客户端，否则连不上别怪服务器不行 =_=</h3>
+    <strong>感谢hsu_bicheng朋友的捐助：）<br>
+    今天我又去找了另外两个提供免费ss帐号的网站爬了一下，现在本网站可以正常运作，订阅服务也能正常运行了。<br>
+    更新增加了json格式的订阅，可以配合curl自动化更新python版ssr的配置文件。</strong>
+    </p>
+    
+    <p>
+        <h3 style="color: #8F5A0A">请使用 ShadowSocksR 客户端，否则连不上别怪服务器不行 =_=</h3>
         
         下面是各操作系统的 SSR 客户端地址：<br>
         <a href="https://github.com/the0demiurge/CharlesScripts/blob/master/charles/bin/ssr" target="_blank">Linux 客户端一键安装配置使用脚本</a>（命令行界面， Mac 也能用，使用方法见注释）<br>
+        <a href="https://the0demiurge.blogspot.jp/2017/07/aptshadowsocks-tsocks.html">使用tsocks为终端开启socks代理</a>（还可以通过tsocks curl ip.cn查看连接状况）<br>
         <a href="https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases" target="_blank">Windows 客户端</a><br>
         <a href="https://github.com/shadowsocksr-backup/shadowsocksr-android/releases" target="_blank"> Android 客户端</a><br>
         <a href="https://github.com/shadowsocksr-backup/ShadowsocksX-NG/releases" target="_blank">macOS 客户端</a><br>
@@ -51,19 +58,21 @@
 
   <legend style="text-align: center;"><strong>ShadowSocks服务器信息</strong></legend>
   {% for server in servers %}
-  <a target="_blank" href="/{{loop.index}}"> {{server['name']}}</a>
-  <br>
+    <p>
+      请支持免费ss帐号的提供者：<a href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
+      <font style="color:#E13C19">服务器通知：{{server['info']['message']}}</font>
+      <br>
+      {%set outer_loop = loop%}
+      {% for s in server['data'] %}
+        <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['name']}}</a>
+        <br>
+      {% endfor %}
+    </p>
   {% endfor %}
-  SSR订阅地址：<a href="/subscribe">http://ss.pythonic.life/subscribe</a>
+  SSR订阅地址：<a href="/subscribe">http://ss.pythonic.life/subscribe</a><br>
+  JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a href="/json">http://ss.pythonic.life/json</a>
 </fieldset>
 
-
-
-<div id="copyright" style="text-align: center;">
-    <p>
-        请支持免费帐号来源：<a target="_blank" href="https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7">原文链接</a>
-    </p>
-</div>
 
 <div id="info" style="text-align: center;">
     <p>如果遇到了什么问题或有任何建议，请到我的 <a href="https://github.com/the0demiurge/Python-Scripts/issues">GitHub Issue 页面</a>提供反馈：）</p>

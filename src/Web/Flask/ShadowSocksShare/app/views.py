@@ -1,17 +1,23 @@
 import base64
 import random
 import time
+import threading
 import os
 from app import app
 from app import shadowsocks_free_qrcode
 from app import ss
-from flask import render_template, send_from_directory
+from flask import render_template, send_from_directory, abort
 
 
 servers = shadowsocks_free_qrcode.main()
 curtime = time.ctime()
 
 counter_path = os.path.expanduser('~/python/counter')
+
+
+def update_servers():
+    global servers
+    servers = shadowsocks_free_qrcode.main()
 
 
 def counter(counter_path=counter_path):
@@ -21,6 +27,9 @@ def counter(counter_path=counter_path):
         open(counter_path, 'w').write('0')
     count = int(open(counter_path).readline())
     open(counter_path, 'w').write(str(count + 1))
+    if count % 10 == 0:
+        update_thread = threading.Thread(target=update_servers)
+        update_thread.start()
     return count
 
 
@@ -28,20 +37,18 @@ def gen_canvas_nest():
     """为背景很绚丽的特效生成随机参数
     """
     color = ','.join([str(random.randint(0, 255)) for i in range(3)])
-    opacity = str(random.random()+0.5)
+    opacity = str(random.random() + 0.5)
     count = str(random.randint(0, 150))
     return color, opacity, count
 
 
 @app.route('/')
 def index():
-    global servers
-    servers = shadowsocks_free_qrcode.main()
     color, opacity, count = gen_canvas_nest()
     return render_template(
         'index.html',
         servers=servers,
-        ss=ss[random.randint(0, len(ss)-1)],
+        ss=ss[random.randint(0, len(ss) - 1)],
         counter=counter(),
         color=color,
         opacity=opacity,
@@ -50,20 +57,26 @@ def index():
     )
 
 
-@app.route('/<int:ind>')
-def pages(ind):
-    ind -= 1
-    uri = servers[ind]['decoded_url'] if 'decoded_url' in servers[ind] else ''
-    name = servers[ind]['name'] if 'name' in servers[ind] else 'None'
-    qrcode = servers[ind]['qrcode'] if 'qrcode' in servers[ind] else ''
-    server = servers[ind]['server'] if 'server' in servers[ind] else 'None'
-    server_port = servers[ind]['server_port'] if 'server_port' in servers[ind] else 'None'
-    password = servers[ind]['password'] if 'password' in servers[ind] else 'None'
-    method = servers[ind]['method'] if 'method' in servers[ind] else 'None'
-    ssr_protocol = servers[ind]['ssr_protocol'] if 'ssr_protocol' in servers[ind] else 'None'
-    obfs = servers[ind]['obfs'] if 'obfs' in servers[ind] else 'None'
-    href = servers[ind]['href'] if 'href' in servers[ind] else 'None'
-    json = servers[ind]['json'] if 'json' in servers[ind] else 'None'
+@app.route('/<string:path>')
+def pages(path):
+    print(path)
+    try:
+        a, b = path.split('-')
+        a, b = int(a), int(b)
+    except Exception:
+        abort(404)
+
+    uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
+    name = servers[a]['data'][b]['name'] if 'name' in servers[a]['data'][b] else 'None'
+    qrcode = servers[a]['data'][b]['qrcode'] if 'qrcode' in servers[a]['data'][b] else ''
+    server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
+    server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
+    password = servers[a]['data'][b]['password'] if 'password' in servers[a]['data'][b] else 'None'
+    method = servers[a]['data'][b]['method'] if 'method' in servers[a]['data'][b] else 'None'
+    ssr_protocol = servers[a]['data'][b]['ssr_protocol'] if 'ssr_protocol' in servers[a]['data'][b] else 'None'
+    obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'
+    href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'
+    json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
     color, opacity, count = gen_canvas_nest()
 
     return render_template(
@@ -79,7 +92,7 @@ def pages(ind):
         href=href,
         name=name,
         counter=counter(),
-        server_data=servers[ind],
+        server_data=servers[a]['data'][b],
         color=color,
         opacity=opacity,
         count=count,
@@ -95,8 +108,18 @@ def send_jsadfsadfs(path):
 
 @app.route('/subscribe')
 def subscribe():
-    decoded = '\n'.join(map(lambda x: x['uri'], servers))
+    decoded = list()
+    for i in servers:
+        for j in i['data']:
+            if j['uri'][2] is 'r':
+                decoded.append(j['uri'])
+    decoded = '\n'.join(decoded)
     return base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+
+
+@app.route('/json')
+def subscribe_json():
+    return random.sample(random.sample(servers, 1)[0]['data'], 1)[0]['json']
 
 
 @app.errorhandler(404)
