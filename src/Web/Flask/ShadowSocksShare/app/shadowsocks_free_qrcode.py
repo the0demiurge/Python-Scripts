@@ -167,7 +167,7 @@ def get_qr_uri(servers):
                 "obfs_param": "",
                 "fast_open": False,
                 "workers": 1,
-                "group": "Charles Xu"
+                "group": "ss.pythonic.life"
             },'''
     for server in servers:
         try:

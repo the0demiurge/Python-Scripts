@@ -5,19 +5,46 @@ import threading
 import os
 from app import app
 from app import shadowsocks_free_qrcode
+from app import shadowsocks_gplus
 from app import ss
 from flask import render_template, send_from_directory, abort
 
 
 servers = shadowsocks_free_qrcode.main()
+sslist = ['正在从Google+中查找ssr分享链接（也可能没查到）']
 curtime = time.ctime()
 
-counter_path = os.path.expanduser('~/python/counter')
+decoded = list()
+for i in servers:
+    for j in i['data']:
+        if j['uri'][2] is 'r':
+            decoded.append(j['uri'])
+decoded = '\n'.join(decoded)
+for i in sslist:
+    if i[2] is 'r':
+        decoded.append(i)
+encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 
 def update_servers():
     global servers
     servers = shadowsocks_free_qrcode.main()
+    global sslist
+    sslist = shadowsocks_gplus.main()
+    global encoded
+    decoded = list()
+    for i in servers:
+        for j in i['data']:
+            if j['uri'][2] is 'r':
+                decoded.append(j['uri'])
+    decoded = '\n'.join(decoded)
+    for i in sslist:
+        if i[2] is 'r':
+            decoded.append(i)
+    encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+
+
+counter_path = os.path.expanduser('~/python/counter')
 
 
 def counter(counter_path=counter_path):
@@ -48,6 +75,7 @@ def index():
     return render_template(
         'index.html',
         servers=servers,
+        sslist=sslist,
         ss=ss[random.randint(0, len(ss) - 1)],
         counter=counter(),
         color=color,
@@ -108,13 +136,7 @@ def send_jsadfsadfs(path):
 
 @app.route('/subscribe')
 def subscribe():
-    decoded = list()
-    for i in servers:
-        for j in i['data']:
-            if j['uri'][2] is 'r':
-                decoded.append(j['uri'])
-    decoded = '\n'.join(decoded)
-    return base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+    return encoded
 
 
 @app.route('/json')
