@@ -20,15 +20,12 @@ import requests
 import base64
 import json
 from app.parse import parse
+from app.config import url
 
 
 __author__ = 'Charles Xu'
 __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
-
-url = [
-    'http://www.ssglobal.me/wp/blog/2017/02/22/%E8%B4%A6%E5%8F%B7%E5%88%86%E4%BA%AB/',
-    'https://plus.google.com/communities/103542666306656189846/stream/dd570c04-df51-4394-8c83-eabb12cc0d0c']
 
 
 def get_href(string, pattern='.*'):
