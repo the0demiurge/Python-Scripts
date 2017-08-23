@@ -143,7 +143,6 @@ def send_favicon():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    counter()
     color, opacity, count = gen_canvas_nest()
     return render_template(
         '404.html',
