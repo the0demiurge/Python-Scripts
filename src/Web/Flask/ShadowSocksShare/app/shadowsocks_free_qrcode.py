@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-本代码使用了regex beautifulsoup4 qrcode这三个第三方库，
+本代码使用了 regex beautifulsoup4 这些第三方库，
 只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，
 如果遇到任何运行问题请联系我。
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
@@ -8,9 +8,8 @@
 try:
     import regex as re
     from bs4 import BeautifulSoup
-    import qrcode
 except ImportError:
-    print('''Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。
+    print('''Python缺少依赖库，请使用 pip install -U regex beautifulsoup4 或者其他方式安装此依赖。
           本软件在Linux下写成，Python版本为3.5，如果遇到任何错误，请到GitHub上提交Issue。\n''')
     exit(0)
 
@@ -32,14 +31,6 @@ def get_href(string, pattern='.*'):
     found = re.findall('(?<=<a\s+href=")[^"]+(?=">%s</a>)' % pattern, string)
     if found:
         return found[0]
-
-
-def qrm2string(qrm):
-    qrs = []
-    for line in qrm:
-        strline = ''.join(['██' if ele else '  ' for ele in line])
-        qrs.append(strline)
-    return qrs
 
 
 def request_url(url):
@@ -224,10 +215,6 @@ def get_qr_uri(servers):
                     str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
                     urllib.parse.quote(server['remarks']))
 
-            qr = qrcode.QRCode(border=0)
-            qr.add_data(ss_uri)
-            server['qrcode'] = qrm2string(qr.get_matrix())
-            server['qr'] = qr
             server['uri'] = ss_uri
             server['decoded_url'] = urllib.parse.unquote(ss_uri)
 

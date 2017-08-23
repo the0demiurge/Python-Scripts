@@ -85,7 +85,6 @@ def pages(path):
 
     uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
     remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
-    qrcode = servers[a]['data'][b]['qrcode'] if 'qrcode' in servers[a]['data'][b] else ''
     server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
     server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
     password = servers[a]['data'][b]['password'] if 'password' in servers[a]['data'][b] else 'None'
@@ -101,7 +100,6 @@ def pages(path):
     return render_template(
         'pages.html',
         uri=uri,
-        qrcode=qrcode,
         server=server,
         server_port=server_port,
         password=password,
@@ -151,3 +149,6 @@ def page_not_found(e):
         opacity=opacity,
         count=count,
     ), 404
+
+
+print('部署完成')
