@@ -16,12 +16,16 @@ import urllib
 import requests
 import base64
 import json
+from app.parse import parse
 
 
 __author__ = 'Charles Xu'
 __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
-__url__ = 'http://ss.ishadowx.com/'
+
+url = [
+    'http://www.ssglobal.me/wp/blog/2017/02/22/%E8%B4%A6%E5%8F%B7%E5%88%86%E4%BA%AB/',
+    'https://plus.google.com/communities/103542666306656189846/stream/dd570c04-df51-4394-8c83-eabb12cc0d0c']
 
 
 def get_href(string, pattern='.*'):
@@ -36,6 +40,21 @@ def qrm2string(qrm):
         strline = ''.join(['██' if ele else '  ' for ele in line])
         qrs.append(strline)
     return qrs
+
+
+def request_url(url):
+    data = list()
+    try:
+        response = requests.get(url, verify=False).text
+        data += re.findall('ssr?://\w+', response)
+    except Exception:
+        return [], {'message': '', 'url': '', 'name': ''}
+    soup = BeautifulSoup(response)
+    title = soup.find('title')
+
+    info = {'message': '', 'url': url, 'name': str(title)}
+    servers = [parse(server) for server in data]
+    return servers, info
 
 
 def request_iss(url='http://ss.ishadowx.com/'):
@@ -65,12 +84,12 @@ def request_iss(url='http://ss.ishadowx.com/'):
             server_data = server.text.strip().split('\n')
             servers[-1]['server'] = server_data[0].split(':')[-1].strip()
             servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0]
-            servers[-1]['name'] = ' '.join(['ss.ishadowx.com', str(i)])
+            servers[-1]['remarks'] = ' '.join(['ss.ishadowx.com', str(i)])
             servers[-1]['password'] = server_data[2].split(':')[-1].strip()
             servers[-1]['method'] = server_data[3].split(':')[-1].strip()
             if 'QR' not in server_data[4]:
                 servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
-                servers[-1]['name'] = ' '.join(['ssr', servers[-1]['name']])
+                servers[-1]['remarks'] = ' '.join(['ssr', servers[-1]['remarks']])
         except Exception:
             pass
     return servers, info
@@ -88,7 +107,7 @@ def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     for server in data:
         server = server.split('\n')
         servers.append(dict())
-        servers[-1]['name'] = '小双{}'.format(server[0]).strip()
+        servers[-1]['remarks'] = '小双{}'.format(server[0]).strip()
         servers[-1]['server'] = server[1].split()[1].strip()
         servers[-1]['server_port'] = server[1].split()[3].strip()
         servers[-1]['password'] = server[2].split()[3].strip()
@@ -115,7 +134,7 @@ def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8
         # name
         tmp = re.findall('服务器\d+[^:：]*(?=\s*[:：])', i)
         if tmp:
-            servers[-1]['name'] = tmp[0]
+            servers[-1]['remarks'] = tmp[0]
 
         # server
         tmp = re.findall('(?<=服务器\s*\d+[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[\w\d\.]+', i)
@@ -169,6 +188,11 @@ def get_qr_uri(servers):
                 "workers": 1,
                 "group": "ss.pythonic.life"
             },'''
+    def encode(decoded):
+        return base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
+
+    def decode(string):
+        return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
     for server in servers:
         try:
             try:
@@ -179,15 +203,15 @@ def get_qr_uri(servers):
                                    server['ssr_protocol'],
                                    server['method'],
                                    server['obfs'],
-                                   base64.urlsafe_b64encode(bytes(server['password'], 'utf-8')).decode('utf-8').replace('=', '')
+                                   encode(server['password'])
                                    ])
                 decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=base64.urlsafe_b64encode(bytes(server['name'], 'utf-8')).decode('utf-8').replace('=', ''),
-                    group=base64.urlsafe_b64encode(b"new-pac&Charles Xu").decode('utf-8').replace('=', ''),
-                )
+                    remarks=encode(server['remarks']),
+                    group=encode("Charles Xu"))
+
                 ss_uri = 'ssr://{endoced}'.format(
-                    endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
-                )
+                    endoced=encode(decoded))
+
             except (KeyError, EOFError):
                 # 不完整则是SS
                 decoded = '{method}:{password}@{hostname}:{port}'.format(
@@ -198,7 +222,7 @@ def get_qr_uri(servers):
                 )
                 ss_uri = 'ss://{}#{}'.format(
                     str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-                    urllib.parse.quote(server['name']))
+                    urllib.parse.quote(server['remarks']))
 
             qr = qrcode.QRCode(border=0)
             qr.add_data(ss_uri)
@@ -210,6 +234,8 @@ def get_qr_uri(servers):
             obfs = server['obfs'] if 'obfs' in server else ''
             method = server['method'] if 'method' in server else ''
             ssr_protocol = server['ssr_protocol'] if 'ssr_protocol' in server else ''
+            obfsparam = server['obfsparam'] if 'obfsparam' in server else ''
+            protoparam = server['protoparam'] if 'protoparam' in server else ''
 
             server['json'] = json.dumps({
                 "server": server['server'],
@@ -222,9 +248,9 @@ def get_qr_uri(servers):
                 "udp_timeout": 60,
                 "method": method,
                 "protocol": ssr_protocol,
-                "protocol_param": "",
+                "protocol_param": protoparam,
                 "obfs": obfs,
-                "obfs_param": "",
+                "obfs_param": obfsparam,
                 "fast_open": False,
                 "workers": 1,
                 "group": "Charles Xu"
@@ -251,6 +277,9 @@ def main():
         {'data': get_qr_uri(servers_iss), 'info': info_iss},
         {'data': get_qr_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
+    for i in url:
+        data, info = request_url(url)
+        result.append({'data': get_qr_uri(data), 'info': info})
     return result
 
 

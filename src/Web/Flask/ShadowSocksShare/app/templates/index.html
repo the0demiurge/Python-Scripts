@@ -8,6 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-transform" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+    <link rel = "Shortcut Icon" href=/favicon.ico> 
     <style type="text/css">
         table{
             border-collapse: collapse;
@@ -64,13 +65,10 @@
       <br>
       {%set outer_loop = loop%}
       {% for s in server['data'] %}
-        <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['name']}}</a>
+        <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}}</a>
         <br>
       {% endfor %}
     </p>
-  {% endfor %}
-  {% for uri in sslist %}
-    <input  value="{{uri}}" readonly onclick="this.select()" size="70"><br>
   {% endfor %}
   SSR订阅地址：<a href="/subscribe">http://ss.pythonic.life/subscribe</a><br>
   JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a href="/json">http://ss.pythonic.life/json</a>

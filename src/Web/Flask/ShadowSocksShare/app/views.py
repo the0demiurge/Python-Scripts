@@ -5,13 +5,11 @@ import threading
 import os
 from app import app
 from app import shadowsocks_free_qrcode
-from app import shadowsocks_gplus
 from app import ss
 from flask import render_template, send_from_directory, abort
 
 
 servers = shadowsocks_free_qrcode.main()
-sslist = ['正在从Google+中查找ssr分享链接（也可能没查到）']
 curtime = time.ctime()
 
 decoded = list()
@@ -20,17 +18,12 @@ for i in servers:
         if j['uri'][2] is 'r':
             decoded.append(j['uri'])
 decoded = '\n'.join(decoded)
-for i in sslist:
-    if i[2] is 'r':
-        decoded.append(i)
 encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 
 def update_servers():
     global servers
     servers = shadowsocks_free_qrcode.main()
-    global sslist
-    sslist = shadowsocks_gplus.main()
     global encoded
     decoded = list()
     for i in servers:
@@ -38,9 +31,6 @@ def update_servers():
             if j['uri'][2] is 'r':
                 decoded.append(j['uri'])
     decoded = '\n'.join(decoded)
-    for i in sslist:
-        if i[2] is 'r':
-            decoded.append(i)
     encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 
@@ -75,7 +65,6 @@ def index():
     return render_template(
         'index.html',
         servers=servers,
-        sslist=sslist,
         ss=ss[random.randint(0, len(ss) - 1)],
         counter=counter(),
         color=color,
@@ -95,7 +84,7 @@ def pages(path):
         abort(404)
 
     uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
-    name = servers[a]['data'][b]['name'] if 'name' in servers[a]['data'][b] else 'None'
+    remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
     qrcode = servers[a]['data'][b]['qrcode'] if 'qrcode' in servers[a]['data'][b] else ''
     server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
     server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
@@ -105,6 +94,8 @@ def pages(path):
     obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'
     href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'
     json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
+    obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
+    protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
     color, opacity, count = gen_canvas_nest()
 
     return render_template(
@@ -118,20 +109,16 @@ def pages(path):
         ssr_protocol=ssr_protocol,
         obfs=obfs,
         href=href,
-        name=name,
+        remarks=remarks,
         counter=counter(),
         server_data=servers[a]['data'][b],
         color=color,
         opacity=opacity,
         count=count,
         json=json,
+        obfsparam=obfsparam,
+        protoparam=protoparam,
     )
-
-
-@app.route('/js/<path:path>')
-def send_jsadfsadfs(path):
-    counter()
-    return send_from_directory('js', path)
 
 
 @app.route('/subscribe')
@@ -142,6 +129,16 @@ def subscribe():
 @app.route('/json')
 def subscribe_json():
     return random.sample(random.sample(servers, 1)[0]['data'], 1)[0]['json']
+
+
+@app.route('/js/<path:path>')
+def send_jsadfsadfs(path):
+    return send_from_directory('js', path)
+
+
+@app.route('/favicon.ico')
+def send_favicon():
+    return send_from_directory('static', 'favicon.ico')
 
 
 @app.errorhandler(404)
