@@ -1,0 +1,417 @@
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/parse.py b/src/Web/Flask/ShadowSocksShare/app/parse.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..336a363[m
+[1m--- /dev/null[m
+[1m+++ b/src/Web/Flask/ShadowSocksShare/app/parse.py[m
+[36m@@ -0,0 +1,44 @@[m
+[32m+[m[32mimport re[m
+[32m+[m[32mimport base64[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef decode(string):[m
+[32m+[m[32m    return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef encode(decoded):[m
+[32m+[m[32m    return base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef parse(uri):[m
+[32m+[m[32m    server = dict()[m
+[32m+[m[32m    stripped = re.sub('ssr?://', '', uri)[m
+[32m+[m[32m    if uri[2] is ':':[m
+[32m+[m[32m        if '#' in uri:[m
+[32m+[m[32m            stripped, server['remarks'] = stripped.split('#')[:2][m
+[32m+[m[32m        else:[m
+[32m+[m[32m            server['remarks'] = 'untitled'[m
+[32m+[m[32m        decoded = decode(stripped)[m
+[32m+[m[32m        data = decoded.split('@')[m
+[32m+[m[32m        server['method'], server['password'] = data[0].split(':')[m
+[32m+[m[32m        server['server'], server['server_port'] = data[1].split(':')[m
+[32m+[m[32m    elif uri[2] is 'r':[m
+[32m+[m[32m        decoded = decode(stripped)[m
+[32m+[m[32m        if '/?' in decoded:[m
+[32m+[m[32m            data = decoded.split('/?')[m
+[32m+[m[32m        else:[m
+[32m+[m[32m            data = [decoded][m
+[32m+[m[32m        [[m
+[32m+[m[32m            server['server'],[m
+[32m+[m[32m            server['server_port'],[m
+[32m+[m[32m            server['ssr_protocol'],[m
+[32m+[m[32m            server['method'],[m
+[32m+[m[32m            server['obfs']] = data[0].split(':')[:5][m
+[32m+[m[32m        server['password'] = decode(data[0].split(':')[5])[m
+[32m+[m[32m        server['remarks'] = 'untitled'[m
+[32m+[m[32m        if len(data) > 1:[m
+[32m+[m[32m            data = data[1].split('&')[m
+[32m+[m[32m            content = {i.split('=')[0]: decode(i.split('=')[1]) for i in data}[m
+[32m+[m[32m            for key in content:[m
+[32m+[m[32m                server[key] = content[key][m
+[32m+[m[32m    return server[m
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/shadowsocks_free_qrcode.py b/src/Web/Flask/ShadowSocksShare/app/shadowsocks_free_qrcode.py[m
+[1mindex 1941ae0..ab1e4eb 100644[m
+[1m--- a/src/Web/Flask/ShadowSocksShare/app/shadowsocks_free_qrcode.py[m
+[1m+++ b/src/Web/Flask/ShadowSocksShare/app/shadowsocks_free_qrcode.py[m
+[36m@@ -16,12 +16,16 @@[m [mimport urllib[m
+ import requests[m
+ import base64[m
+ import json[m
+[32m+[m[32mfrom app.parse import parse[m
+ [m
+ [m
+ __author__ = 'Charles Xu'[m
+ __email__ = 'charl3s.xu@gmail.com'[m
+ __my_girlfriend__ = '小胖儿～'[m
+[31m-__url__ = 'http://ss.ishadowx.com/'[m
+[32m+[m
+[32m+[m[32murl = [[m
+[32m+[m[32m    'http://www.ssglobal.me/wp/blog/2017/02/22/%E8%B4%A6%E5%8F%B7%E5%88%86%E4%BA%AB/',[m
+[32m+[m[32m    'https://plus.google.com/communities/103542666306656189846/stream/dd570c04-df51-4394-8c83-eabb12cc0d0c'][m
+ [m
+ [m
+ def get_href(string, pattern='.*'):[m
+[36m@@ -38,6 +42,21 @@[m [mdef qrm2string(qrm):[m
+     return qrs[m
+ [m
+ [m
+[32m+[m[32mdef request_url(url):[m
+[32m+[m[32m    data = list()[m
+[32m+[m[32m    try:[m
+[32m+[m[32m        response = requests.get(url, verify=False).text[m
+[32m+[m[32m        data += re.findall('ssr?://\w+', response)[m
+[32m+[m[32m    except Exception:[m
+[32m+[m[32m        return [], {'message': '', 'url': '', 'name': ''}[m
+[32m+[m[32m    soup = BeautifulSoup(response)[m
+[32m+[m[32m    title = soup.find('title')[m
+[32m+[m
+[32m+[m[32m    info = {'message': '', 'url': url, 'name': str(title)}[m
+[32m+[m[32m    servers = [parse(server) for server in data][m
+[32m+[m[32m    return servers, info[m
+[32m+[m
+[32m+[m
+ def request_iss(url='http://ss.ishadowx.com/'):[m
+     data = requests.get(url)[m
+     soup = BeautifulSoup(data.text, 'html.parser')[m
+[36m@@ -65,12 +84,12 @@[m [mdef request_iss(url='http://ss.ishadowx.com/'):[m
+             server_data = server.text.strip().split('\n')[m
+             servers[-1]['server'] = server_data[0].split(':')[-1].strip()[m
+             servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0][m
+[31m-            servers[-1]['name'] = ' '.join(['ss.ishadowx.com', str(i)])[m
+[32m+[m[32m            servers[-1]['remarks'] = ' '.join(['ss.ishadowx.com', str(i)])[m
+             servers[-1]['password'] = server_data[2].split(':')[-1].strip()[m
+             servers[-1]['method'] = server_data[3].split(':')[-1].strip()[m
+             if 'QR' not in server_data[4]:[m
+                 servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)[m
+[31m-                servers[-1]['name'] = ' '.join(['ssr', servers[-1]['name']])[m
+[32m+[m[32m                servers[-1]['remarks'] = ' '.join(['ssr', servers[-1]['remarks']])[m
+         except Exception:[m
+             pass[m
+     return servers, info[m
+[36m@@ -88,7 +107,7 @@[m [mdef request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):[m
+     for server in data:[m
+         server = server.split('\n')[m
+         servers.append(dict())[m
+[31m-        servers[-1]['name'] = '小双{}'.format(server[0]).strip()[m
+[32m+[m[32m        servers[-1]['remarks'] = '小双{}'.format(server[0]).strip()[m
+         servers[-1]['server'] = server[1].split()[1].strip()[m
+         servers[-1]['server_port'] = server[1].split()[3].strip()[m
+         servers[-1]['password'] = server[2].split()[3].strip()[m
+[36m@@ -115,7 +134,7 @@[m [mdef request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8[m
+         # name[m
+         tmp = re.findall('服务器\d+[^:：]*(?=\s*[:：])', i)[m
+         if tmp:[m
+[31m-            servers[-1]['name'] = tmp[0][m
+[32m+[m[32m            servers[-1]['remarks'] = tmp[0][m
+ [m
+         # server[m
+         tmp = re.findall('(?<=服务器\s*\d+[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[\w\d\.]+', i)[m
+[36m@@ -169,6 +188,11 @@[m [mdef get_qr_uri(servers):[m
+                 "workers": 1,[m
+                 "group": "ss.pythonic.life"[m
+             },'''[m
+[32m+[m[32m    def encode(decoded):[m
+[32m+[m[32m        return base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')[m
+[32m+[m
+[32m+[m[32m    def decode(string):[m
+[32m+[m[32m        return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')[m
+     for server in servers:[m
+         try:[m
+             try:[m
+[36m@@ -179,15 +203,15 @@[m [mdef get_qr_uri(servers):[m
+                                    server['ssr_protocol'],[m
+                                    server['method'],[m
+                                    server['obfs'],[m
+[31m-                                   base64.urlsafe_b64encode(bytes(server['password'], 'utf-8')).decode('utf-8').replace('=', '')[m
+[32m+[m[32m                                   encode(server['password'])[m
+                                    ])[m
+                 decoded += '/?remarks={remarks}&group={group}'.format([m
+[31m-                    remarks=base64.urlsafe_b64encode(bytes(server['name'], 'utf-8')).decode('utf-8').replace('=', ''),[m
+[31m-                    group=base64.urlsafe_b64encode(b"new-pac&Charles Xu").decode('utf-8').replace('=', ''),[m
+[31m-                )[m
+[32m+[m[32m                    remarks=encode(server['remarks']),[m
+[32m+[m[32m                    group=encode("Charles Xu"))[m
+[32m+[m
+                 ss_uri = 'ssr://{endoced}'.format([m
+[31m-                    endoced=base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')[m
+[31m-                )[m
+[32m+[m[32m                    endoced=encode(decoded))[m
+[32m+[m
+             except (KeyError, EOFError):[m
+                 # 不完整则是SS[m
+                 decoded = '{method}:{password}@{hostname}:{port}'.format([m
+[36m@@ -198,7 +222,7 @@[m [mdef get_qr_uri(servers):[m
+                 )[m
+                 ss_uri = 'ss://{}#{}'.format([m
+                     str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),[m
+[31m-                    urllib.parse.quote(server['name']))[m
+[32m+[m[32m                    urllib.parse.quote(server['remarks']))[m
+ [m
+             qr = qrcode.QRCode(border=0)[m
+             qr.add_data(ss_uri)[m
+[36m@@ -210,6 +234,8 @@[m [mdef get_qr_uri(servers):[m
+             obfs = server['obfs'] if 'obfs' in server else ''[m
+             method = server['method'] if 'method' in server else ''[m
+             ssr_protocol = server['ssr_protocol'] if 'ssr_protocol' in server else ''[m
+[32m+[m[32m            obfsparam = server['obfsparam'] if 'obfsparam' in server else ''[m
+[32m+[m[32m            protoparam = server['protoparam'] if 'protoparam' in server else ''[m
+ [m
+             server['json'] = json.dumps({[m
+                 "server": server['server'],[m
+[36m@@ -222,9 +248,9 @@[m [mdef get_qr_uri(servers):[m
+                 "udp_timeout": 60,[m
+                 "method": method,[m
+                 "protocol": ssr_protocol,[m
+[31m-                "protocol_param": "",[m
+[32m+[m[32m                "protocol_param": protoparam,[m
+                 "obfs": obfs,[m
+[31m-                "obfs_param": "",[m
+[32m+[m[32m                "obfs_param": obfsparam,[m
+                 "fast_open": False,[m
+                 "workers": 1,[m
+                 "group": "Charles Xu"[m
+[36m@@ -251,6 +277,9 @@[m [mdef main():[m
+         {'data': get_qr_uri(servers_iss), 'info': info_iss},[m
+         {'data': get_qr_uri(servers_xiaoshuang), 'info': info_xiaoshuang},[m
+     ][m
+[32m+[m[32m    for i in url:[m
+[32m+[m[32m        data, info = request_url(url)[m
+[32m+[m[32m        result.append({'data': get_qr_uri(data), 'info': info})[m
+     return result[m
+ [m
+ [m
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/shadowsocks_gplus.py b/src/Web/Flask/ShadowSocksShare/app/shadowsocks_gplus.py[m
+[1mindex a9efdc8..494de51 100644[m
+[1m--- a/src/Web/Flask/ShadowSocksShare/app/shadowsocks_gplus.py[m
+[1m+++ b/src/Web/Flask/ShadowSocksShare/app/shadowsocks_gplus.py[m
+[36m@@ -1,23 +1,22 @@[m
+ #!/usr/bin/env python[m
+ import requests[m
+ import re[m
+[32m+[m[32mimport bs4[m
+[32m+[m[32mfrom app.parse import parse[m
+ url = 'http://www.ssglobal.me/wp/blog/2017/02/22/%E8%B4%A6%E5%8F%B7%E5%88%86%E4%BA%AB/'[m
+ url2 = 'https://plus.google.com/communities/103542666306656189846/stream/dd570c04-df51-4394-8c83-eabb12cc0d0c'[m
+ [m
+[31m-def main():[m
+[32m+[m
+[32m+[m[32mdef request_url(url):[m
+     data = list()[m
+     try:[m
+[31m-        data += re.findall('ssr?://\w+', requests.get(url, verify=False).text)[m
+[32m+[m[32m        response = requests.get(url2, verify=False).text[m
+[32m+[m[32m        data += re.findall('ssr?://\w+', response)[m
+     except Exception:[m
+         pass[m
+[31m-    try:[m
+[31m-        data += re.findall('ssr?://\w+', requests.get(url2, verify=False).text)[m
+[31m-    except Exception:[m
+[31m-        pass[m
+[31m-    return data[m
+[31m-[m
+[32m+[m[32m    soup = bs4.BeautifulSoup(response)[m
+[32m+[m[32m    title = soup.find('title')[m
+ [m
+[31m-if __name__ == '__main__':[m
+[31m-    data = main()[m
+[31m-    for i in data:[m
+[31m-        print(i)[m
+[32m+[m[32m    info = {'message': '', 'url': url, 'name': str(title)}[m
+[32m+[m[32m    servers = [parse(server) for server in data][m
+[32m+[m[32m    return servers, info[m
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/static/favicon.ico b/src/Web/Flask/ShadowSocksShare/app/static/favicon.ico[m
+[1mnew file mode 100644[m
+[1mindex 0000000..262dfb5[m
+Binary files /dev/null and b/src/Web/Flask/ShadowSocksShare/app/static/favicon.ico differ
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/templates/index.html b/src/Web/Flask/ShadowSocksShare/app/templates/index.html[m
+[1mindex 6071139..a386d30 100644[m
+[1m--- a/src/Web/Flask/ShadowSocksShare/app/templates/index.html[m
+[1m+++ b/src/Web/Flask/ShadowSocksShare/app/templates/index.html[m
+[36m@@ -8,6 +8,7 @@[m
+     <meta http-equiv="Cache-Control" content="no-transform" />[m
+     <meta http-equiv="Cache-Control" content="no-siteapp" />[m
+     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />[m
+[32m+[m[32m    <link rel = "Shortcut Icon" href=/favicon.ico>[m[41m [m
+     <style type="text/css">[m
+         table{[m
+             border-collapse: collapse;[m
+[36m@@ -64,14 +65,11 @@[m
+       <br>[m
+       {%set outer_loop = loop%}[m
+       {% for s in server['data'] %}[m
+[31m-        <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['name']}}</a>[m
+[32m+[m[32m        <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}}</a>[m
+         <br>[m
+       {% endfor %}[m
+     </p>[m
+   {% endfor %}[m
+[31m-  {% for uri in sslist %}[m
+[31m-    <input  value="{{uri}}" readonly onclick="this.select()" size="70"><br>[m
+[31m-  {% endfor %}[m
+   SSR订阅地址：<a href="/subscribe">http://ss.pythonic.life/subscribe</a><br>[m
+   JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a href="/json">http://ss.pythonic.life/json</a>[m
+ </fieldset>[m
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/templates/pages.html b/src/Web/Flask/ShadowSocksShare/app/templates/pages.html[m
+[1mindex c7c05fe..245717f 100644[m
+[1m--- a/src/Web/Flask/ShadowSocksShare/app/templates/pages.html[m
+[1m+++ b/src/Web/Flask/ShadowSocksShare/app/templates/pages.html[m
+[36m@@ -7,6 +7,7 @@[m
+     <meta http-equiv="Cache-Control" content="no-transform" />[m
+     <meta http-equiv="Cache-Control" content="no-siteapp" />[m
+     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />[m
+[32m+[m[32m    <link rel = "Shortcut Icon" href=/favicon.ico>[m[41m [m
+     <style type="text/css">[m
+         table{[m
+             border-collapse: collapse;[m
+[36m@@ -26,7 +27,7 @@[m
+ <div style="text-align: center;">[m
+ [m
+ [m
+[31m-<h1>{{name}}</h1>[m
+[32m+[m[32m<h1>{{remarks}}</h1>[m
+ [m
+ [m
+ <a href='/'>返回主页</a><br>[m
+[36m@@ -61,6 +62,8 @@[m
+         <tr><td>加密方法</td><td>{{method}}</td></tr>[m
+         <tr><td>SSR协议</td><td>{{ssr_protocol}}</td></tr>[m
+         <tr><td>混淆方式</td><td>{{obfs}}</td></tr>[m
+[32m+[m[32m        <tr><td>协议参数</td><td>{{protoparam}}</td></tr>[m
+[32m+[m[32m        <tr><td>混淆参数</td><td>{{obfsparam}}</td></tr>[m
+     </table>[m
+     </div>[m
+     [m
+[1mdiff --git a/src/Web/Flask/ShadowSocksShare/app/views.py b/src/Web/Flask/ShadowSocksShare/app/views.py[m
+[1mindex eea5980..feeaf0a 100644[m
+[1m--- a/src/Web/Flask/ShadowSocksShare/app/views.py[m
+[1m+++ b/src/Web/Flask/ShadowSocksShare/app/views.py[m
+[36m@@ -5,13 +5,11 @@[m [mimport threading[m
+ import os[m
+ from app import app[m
+ from app import shadowsocks_free_qrcode[m
+[31m-from app import shadowsocks_gplus[m
+ from app import ss[m
+ from flask import render_template, send_from_directory, abort[m
+ [m
+ [m
+ servers = shadowsocks_free_qrcode.main()[m
+[31m-sslist = ['正在从Google+中查找ssr分享链接（也可能没查到）'][m
+ curtime = time.ctime()[m
+ [m
+ decoded = list()[m
+[36m@@ -20,17 +18,12 @@[m [mfor i in servers:[m
+         if j['uri'][2] is 'r':[m
+             decoded.append(j['uri'])[m
+ decoded = '\n'.join(decoded)[m
+[31m-for i in sslist:[m
+[31m-    if i[2] is 'r':[m
+[31m-        decoded.append(i)[m
+ encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))[m
+ [m
+ [m
+ def update_servers():[m
+     global servers[m
+     servers = shadowsocks_free_qrcode.main()[m
+[31m-    global sslist[m
+[31m-    sslist = shadowsocks_gplus.main()[m
+     global encoded[m
+     decoded = list()[m
+     for i in servers:[m
+[36m@@ -38,9 +31,6 @@[m [mdef update_servers():[m
+             if j['uri'][2] is 'r':[m
+                 decoded.append(j['uri'])[m
+     decoded = '\n'.join(decoded)[m
+[31m-    for i in sslist:[m
+[31m-        if i[2] is 'r':[m
+[31m-            decoded.append(i)[m
+     encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))[m
+ [m
+ [m
+[36m@@ -75,7 +65,6 @@[m [mdef index():[m
+     return render_template([m
+         'index.html',[m
+         servers=servers,[m
+[31m-        sslist=sslist,[m
+         ss=ss[random.randint(0, len(ss) - 1)],[m
+         counter=counter(),[m
+         color=color,[m
+[36m@@ -95,7 +84,7 @@[m [mdef pages(path):[m
+         abort(404)[m
+ [m
+     uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''[m
+[31m-    name = servers[a]['data'][b]['name'] if 'name' in servers[a]['data'][b] else 'None'[m
+[32m+[m[32m    remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'[m
+     qrcode = servers[a]['data'][b]['qrcode'] if 'qrcode' in servers[a]['data'][b] else ''[m
+     server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'[m
+     server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'[m
+[36m@@ -105,6 +94,8 @@[m [mdef pages(path):[m
+     obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'[m
+     href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'[m
+     json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'[m
+[32m+[m[32m    obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'[m
+[32m+[m[32m    protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'[m
+     color, opacity, count = gen_canvas_nest()[m
+ [m
+     return render_template([m
+[36m@@ -118,22 +109,18 @@[m [mdef pages(path):[m
+         ssr_protocol=ssr_protocol,[m
+         obfs=obfs,[m
+         href=href,[m
+[31m-        name=name,[m
+[32m+[m[32m        remarks=remarks,[m
+         counter=counter(),[m
+         server_data=servers[a]['data'][b],[m
+         color=color,[m
+         opacity=opacity,[m
+         count=count,[m
+         json=json,[m
+[32m+[m[32m        obfsparam=obfsparam,[m
+[32m+[m[32m        protoparam=protoparam,[m
+     )[m
+ [m
+ [m
+[31m-@app.route('/js/<path:path>')[m
+[31m-def send_jsadfsadfs(path):[m
+[31m-    counter()[m
+[31m-    return send_from_directory('js', path)[m
+[31m-[m
+[31m-[m
+ @app.route('/subscribe')[m
+ def subscribe():[m
+     return encoded[m
+[36m@@ -144,6 +131,16 @@[m [mdef subscribe_json():[m
+     return random.sample(random.sample(servers, 1)[0]['data'], 1)[0]['json'][m
+ [m
+ [m
+[32m+[m[32m@app.route('/js/<path:path>')[m
+[32m+[m[32mdef send_jsadfsadfs(path):[m
+[32m+[m[32m    return send_from_directory('js', path)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m@app.route('/favicon.ico')[m
+[32m+[m[32mdef send_favicon():[m
+[32m+[m[32m    return send_from_directory('static', 'favicon.ico')[m
+[32m+[m
+[32m+[m
+ @app.errorhandler(404)[m
+ def page_not_found(e):[m
+     counter()[m

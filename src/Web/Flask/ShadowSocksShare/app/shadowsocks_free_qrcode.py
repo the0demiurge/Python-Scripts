@@ -89,7 +89,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
             servers[-1]['method'] = server_data[3].split(':')[-1].strip()
             if 'QR' not in server_data[4]:
                 servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
-                servers[-1]['remarks'] = ' '.join(['ssr', servers[-1]['remarks']])
+                servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'ssr'])
         except Exception:
             pass
     return servers, info

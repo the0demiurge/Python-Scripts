@@ -41,4 +41,5 @@ def parse(uri):
             content = {i.split('=')[0]: decode(i.split('=')[1]) for i in data}
             for key in content:
                 server[key] = content[key]
+        server['remarks'] += ' ssr'
     return server
