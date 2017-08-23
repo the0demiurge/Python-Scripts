@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- utf-8 -*-
 import re
 import base64
 

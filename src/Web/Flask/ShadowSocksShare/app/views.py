@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- utf-8 -*-
 import base64
 import random
 import time

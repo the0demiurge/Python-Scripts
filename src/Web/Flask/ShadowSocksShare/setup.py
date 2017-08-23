@@ -1,12 +1,12 @@
+#!/usr/bin/env python
+# -*- utf-8 -*-
 from setuptools import setup
 
 requirements = list()
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
-readme = str()
-with open('README.md') as f:
-    readme = f.read()
+readme = 'ShadowSocksShare'
 
 setup(name='ShadowSocks-share',
 

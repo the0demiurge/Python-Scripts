@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- utf-8 -*-
+
 from flask import Flask
 
 ss = [
