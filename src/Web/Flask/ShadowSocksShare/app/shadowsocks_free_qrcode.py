@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """
-本代码使用了regex beautifulsoup4 qrcode这三个第三方库，只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，如果遇到任何运行问题请联系我。
+本代码使用了regex beautifulsoup4 qrcode这三个第三方库，
+只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，
+如果遇到任何运行问题请联系我。
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
 """
 try:
@@ -8,7 +10,8 @@ try:
     from bs4 import BeautifulSoup
     import qrcode
 except ImportError:
-    print('Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。\n本软件在Linux下写成，Python版本为3.5，如果遇到任何错误，请到GitHub上提交Issue。\n')
+    print('''Python缺少依赖库，请使用pip install -U regex beautifulsoup4 qrcode或者其他方式安装此依赖。
+          本软件在Linux下写成，Python版本为3.5，如果遇到任何错误，请到GitHub上提交Issue。\n''')
     exit(0)
 
 import urllib
@@ -49,8 +52,8 @@ def request_url(url):
         data += re.findall('ssr?://\w+', response)
     except Exception:
         return [], {'message': '', 'url': '', 'name': ''}
-    soup = BeautifulSoup(response)
-    title = soup.find('title')
+    soup = BeautifulSoup(response, 'html.parser')
+    title = soup.find('title').text
 
     info = {'message': '', 'url': url, 'name': str(title)}
     servers = [parse(server) for server in data]
@@ -89,7 +92,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
             servers[-1]['method'] = server_data[3].split(':')[-1].strip()
             if 'QR' not in server_data[4]:
                 servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
-                servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'ssr'])
+                servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'SSR'])
         except Exception:
             pass
     return servers, info
@@ -278,7 +281,7 @@ def main():
         {'data': get_qr_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
     for i in url:
-        data, info = request_url(url)
+        data, info = request_url(i)
         result.append({'data': get_qr_uri(data), 'info': info})
     return result
 
