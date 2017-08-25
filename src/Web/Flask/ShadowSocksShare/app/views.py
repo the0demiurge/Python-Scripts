@@ -46,7 +46,7 @@ def counter(counter_path=counter_path):
         open(counter_path, 'w').write('0')
     count = int(open(counter_path).readline())
     open(counter_path, 'w').write(str(count + 1))
-    if count % 100 == 0:
+    if count % 15 == 0:
         update_thread = threading.Thread(target=update_servers)
         update_thread.start()
     return count
