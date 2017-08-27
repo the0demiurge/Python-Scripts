@@ -4,9 +4,6 @@
 [submodule "src/Web/js/Views/canvas-nest"]
 	path = src/Web/js/Views/canvas-nest
 	url = https://github.com/hustcc/canvas-nest.js.git
-[submodule "src/Web/Flask/ShadowSocksShare/ShadowSocksShare-OpenShift"]
-	path = src/Web/Flask/ShadowSocksShare/ShadowSocksShare-OpenShift
-	url = https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git
-[submodule "src/Web/Flask/ShadowSocksShare-OpenShift"]
+[submodule "ShadowSocksShare"]
 	path = src/Web/Flask/ShadowSocksShare-OpenShift
 	url = https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git
