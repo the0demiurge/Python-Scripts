@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import qrcode
+
 data = input('请输入需要转换成二维码的文字：')
 
 # 生成二维码信息
@@ -21,5 +22,6 @@ while True:
         if way in show:
             show[way]()
     except (EOFError, KeyboardInterrupt):
+        print('作者的对象：小胖儿')
         exit(0)
 
