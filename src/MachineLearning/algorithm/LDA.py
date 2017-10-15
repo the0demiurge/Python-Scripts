@@ -13,6 +13,8 @@ scaler = MinMaxScaler()
 scaler.fit(x)
 x = scaler.transform(x)
 
+tsne(x, y, label_names=label_names)
+
 trainx, testx, trainy, testy = train_test_split(x, reshape(y, [-1, 1]), test_size=0.1)
 
 
@@ -96,11 +98,10 @@ plot_prediction2(
     threshold)
 print('train err:', trainerr,
       '\ntest err:', testerr)
-
+show()
 # figure()
 # plot_prediction(transformed, predicted, y, label_names)
 
-# tsne(x, y, label_names=label_names)
 
 # \documentclass{article}
 # \usepackage{amsmath}
