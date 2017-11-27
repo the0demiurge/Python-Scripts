@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from sklearn.datasets import load_breast_cancer
 from tsne import *
+import pandas as pd
 from pylab import *
 import seaborn as sns
 from functools import reduce
@@ -87,6 +88,7 @@ testp = predict(testt, threshold, [0, 1])
 testerr = mean(abs(reshape(testp, [1, -1]) - reshape(testy, [1, -1])))
 
 
+figure()
 plot_prediction2(
     np.vstack([traint, testt]),
     np.vstack([mat(trainp) + 4, mat(testp) + 6]),
