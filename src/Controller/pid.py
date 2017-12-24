@@ -11,6 +11,9 @@ class PID(object):
         self.e_prev_prev = 0
 
     def step(self, e):
-        u = (self.u_prev + self.Kp * (e - self.e_prev) + self.Ki * self.T_sample * e + self.Kd * (e - 2 * self.e_prev + self.e_prev_prev))
+        p = self.Kp * (e - self.e_prev)
+        i = self.Ki * self.T_sample * e
+        d = self.Kd * (e - 2 * self.e_prev + self.e_prev_prev)
+        u = (self.u_prev + p + i + d)
         self.u_prev, self.e_prev, self.e_prev_prev = u, e, self.e_prev
         return u
