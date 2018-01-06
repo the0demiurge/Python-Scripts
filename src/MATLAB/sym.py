@@ -7,6 +7,7 @@ from sympy import symbols, Matrix, MatrixSymbol, abc, det, Inverse
 
 inv = s.Inverse
 exp = s.MatPow
+syms = symbols
 
 
 def mat(data, shape=None):
