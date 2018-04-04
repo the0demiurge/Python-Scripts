@@ -7,6 +7,9 @@
 import sys
 import os
 import turtle
+import tty
+import termios
+
 t = turtle.Pen()
 
 
@@ -15,9 +18,9 @@ t = turtle.Pen()
 
 # turtle bot 模拟器
 # 只有三种动作，前进、左转、右转，转弯半径恒定为 r， 前进距离恒定为 l
-r = 15 # 转弯半径
-rl = 5 # 转弯时走的路程
-l = 5 # 前进时走的路程
+r = 15  # 转弯半径
+rl = 5  # 转弯时走的路程
+l = 5  # 前进时走的路程
 
 
 # In[16]:
@@ -42,23 +45,35 @@ t.goto(*ld)
 
 def left():
     t.circle(r, rl)
+
+
 def right():
     t.circle(-r, rl)
+
+
 def forward():
     t.forward(l)
+
+
 def undo():
     t.undo()
+
+
 def save(name='turtle.eps'):
     t.color("")
     t.goto(-500, -500)
     ts = turtle.getscreen()
     ts.getcanvas().postscript(file=name)
+
+
 def reset():
     t.color("")
-    t.goto(0,0)
+    t.goto(0, 0)
     t.color("black")
     t.pensize(1)
     t.seth(0)
+
+
 def pensize(s=None):
     try:
         if s is None:
@@ -67,6 +82,8 @@ def pensize(s=None):
         t.pensize(float(s))
     except:
         print('画笔粗细输入错误')
+
+
 def color(c=None):
     try:
         if c is None:
@@ -75,30 +92,34 @@ def color(c=None):
         t.color(c)
     except:
         print('颜色错误')
+
+
 def show_help():
     help_info = '''用法：
     支持解析脚本（直接把动作写到文本文档里即可）：python turtle.py <file>
-    
+
     机器人运动指令：
     w
    asd 分别为方向键，前后左右；
-    
+
     r：reset,           回到原来位置
     g：go to,           指定的坐标位置，颜色什么的全部重置
     z：set heading      设置头部朝向
     l：draw line        从当前位置到指定坐标画一条线
-    
+
     属性设置指令：
     t：set turtle bot,  设置运动半径和距离
     c：color,           改变颜色
     p：pen size,        改变画笔粗细
-    
+
     其他：
     o：save,            保存图片
     q：quit,            退出
     h：help,            显示帮助'''
     print(help_info)
-    print("方格坐标为左下角",ld, "右上角", ru)
+    print("方格坐标为左下角", ld, "右上角", ru)
+
+
 def goto(position=None):
     try:
         t.color("")
@@ -111,6 +132,8 @@ def goto(position=None):
         t.pensize(1)
     except:
         print('坐标输入错误！')
+
+
 def draw_line(position=None):
     try:
         if not position:
@@ -120,6 +143,8 @@ def draw_line(position=None):
         t.goto(*position)
     except:
         print('坐标输入错误！')
+
+
 def set_turtle(s=None):
     global r
     global l
@@ -132,6 +157,8 @@ def set_turtle(s=None):
         [r, l] = s
     except:
         print('r\\l输入错误！')
+
+
 def set_heading(s=None):
     try:
         if not s:
@@ -141,9 +168,12 @@ def set_heading(s=None):
         t.seth(s)
     except:
         print('r\\l输入错误！')
+
+
 def nop():
     pass
-        
+
+
 act = {
     'w': forward,
     's': undo,
@@ -177,7 +207,7 @@ if len(sys.argv) > 1:
         try:
             if read_data:
                 read_data = False
-                act[data[i-1].strip()](line.strip())
+                act[data[i - 1].strip()](line.strip())
             elif line.strip() in list('gcptlz'):
                 read_data = True
             else:
@@ -199,17 +229,22 @@ if not path:
         warns = input('警告！该文件已存在！继续将在该文件之后append内容！继续请输入“yes”')
 else:
     print("可以继续输入指令，输入的指令将继续保存在该文件，与之前的内容使用分隔线分隔")
-        
+
 if warns == 'yes':
     print('------', file=open(path, 'a'))
     while True:
         print("当前坐标：", t.pos(), "角度", t.heading())
-        info = input("turtlebot>")
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            info = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
         print(info, file=open(path, 'a'))
         try:
             act[info]()
         except:
             print('输入错误！')
             act['h']()
-    
-
