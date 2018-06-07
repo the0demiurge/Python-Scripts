@@ -1,15 +1,24 @@
 # P2P Protocol
 
 ## Connection Method
+
 socket, UDP(/TCP)
+
 ## Client Request
-`(('username', 'ip', port, request, 'request_data'), 'Markdown message', (('binary object name', 'binary object data'), ...))`
+
+```python
+(
+    ('username', 'ip', port, request, 'request_data'),
+    'Markdown message',
+    (('binary object name', 'binary object data'), (...))
+)
+```
 
 Where request contains:
 
 - message
 - hello : `(('available time', int), ('erase after noconnection', int))`, if always available, set it to -1; if do not available, set to 0
-- rsa pubkey
+- RSA pubkey
 - AES key
 - erase history
 - erase keys
@@ -22,26 +31,41 @@ Where request contains:
 
 ## Encryption, Decryption
 
-Sender:
-
-First connection: receive RSA key and save to contact
-
-- Generate temp AES key
-- Randomly choose iter times and print iter times
-- Use RSA pubkey encrypt AES key plus salt with itertimes
-- Uses AES when Transfering data
-- Received hello message
-
-Receiver:
-
-First connection: send RSA pubkey encrypted by base64
-
-- Receive encrypted AES key
-- Use private key, salt and iter times decrypt AES key
-- send hello message
+Use ECDHE, RSA, AES, PSK
 
 # Saved Files
-Config must be encrypted by self RSA pubkey, and privkey will be stored securily
+
+Config must be encrypted by self RSA pubkey, and privkey should be stored securily, thus configs cannot be pried without keys
+
 ## Contacts
+
+```python
+{
+    'contact name':[
+        pubkey,
+        ('host', port),
+        aes_key
+        ]
+}
+
+```
 ## Messages
+```python
+{
+    ('contact name', 'host', port):[
+
+    ]
+}
+```
+
+
 ## Client and Server configs
+```python
+{
+    'item':value
+}
+```
+
+# Group Chat Protocol
+
+Broadcast message to all network by traverse the graph, maintain a cluster shared contact list.

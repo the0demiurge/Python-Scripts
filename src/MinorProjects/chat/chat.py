@@ -4,6 +4,18 @@ import argparse
 import threading
 import time
 import select
+import queue
+
+try:
+    import Cryptodome
+    from Cryptodome.Cipher import AES
+    from Cryptodome.PublicKey import RSA
+    from Cryptodome.Random import get_random_bytes
+except ImportError as e:
+    print(e)
+    print('You should install python library {} first: {}'.format(
+        'pycryptodomex', 'https://pypi.org/project/pycryptodomex/'))
+    exit()
 
 
 def get_host_ip(address=('8.8.8.8', 80)):
@@ -19,16 +31,17 @@ def get_host_ip(address=('8.8.8.8', 80)):
 class UDPServer(threading.Thread):
     """docstring for Server"""
 
-    def __init__(
-        self, address=('127.0.0.1', 54321),
-        sock_mode=(socket.AF_INET, socket.SOCK_DGRAM),
-        show_msg=print,
-        buffer_size=4096,
-    ):
+    def __init__(self,
+                 address=('127.0.0.1', 54321),
+                 queue=None,
+                 sock_mode=(socket.AF_INET, socket.SOCK_DGRAM),
+                 show_msg=print,
+                 buffer_size=4096):
         super(UDPServer, self).__init__(name='UDPServer')
         if address[0] != '127.0.0.1':
             address = get_host_ip(), address[1]
         self.address = address
+        self.queue = queue
         self.sock_mode = sock_mode
         self.show_msg = show_msg
         self.buffer_size = buffer_size
@@ -45,21 +58,16 @@ class UDPServer(threading.Thread):
     def stop(self):
         self.running_status = False
         self.sock.close()
+        self.show_msg('Server Stopped')
 
     def bind(self):
-        err_code = 0
-        server_ok = False
-
-        while self.running_status and not server_ok:
-            try:
-                self.sock.bind(self.address)
-                server_ok = True
-                self.show_msg('Server started at {}:{}'.format(*self.address))
-            except OSError as e:
-                if e.args[0] != err_code:
-                    self.show_msg(e)
-                    err_code = e.args[0]
-                time.sleep(1)
+        try:
+            self.sock.bind(self.address)
+            self.show_msg('Server started at {}:{}'.format(*self.address))
+        except OSError as e:
+            self.show_msg(e)
+            return e
+        return True
 
     def run(self):
         try:
@@ -81,19 +89,45 @@ class UDPServer(threading.Thread):
         return data, addr
 
     def enqueue(self, *data):
-        print(data)
+        if not self.queue.full():
+            self.queue.put(data)
+        else:
+            self.show_msg('Queue full')
 
 
 class UDPClient(object):
-    def __init__(self, sock_mode=(socket.AF_INET, socket.SOCK_DGRAM)):
+    def __init__(self,
+                 port=12345,
+                 sock_mode=(socket.AF_INET, socket.SOCK_DGRAM),
+                 show_msg=print):
+        self.port = port
         self.sock_mode = sock_mode
+        self.show_msg = show_msg
         self.sock = socket.socket(*sock_mode)
+
+        self.running_status = True
+
+        self.bind()
 
     def sendto(self, address, msg):
         self.sock.sendto(bytes(msg, 'utf-8'), address)
 
-    def __del__(self):
+    def bind(self):
+        try:
+            self.sock.bind(('127.0.0.1', self.port))
+            self.show_msg('Client started at port {}'.format(self.port))
+        except OSError as e:
+            self.show_msg(e)
+            return e
+        return True
+
+    def stop(self):
+        self.running_status = False
         self.sock.close()
+        self.show_msg('Client Stopped')
+
+    def __del__(self):
+        self.stop()
 
 
 def print_loop(address):
@@ -107,7 +141,8 @@ def print_loop(address):
             client.sendto(address, msg)
     except (KeyboardInterrupt, EOFError):
         running_status = False
-
+    finally:
+        client.stop()
 
 
 def parse_args():
@@ -121,10 +156,11 @@ def parse_args():
 
 
 def main():
+    message_queue = queue.Queue()
     address, sock_mode = parse_args()
     print('Connect to:')
     print(address, sock_mode, sep='\n', end='\n\n')
-    thread = UDPServer(address, sock_mode)
+    thread = UDPServer(address=address, sock_mode=sock_mode, queue=message_queue)
     thread.start()
     print_loop(address)
     thread.stop()
