@@ -2,18 +2,15 @@
 """Python MATLAB style tools
 """
 import sympy as s
-from math import sqrt
 from sympy import symbols, Matrix, MatrixSymbol, abc, det, Inverse
+import re
+from ast import literal_eval
 
-inv = s.Inverse
-exp = s.MatPow
+sinv = s.Inverse
+sexp = s.MatPow
 syms = symbols
+sdet = det
 
-
-def mat(data, shape=None):
-    # Make a matrix by inputing data in one-line and mat-shape
-    if not shape:
-        shape = [round(sqrt(len(data)))] * 2
-    elif isinstance(shape, int):
-        shape = [shape, len(data) / shape]
-    return Matrix(s.reshape(data, [shape[0]]))
+def smat(data):
+    # string -> sympy.Matrix
+    return Matrix([[syms(number) for number in re.split('[ ,]+', numbers.strip())] for numbers in data.split(';')])

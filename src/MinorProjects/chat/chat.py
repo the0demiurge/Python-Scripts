@@ -32,13 +32,13 @@ class UDPServer(threading.Thread):
     """docstring for Server"""
 
     def __init__(self,
-                 address=('127.0.0.1', 54321),
+                 address=('', 54321),
                  queue=None,
                  sock_mode=(socket.AF_INET, socket.SOCK_DGRAM),
                  show_msg=print,
                  buffer_size=4096):
         super(UDPServer, self).__init__(name='UDPServer')
-        if address[0] != '127.0.0.1':
+        if address[0] not in ('127.0.0.1', '0.0.0.0', '::', ''):
             address = get_host_ip(), address[1]
         self.address = address
         self.queue = queue
@@ -164,6 +164,8 @@ def main():
     thread.start()
     print_loop(address)
     thread.stop()
+    while not message_queue.empty():
+        print(message_queue.get())
     print('bye')
 
 

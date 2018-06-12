@@ -31,7 +31,7 @@ Where request contains:
 
 ## Encryption, Decryption
 
-Use ECDHE, RSA, AES, PSK
+Use ECDHE, RSA, AES, PSK/SRP
 
 # Saved Files
 
