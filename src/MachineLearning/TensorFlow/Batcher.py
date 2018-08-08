@@ -23,7 +23,7 @@ class Batcher(object):
             Y,
             train_size=None,
             test_size=None,
-            random_state=np.random.randint(0, 4294967295),
+            random_state=None,
             to_shuffle=True):
         '''
 Args:
@@ -44,7 +44,6 @@ Args:
             Pseudo-random number generator state used for random sampling.
     to_shuffle: shuffle the data initially
             '''
-
         X = pd.DataFrame(X)
         Y = pd.DataFrame(Y)
 
@@ -53,6 +52,9 @@ Args:
 
         if to_shuffle:
             X, Y = shuffle(X, Y)
+
+        if random_state is None:
+            random_state = np.random.randint(0, 4294967295)
 
         (self.X_train,
          self.X_test,
