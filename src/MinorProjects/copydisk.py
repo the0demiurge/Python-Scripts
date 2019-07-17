@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+'''Usage: python {filename}
+交互式界面，将一个内存卡中的内容使用dd转移到另一个内存卡。为不熟悉linux和dd命令的用户设计
+'''.format(__file__)
 import os
 
 
