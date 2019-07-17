@@ -31,8 +31,7 @@ def crawl(url_list):
 def main():
     path = 'url_list.txt'
     if not os.path.exists(path):
-        print('need', path)
-        exit(0)
+        os.system(' '.join(['vim', path]))
     urls = [i for i in open(path).readlines() if len(i) > 5]
     content = crawl(urls)
     open('tieba.html', 'w').write(content)
