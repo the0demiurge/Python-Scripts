@@ -7,3 +7,6 @@
 [submodule "ShadowSocksShare"]
 	path = src/Web/Flask/ShadowSocksShare-OpenShift
 	url = https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git
+[submodule "MATLAB"]
+	path = src/pyMATLAB-style
+	url = git@github.com:the0demiurge/pyMATLAB-style.git
