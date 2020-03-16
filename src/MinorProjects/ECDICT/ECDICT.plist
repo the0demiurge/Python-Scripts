@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>Chinese</string>
+		<key>CFBundleIdentifier</key>
+		<string>com.apple.dictionary.ECDICT</string>
+		<key>CFBundleName</key>
+		<string>简明英汉字典增强版</string>
+		<key>CFBundleShortVersionString</key>
+		<string>1.0</string>
+		<key>DCSDictionaryCopyright</key>
+		<string>Copyright © 2017 Linwei under MIT License. https://github.com/skywind3000/ECDICT</string>
+		<key>DCSDictionaryManufacturerName</key>
+		<string>Charles Xu</string>
+		<key>DCSDictionaryPrefsHTML</key>
+		<string>ECDICT_prefs.html</string>
+		<key>DCSDictionaryXSL</key>
+		<string>ECDICT.xsl</string>
+		<key>DCSDictionaryDefaultPrefs</key>
+		<dict>
+			<key>display-defitition</key>
+			<string>1</string>
+			<key>display-tags</key>
+			<string>1</string>
+			<key>version</key>
+			<string>1</string>
+		</dict>
+	</dict>
+</plist>
