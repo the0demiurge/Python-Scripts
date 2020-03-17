@@ -8,7 +8,7 @@
 
 # You need to edit these values.
 
-DICT_NAME		=	"简明英汉字典增强版"
+DICT_NAME		=	"简明英汉必应版"
 DICT_SRC_PATH		=	ECDICT.xml
 CSS_PATH		=	ECDICT.css
 PLIST_PATH		=	ECDICT.plist
