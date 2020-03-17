@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 import csv
-from xml.sax.saxutils import escape, unescape, quoteattr
+import sys
+from xml.sax.saxutils import escape, quoteattr, unescape
+
+if len(sys.argv) != 2:
+    print('usage: python3', __file__, '<path-to-csv-file>')
+    exit()
 
 template = ''' <d:entry id="{id}" d:title={word_}><d:index d:value={word_}/>{index_list}<h1 class="word">{word}</h1>{contents}</d:entry>'''
 phonetic_temp = '<span class="phonetic"><span d:pr="1">| {} |</span></span>'
@@ -13,7 +18,7 @@ head = '''<?xml version="1.0" encoding="UTF-8"?>
 xmlns:d="http://www.apple.com/DTDs/DictionaryService-1.0.rng">
 '''
 tail = '''</d:dictionary>'''
-file_path = '/Users/charles/Downloads/ultimate.csv'
+file_path = sys.argv[-1]
 out_path = 'ECDICT.xml'
 data = csv.reader(open(file_path, 'r').readlines()[1:])
 
