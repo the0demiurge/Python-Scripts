@@ -37,7 +37,7 @@ def gen_entry(entry_id, word, phonetic, definition, translation, tags, exchange)
 
 
 def name_escape(word, string):
-    if string.startswith('n. ({})人名'.format(word.title())):
+    if ')人名' in string:
         return '<span class="trans_name"><i>{}</i></span>'.format(string), 1
     else:
         return string, 0
@@ -50,10 +50,12 @@ def format_trans(word, string):
     return '<br />'.join(next(zip(*contents)))
 
 
-def process_exchange(exchange):
+def process_exchange(word, exchange):
     if not exchange:
         return ''
     exchange = set([i.split(':', 1)[1] for i in exchange.split('/') if not i.startswith('1')])
+    if word in exchange:
+        exchange.remove(word)
     return ''.join(index_temp.format(quoteattr(i)) for i in exchange if i)
 
 
@@ -84,7 +86,7 @@ for i, entry in enumerate(data):
             format_trans(word, definition),
             format_trans(word, translation),
             escape(unescape(tag.replace(' ', ','))),
-            process_exchange(exchange),
+            process_exchange(word, exchange),
         ),
         file=f
     )
