@@ -5,13 +5,13 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>Chinese</string>
 		<key>CFBundleIdentifier</key>
-		<string>com.apple.dictionary.ECDICT</string>
+		<string>com.apple.dictionary.ECDICT-ultimate</string>
 		<key>CFBundleName</key>
-		<string>简明英汉字典增强版</string>
+		<string>简明英汉必应版</string>
 		<key>CFBundleShortVersionString</key>
 		<string>1.0</string>
 		<key>DCSDictionaryCopyright</key>
-		<string>Copyright © 2017 Linwei under MIT License. https://github.com/skywind3000/ECDICT</string>
+		<string>Copyright © 2017 Linwei under MIT License. https://github.com/skywind3000/ECDICT-ultimate/releases</string>
 		<key>DCSDictionaryManufacturerName</key>
 		<string>Charles Xu</string>
 		<key>DCSDictionaryPrefsHTML</key>

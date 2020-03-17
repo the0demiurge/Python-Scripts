@@ -8,7 +8,7 @@
 
 # You need to edit these values.
 
-DICT_NAME		=	"简明英汉字典增强版"
+DICT_NAME		=	"简明英汉必应版"
 DICT_SRC_PATH		=	ECDICT.xml
 CSS_PATH		=	ECDICT.css
 PLIST_PATH		=	ECDICT.plist
@@ -22,7 +22,7 @@ DICT_BUILD_OPTS		=
 # The DICT_BUILD_TOOL_DIR value is used also in "build_dict.sh" script.
 # You need to set it when you invoke the script directly.
 
-DICT_BUILD_TOOL_DIR	=	"/Users/charles/Downloads/Dictionary-Development-Kit-master"
+DICT_BUILD_TOOL_DIR	=	"/Users/charles/Desktop/Dictionary Development Kit"
 DICT_BUILD_TOOL_BIN	=	"$(DICT_BUILD_TOOL_DIR)/bin"
 
 ###########################
