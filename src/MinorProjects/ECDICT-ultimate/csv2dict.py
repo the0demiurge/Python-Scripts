@@ -54,7 +54,7 @@ def process_exchange(exchange):
     if not exchange:
         return ''
     exchange = set([i.split(':', 1)[1] for i in exchange.split('/') if not i.startswith('1')])
-    return ''.join(index_temp.format(quoteattr(i)) for i in exchange)
+    return ''.join(index_temp.format(quoteattr(i)) for i in exchange if i)
 
 
 f = open(out_path, 'w')
