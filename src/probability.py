@@ -38,18 +38,17 @@ def integrate(function, start, end, step=0.001):
 
 def iterfunc(function):
     @wraps(function)
-    def iterfunc_wrapper(x):
+    def iterfunc_wrapper(x, *args, **kwargs):
         if '__iter__' in dir(x):
-            return [function(x_i) for x_i in x.__iter__()]
+            return [function(x_i, *args, **kwargs) for x_i in x.__iter__()]
         elif x is None or x is math.isnan(x):
             return math.nan
         else:
             try:
-                return function(x)
-            except ZeroDivisionError:
+                return function(x, *args, **kwargs)
+            except (ZeroDivisionError, ValueError):
                 return math.nan
     return iterfunc_wrapper
-
 
 def pdf2cdf(start, end):
     def pdf2cdf_wrapper(PDF):
